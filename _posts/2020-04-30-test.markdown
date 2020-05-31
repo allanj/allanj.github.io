@@ -1,0 +1,8 @@
+---
+layout: page
+title: "POST TITLE"
+date: 2020-04-25 00:00:00 +0800
+categories: code 
+---
+
+type of this post
