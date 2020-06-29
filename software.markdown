@@ -7,4 +7,6 @@ title: Software
 permalink: /software/
 ---
 
-content of blogs page.
+
+* A general [LSTM-CRF](https://github.com/allanj/pytorch_lstmcrf){:target="_blank"} framework using PyTorch!.
+* Neural [Partial-CRF](https://github.com/allanj/neural-partialCRF){:target="_blank"} Suite based on partial CRF suite..
