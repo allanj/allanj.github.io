@@ -5,6 +5,23 @@
 layout: page
 ---
 
+<p align="center">
+  
+  <!-- <a href="#">Link 1</a> |
+  <a href="#">Link 2</a> |
+  <a href="#">Link 3</a>
+  <br><br> -->
+  <img src="files/front.jpg" style="width:500px;height:360px;">
+  <br>
+  <i>Lunch with my family during EMNLP 2019 in Hong Kong</i>
+</p>
+
+
+<!-- ![Lunch with my family during EMNLP 2019 in Hong Kong](files/front.jpg)
+
+
+-><- -->
+
 NLP Scientist at [ByteDance AI Lab](https://ailab.bytedance.com/){:target="_blank"}, Singapore.
 I'm interested in fundamental research in NLP. 
 
