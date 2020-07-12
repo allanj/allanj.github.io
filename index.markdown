@@ -39,3 +39,4 @@ Other Information:
 * Sept 2019: Finish my internship at Allen Institute for Artificial Intelligence.
 
 ### Recent Post
+{% include list_posts.html %}
