@@ -9,9 +9,11 @@ permalink: /publications/
 
 ### Conference Papers
 1. Lu Xu, **Zhanming Jie**, Wei Lu and Lidong Bing. "Fusing Structured Information into LSTM for Named Entity Recognition" In Proceedings of NAACL, 2021.
+
 2. Liying Cheng, Dekun Wu, Lidong Bing, Yan Zhang, **Zhanming Jie**, Wei Lu, Luo Si. "[_ENT-DESC: Entity Description Generation by Exploring Knowledge Graph_](https://www.aclweb.org/anthology/2020.emnlp-main.90/){:target="_blank"}" In Proceedings of EMNLP, 2020. [\[code\]](https://github.com/LiyingCheng95/EntityDescriptionGeneration){:target="_blank"} [\[Slides\]](https://docs.google.com/presentation/d/1xuZ48Yl-wIHdrZME15Iimcw3eSQTF9_TiaIS7Mu6SoU/edit?usp=sharing){:target="_blank"}
 
 3. Xuefeng Yang, Benhong Wu, **Zhanming Jie**, Yunfeng Liu. "[_Overview of the NLPCC 2020 Shared Task: AutoIE_](https://link.springer.com/chapter/10.1007/978-3-030-60457-8_46){:target="_blank"}" In Proceedings of NLPCC, 2020
+
 4. **Zhanming Jie** and Wei Lu. "[_Dependency-guided LSTM-CRF for Named Entity Recognition_](https://arxiv.org/abs/1909.10148){:target="_blank"} " In Proceedings of EMNLP, 2019. [\[code\]](https://github.com/allanj/ner_with_dependency){:target="_blank"} [\[Slides\]](https://docs.google.com/presentation/d/1tk0EcChsI-DIt0LvFVcubKvpCi3Ptg6OrnRx5U-CsO0/edit?usp=sharing){:target="_blank"}
 
 5. **Zhanming Jie**, Pengjun Xie, Wei Lu, Ruixue Ding and Linlin Li. "[_Better Modeling of Incomplete Annotations for Named Entity Recognition_](https://www.aclweb.org/anthology/N19-1079){:target="_blank"} " In Proceedings of NAACL, 2019. [\[code\]](https://github.com/allanj/ner_incomplete_annotation/){:target="_blank"} [\[Slides\]](http://people.sutd.edu.sg/~allanjie/wp-content/uploads/2019/07/presentation.pdf){:target="_blank"}
