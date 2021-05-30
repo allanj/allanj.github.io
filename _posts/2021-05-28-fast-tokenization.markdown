@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Use PretrainedTokenizationFast is Much Faster than just PretrainedTokenization (in my case)"
+title:  "Use PretrainedTokenizationFast is Much Faster than just PretrainedTokenization"
 date:   2021-05-28 23:43:08 +0800
 categories: huggingface
 ---
