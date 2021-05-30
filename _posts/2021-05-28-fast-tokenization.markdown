@@ -45,7 +45,7 @@ The following data comes from my Mac.
 However, the current `PretrainedTokenizerFast` is not so well supported by multithreading in Python. 
 I would expect it would be even much much faster with that available. 
 
-[**Colab Code**](https://colab.research.google.com/drive/1TESTyiqEhaVNfW6PsXc6Hqm26s4RxRuo?usp=sharing) for the experiments below.
+[**Colab Code**](https://colab.research.google.com/drive/1TESTyiqEhaVNfW6PsXc6Hqm26s4RxRuo?usp=sharing){:target="_blank"} for the experiments below.
 
 ### Experiments with different Batch Size
 Tokenization time (ms) with different batch size using the `batch_encode_plus` method.
