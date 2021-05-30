@@ -5,17 +5,12 @@
 layout: page
 ---
 
-<p align="center">
-  
-  <!-- <a href="#">Link 1</a> |
-  <a href="#">Link 2</a> |
-  <a href="#">Link 3</a>
-  <br><br> -->
+<!-- <p align="center">
   <img src="files/front.jpg" style="width:500px;height:360px;">
   <br>
   <i>Lunch with my family during EMNLP 2019 in Hong Kong</i>
 </p>
-
+ -->
 
 <!-- ![Lunch with my family during EMNLP 2019 in Hong Kong](files/front.jpg)
 
@@ -33,6 +28,7 @@ Other Information:
 
 
 ###  News
+* Mar 2021: NER paper [(*Better Feature Integration for Named Entity Recognition*)](https://www.aclweb.org/anthology/2021.naacl-main.271.pdf){:target="_blank"} accepted in NAACL 2021. 
 * Apr 2020: grateful for getting my PhD from the [StatNLP Research](https://statnlp-research.github.io/){:target="_blank"} Group. [Thesis and slides](https://github.com/allanj/phd-thesis){:target="_blank"}.
 * Mar 2020: Finish my internship at Alibaba, Singapore
 * Nov 2019: Attend EMNLP to present [Dependency-Guided LSTM-CRF for Named Entity Recognition](https://www.aclweb.org/anthology/D19-1399.pdf){:target="_blank"}

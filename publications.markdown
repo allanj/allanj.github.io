@@ -8,7 +8,7 @@ permalink: /publications/
 ---
 
 ### Conference Papers
-1. Lu Xu, **Zhanming Jie**, Wei Lu and Lidong Bing. "Fusing Structured Information into LSTM for Named Entity Recognition" In Proceedings of NAACL, 2021.
+1. Lu Xu, **Zhanming Jie**, Wei Lu and Lidong Bing. "[_Better Feature Integration for Named Entity Recognition_](https://www.aclweb.org/anthology/2021.naacl-main.271.pdf){:target="_blank"}" In Proceedings of NAACL, 2021. [\[code\]](https://github.com/xuuuluuu/SynLSTM-for-NER){:target="_blank"}
 
 2. Liying Cheng, Dekun Wu, Lidong Bing, Yan Zhang, **Zhanming Jie**, Wei Lu, Luo Si. "[_ENT-DESC: Entity Description Generation by Exploring Knowledge Graph_](https://www.aclweb.org/anthology/2020.emnlp-main.90/){:target="_blank"}" In Proceedings of EMNLP, 2020. [\[code\]](https://github.com/LiyingCheng95/EntityDescriptionGeneration){:target="_blank"} [\[Slides\]](https://docs.google.com/presentation/d/1xuZ48Yl-wIHdrZME15Iimcw3eSQTF9_TiaIS7Mu6SoU/edit?usp=sharing){:target="_blank"}
 
