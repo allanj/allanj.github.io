@@ -23,11 +23,12 @@ I'm interested in fundamental research in NLP.
 
 Other Information:
 * [Google Scholar](https://scholar.google.com.sg/citations?user=u68TA6oAAAAJ&hl=en){:target="_blank"} 
-* [CV](files/cv.pdf){:target="_blank"} 
+* [CV](files/cv_v2.pdf){:target="_blank"} 
 * [GitHub](https://github.com/allanj/){:target="_blank"} 
 
 
 ###  News
+* July 2021: [(*To be Closer: Learning toLink up Aspect with Opinions*)](https://aclanthology.org/2021.emnlp-main.317.pdf){:target="_blank"} accepted in EMNLP 2021. 
 * Mar 2021: NER paper [(*Better Feature Integration for Named Entity Recognition*)](https://www.aclweb.org/anthology/2021.naacl-main.271.pdf){:target="_blank"} accepted in NAACL 2021. 
 * Apr 2020: grateful for getting my PhD from the [StatNLP Research](https://statnlp-research.github.io/){:target="_blank"} Group. [Thesis and slides](https://github.com/allanj/phd-thesis){:target="_blank"}.
 * Mar 2020: Finish my internship at Alibaba, Singapore
