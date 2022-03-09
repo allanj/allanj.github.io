@@ -8,6 +8,7 @@ permalink: /publications/
 ---
 
 ### Conference Papers
+1. **Zhanming Jie**, Jierui Li, and Wei Lu. "[_Math Word Problem Solving as Complex Relation Extraction._]()" In Proceedings of ACL, 2022. [\[code\]](https://github.com/allanj/logicalform_math){:target="_blank"}
 1. Yuxiang Zhou, Lejian Liao, Yang Gao, **Zhanming Jie** and Wei Lu. "[_To be Closer: Learning toLink up Aspect with Opinions._](https://aclanthology.org/2021.emnlp-main.317.pdf){:target="_blank"}" In Proceedings of EMNLP, 2021. [\[code\]](https://github.com/zyxnlp/aclt){:target="_blank"}
 
 2. Lu Xu, **Zhanming Jie**, Wei Lu and Lidong Bing. "[_Better Feature Integration for Named Entity Recognition_](https://www.aclweb.org/anthology/2021.naacl-main.271.pdf){:target="_blank"}" In Proceedings of NAACL, 2021. [\[code\]](https://github.com/xuuuluuu/SynLSTM-for-NER){:target="_blank"}
