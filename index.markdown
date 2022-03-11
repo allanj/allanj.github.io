@@ -18,7 +18,9 @@ layout: page
 -><- -->
 
 NLP Scientist at [ByteDance AI Lab](https://ailab.bytedance.com/){:target="_blank"}, Singapore.
-I'm interested in fundamental research in NLP. 
+I'm currently working on multimodal question answering and reasoning in NLP. 
+I'm also interested in fundamental research topics, especially syntactic parsing, semantic parsing and named entity recognition.
+
 
 
 Other Information:
@@ -27,9 +29,9 @@ Other Information:
 * [GitHub](https://github.com/allanj/){:target="_blank"} 
 
 
-###  News
+###  News ℹ️
 * Mar 2022: Our paper [Math Word Problem Solving as Complex Relation Extraction]() is accepted by ACL-2022 as a main paper.
-* Mar 2022: Present a talk on math word problem solving at [SMT SUTD](https://smt.sutd.edu.sg/){:target="_blank"}.
+* Mar 2022: Present a talk ([slides](files/sutd_smt_talk.pdf){:target="_blank"}) on math word problem solving at [SMT SUTD](https://smt.sutd.edu.sg/){:target="_blank"}.
 * July 2021: [(*To be Closer: Learning toLink up Aspect with Opinions*)](https://aclanthology.org/2021.emnlp-main.317.pdf){:target="_blank"} accepted in EMNLP 2021. 
 * Mar 2021: NER paper [(*Better Feature Integration for Named Entity Recognition*)](https://www.aclweb.org/anthology/2021.naacl-main.271.pdf){:target="_blank"} accepted in NAACL 2021. 
 * Apr 2020: grateful for getting my PhD from the [StatNLP Research](https://statnlp-research.github.io/){:target="_blank"} Group. [Thesis and slides](https://github.com/allanj/phd-thesis){:target="_blank"}.
