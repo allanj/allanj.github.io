@@ -7,5 +7,4 @@ inline: true
 
 
 
-
-Apr 2020: grateful for getting my PhD from the [StatNLP Research](https://statnlp-research.github.io/) Group. [Thesis and slides](https://github.com/allanj/phd-thesis). Received the __Best Thesis Award__ (SUTD).
+Grateful for getting my PhD from the [StatNLP Research](https://statnlp-research.github.io/) Group. [Thesis and slides](https://github.com/allanj/phd-thesis). Received the __Best Thesis Award__ (SUTD).
