@@ -20,10 +20,12 @@ social: true  # includes social icons at the bottom of the page
 ---
 
 
-NLP Scientist at [ByteDance AI Lab](https://ailab.bytedance.com/), Singapore.
-I'm currently working on multimodal question answering and reasoning in NLP. 
+NLP Scientist at [ByteDance AI Lab](https://ailab.bytedance.com/), Singapore. 
+I obtained my PhD degree from the [SUTD](https://sutd.edu.sg/) [StatNLP Group](https://statnlp-research.github.io/) supervised by Prof. [Wei Lu](https://istd.sutd.edu.sg/people/faculty/lu-wei). 
+I also interned at the [Allen Institute for AI](https://allenai.org/) under the supervision of [Pradeep Dasigi](https://pdasigi.github.io/) and [Ana Marasović](https://www.anamarasovic.com/). 
 
-I'm also particularly interested in fundamental research topics, especially syntactic parsing, semantic parsing and named entity recognition.
+I currently focus on multimodal question answering and reasoning in NLP. 
+I'm also particularly interested in building structured models that extract structural and explainable information from texts.
 
 
 [CV](files/cv_v2.pdf)
