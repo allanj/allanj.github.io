@@ -8,7 +8,7 @@ nav: false
 
 profile:
   align: right
-  image: myself.jpg
+  image: prof_pic.jpg
   <!-- address: >
     <p>555 your office number</p>
     <p>123 your address street</p>
