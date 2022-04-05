@@ -9,7 +9,7 @@ nav: true
 
 
 ### Conference Papers
-1. **Zhanming Jie**, Jierui Li, and Wei Lu. "[_Learning to Reason Deductively: Math Word Problem Solving as Complex Relation Extraction._](https://arxiv.org/pdf/2203.10316v1.pdf)" In Proceedings of ACL, 2022. [\[code\]](https://github.com/allanj/logicalform_math)
+1. **Zhanming Jie**, Jierui Li, and Wei Lu. "[_Learning to Reason Deductively: Math Word Problem Solving as Complex Relation Extraction._](https://arxiv.org/pdf/2203.10316v1.pdf)" In Proceedings of ACL, 2022. [\[code\]](https://github.com/allanj/Deductive-MWP)
 
 1. Yuxiang Zhou, Lejian Liao, Yang Gao, **Zhanming Jie** and Wei Lu. "[_To be Closer: Learning toLink up Aspect with Opinions._](https://aclanthology.org/2021.emnlp-main.317.pdf)" In Proceedings of EMNLP, 2021. [\[code\]](https://github.com/zyxnlp/aclt)
 
