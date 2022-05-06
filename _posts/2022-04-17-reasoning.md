@@ -32,7 +32,7 @@ Large-scale pretrained language models GPT-3, have been achieving promising resu
 
 
 <div >
-        {% include figure.html path="files/reasoning_blog/paper_title.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/paper_title.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>		
 
 This paper is accepted by the 60th Annual Meeting of the Association for Computational Linguistics ([ACL-2022](https://www.2022.aclweb.org/))
@@ -42,7 +42,7 @@ This paper is accepted by the 60th Annual Meeting of the Association for Computa
 ## Research Motivation
 We use the following figure taken from the PaLM ([Chowdhery et al., 2022](https://arxiv.org/abs/2204.02311)) paper as an example. This work performs prompting to solve the math word problem in a few-shot learning scenario. We can see if we give some samples with just questions and answers, we might not be able to obtain the correct answer. But if we give some more reasoning description, the model is able to predict reasoning description and also make a correct prediction. So it is good to have interpretable multi-step reasoning as output.
 <div >
-        {% include figure.html path="files/reasoning_blog/chain-of-thought.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/chain-of-thought.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>		
 
 Also, math word problem (MWP) solving is a straightforward application to evaluate such multi-step reasoning ability.
@@ -70,7 +70,7 @@ The Nice thing is that it gives us a binary tree structure, but it is also count
 
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/tree_generation.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/tree_generation.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>	
 
 ## Deductive Reasoning
@@ -78,7 +78,7 @@ The Nice thing is that it gives us a binary tree structure, but it is also count
 In our proposed approach, we want to solve this problem in a step-by-step and interpretable manner as shown in the Figure below.
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/deductive_procedure.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/deductive_procedure.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>	
 
 The first two steps give us the divisor. The third step computes the quotient. We can see that the results of the first two steps can be used at the fourth step for the final dividend computation.
@@ -105,13 +105,13 @@ Indicate the mathematical operations from $$q_i$$ to $$q_j$$. The underlying rep
 $$ is directed. For those non-commutative operators, such as subtraction and division, we use an additional reverse direction to represent such operators. Here we can use "$$-_{reverse}$$" to represent $$q_j - q_i$$.
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/derivation.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/derivation.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>	
 
 From the perspective of formal deductive systems, we can use the above derivation to represent the procedure. Such deductive process is similar to the transition-based system in dependency parsing task. From time $$t$$ to $$t+1$$, the difference between states is an additional new expression $$e_{i,j,op}^{(t)}$$, and this new expression will be a new candidate quantity at the next state.
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/state_change.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/state_change.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>	
 
 The above figure visualizes the evolution of the states. We can see that, we size of the state increases with the increase of time step $$t$$.
@@ -121,7 +121,7 @@ The above figure visualizes the evolution of the states. We can see that, we siz
 First, we use pre-trained language models such as BERT or Roberta to obtain vector representation of quantities. We then perform inference on top of these quantity representations. Here, we use an example to visualize the inference process.
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/model_impl.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/model_impl.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>
 
 At the first step, we obtain the joint representation between and by simple concatenation between their quantity representations. We then apply an operator-specific feed-forward network to obtain the vector representation of the mathematical expression . Thus, this new expression will become the new candidate quantity . Potentially, we might obtain incorrect expressions, such as . Thus, we need to score all the possible expressions and find the optimal expression to be the new quantity . Finally, at , we arrive at the expression .
@@ -137,7 +137,7 @@ We mainly conduct experiments on four public datasets: MAWPS, Math23k, MathQA an
 
 
 <div style="text-align:center;">
-        {% include figure.html path="files/reasoning_blog/table.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="assets/img/reasoning_blog/table.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 </div>
 
 
