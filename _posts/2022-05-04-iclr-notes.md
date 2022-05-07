@@ -120,7 +120,7 @@ But of course, we might doubt that the amount of validation data could be a pote
 </div>
 
 [\<Back to Table of Content\>](#table-of-content)
-
+## Symbolic Learning and Structured Prediction
 #### [Safe Neurosymbolic Learning with Differentiable Symbolic Execution](https://arxiv.org/abs/2203.07671)
 Different from symbolic reasoning in NLP,  this work is about learning the neural network within an executable program. 
 To be even more specific, this is called "_symbolic transition system_" (Manna & Pnueli, 2012). 
@@ -155,7 +155,7 @@ But I didn't fully read the papers, I could be misunderstanding some of the key 
 </div>
 
 [\<Back to Table of Content\>](#table-of-content)
-
+## Interpretability
 #### [Discovering Latent Concepts Learned in BERT](https://openreview.net/forum?id=POTMtpYI1xH)
 The last poster I read is more about findings in BERT. 
 They perform clustering for the word presentations given by BERT/Roberta. 
@@ -171,5 +171,21 @@ Though they did not have any downstream experiments, the research efforts here i
 [\<Back to Table of Content\>](#table-of-content)
 
 
+
+## Others
+Here comes a list of papers in my mind while going through the above posters.
+1. [Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting](https://openreview.net/pdf?id=0EXmFzUn5I)
+2. [Large Language Models Can Be Strong Differentially Private Learners](https://arxiv.org/abs/2110.05679)
+   * This looks like a new technique to me: "private learner"
+3. [Autoregressive Diffusion Model](https://arxiv.org/abs/2110.02037)
+4. [Self-Supervised Inference in State-Space Models](https://arxiv.org/abs/2107.13349)
+5. [Unsupervised Vision-Language Grammar Induction with Shared Structure Modeling](https://openreview.net/forum?id=N0n_QyQ5lBF)
+6. [A Fine-Tuning Approach to Belief State Modeling](https://openreview.net/forum?id=ckZY7DGa7FQ)
+7. [On the limitations of multimodal VAEs](https://arxiv.org/abs/2110.04121)
+8. [Differentiable DAG Sampling](https://arxiv.org/abs/2203.08509)
+9. [Knowledge Infused Decoding](https://arxiv.org/abs/2204.03084)
+10. [Self-supervised Learning is More Robust to Dataset Imbalance](https://arxiv.org/abs/2110.05025)
+11. [Enhancing Cross-lingual Transfer by Manifold Mixup](https://openreview.net/forum?id=OjPmfr9GkVv)
+12. [How Do Vision Transformers Work?](https://arxiv.org/abs/2202.06709)
 
 
