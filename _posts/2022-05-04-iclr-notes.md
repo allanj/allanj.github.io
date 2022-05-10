@@ -176,7 +176,11 @@ Though they did not have any downstream experiments, the research efforts here i
 Here comes a list of papers in my mind while going through the above posters.
 1. [Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting](https://openreview.net/pdf?id=0EXmFzUn5I)
 2. [Large Language Models Can Be Strong Differentially Private Learners](https://arxiv.org/abs/2110.05679)
-   * This looks like a new technique to me: "private learner"
+   * This looks like a new technique to me: "Differentially Private (DP) learning". 
+   As as explained by a friend Xiaosen Zheng, differentially private is about learning a model that does not expose the privacy. 
+   For example in membership inference attack, a good attacker can always tell if a sample is from the training set. 
+   Differentially private learning is trying to defend from this attacks. 
+   This paper show that the hyperparameters are the reason of why previous DP methods fail.
 3. [Autoregressive Diffusion Model](https://arxiv.org/abs/2110.02037)
 4. [Self-Supervised Inference in State-Space Models](https://arxiv.org/abs/2107.13349)
 5. [Unsupervised Vision-Language Grammar Induction with Shared Structure Modeling](https://openreview.net/forum?id=N0n_QyQ5lBF)
