@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Research Notes on ICLR-2022 Conference
+title: Paper Reading Notes on ICLR-2022 Conference
 date: 2022-05-04 01:59:00+0800
 comments: true
 categories: nlp
