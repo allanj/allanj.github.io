@@ -29,6 +29,7 @@ Finally, I also make a list of certain papers that I'm interested but I did not 
 * [Constraining Linear-chain CRFs to Regular Languages](#constraining-linear-chain-crfs-to-regular-languages)
 
 ##### Interpretability
+* [How Do Vision Transformers Work?](#how-do-vision-transformers-work)
 * [Discovering Latent Concepts Learned in BERT](#discovering-latent-concepts-learned-in-bert)
 
 ## Training Strategy
@@ -156,8 +157,23 @@ But I didn't fully read the papers, I could be misunderstanding some of the key 
 
 [\<Back to Table of Content\>](#table-of-content)
 ## Interpretability
+
+#### [How Do Vision Transformers Work?](https://arxiv.org/pdf/2202.06709.pdf)
+This paper presented some empirical findings through some pretty nice figures. 
+I listed some of their key findings here:
+1. Figure 1: ViT has smoother loss lanscape than ResNet because of the `softmax`. 
+2. The learning trajectory of parameters of ViT is also smooth compared to the one in ResNet.
+3. Multi-head Self Attentions (MSAs) are low-pass filter but Convolutions are high-pass filter.
+The original paper also compare more state-of-the-art architectures such as Swin Transformers. 
+Read the paper and it might be helpful if you are looking for a vision encoder which is suitable for a specific dataset.
+<div>
+        {% include figure.html path="assets/img/iclr-2022/how-do-vision-transformers-work.png" class="img-fluid rounded z-depth-2" zoomable=true %}
+</div>
+
+[\<Back to Table of Content\>](#table-of-content)
+
 #### [Discovering Latent Concepts Learned in BERT](https://openreview.net/forum?id=POTMtpYI1xH)
-The last poster I read is more about findings in BERT. 
+The last poster I read in the conference is more about findings in BERT. 
 They perform clustering for the word presentations given by BERT/Roberta. 
 The same words in different contexts might have different semantic meaning as well.
 Similar to some previous findings, they also show the representations in the upper layers convey more semantic information while the representations 
@@ -169,6 +185,10 @@ Though they did not have any downstream experiments, the research efforts here i
 </div>
 
 [\<Back to Table of Content\>](#table-of-content)
+
+
+
+
 
 
 
