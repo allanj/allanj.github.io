@@ -72,7 +72,7 @@ Of course, if the two tasks are far away from each other, the improvements would
 
 
 #### [Finetuned Language Models are Zero-Shot Learners](https://arxiv.org/abs/2109.01652)
-I just attended this task by [Jason Wei](https://jasonwei20.github.io/). As shown in the summary, researchers from Google show  that we can obtain better zero-shot performance by finetuning the (large) language models on other tasks with instruction tuning.
+I just attended this talk by [Jason Wei](https://jasonwei20.github.io/). As shown in the summary, researchers from Google show  that we can obtain better zero-shot performance by finetuning the (large) language models on other tasks with instruction tuning.
 Basically, we design some instruction templates as shown in the center of the poster, and finetune the model.
 In my opinion, the instructions are pretty similar to prompts in terms of implementation.
 <div>
