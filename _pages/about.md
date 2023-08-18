@@ -28,7 +28,7 @@ I currently focus on multimodal question answering and reasoning in NLP.
 I'm also particularly interested in building structured models that extract structural and explainable information from texts.
 
 
-[CV](files/cv_v2.pdf)
+<!-- [CV](files/cv_v2.pdf) -->
 
 Check out my [research statement](files/research_statement.pdf)!
 
