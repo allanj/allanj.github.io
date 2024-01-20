@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+    <!-- Website verification -->
+    <meta name="google-site-verification" content="0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw" />
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zhanming (Allan) Jie | Deductive Reasoning (for Math Word Problem Solving)</title>
+    <meta name="author" content="Zhanming (Allan) Jie" />
+    <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+" />
+    <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔠</text></svg>">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://allanj.github.io/blog/2022/reasoning/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://allanj.github.io/"><span class="font-weight-bold">Zhanming</span> (Allan)  Jie</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">About</a>
+              </li>
+              
+              <!-- Blog -->
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">Blog</a>
+              </li>
+
+              <!-- Other pages -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/activities/">Activities</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="/publications/">Publications</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="/software/">Software</a>
+              </li>
+
+              <!-- Toogle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- _layouts/post.html -->
+
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Deductive Reasoning (for Math Word Problem Solving)</h1>
+    <p class="post-meta">April 18, 2022</p>
+    <p class="post-tags">
+      <a href="/blog/2022"> <i class="fas fa-calendar fa-sm"></i> 2022 </a>
+        ·  
+        <a href="/blog/category/nlp">
+          <i class="fas fa-tag fa-sm"></i> nlp</a>  
+          
+
+    </p>
+  </header>
+
+  <article class="post-content">
+    <h2 id="introduction">Introduction</h2>
+
+<p>Large-scale pretrained language models GPT-3, have been achieving promising results on many NLP downstream tasks. However, most of these models are not able to give us the reasoning steps and the performance on the tasks require complex reasoning is still unsatisfactory (<a href="https://dl.acm.org/doi/pdf/10.1145/3448250?download=true" target="_blank" rel="noopener noreferrer">Bengio et al., 2021</a>). We propose a deductive reasoning approach and aim to achieve the reasoning ability as in <em>System 2</em> (<a href="http://dspace.vnbrims.org:13000/jspui/bitstream/123456789/2224/1/Daniel-Kahneman-Thinking-Fast-and-Slow-.pdf" target="_blank" rel="noopener noreferrer">Daniel 2017</a>).</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/paper_title-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/paper_title-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/paper_title-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/paper_title.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>This paper is accepted by the 60th Annual Meeting of the Association for Computational Linguistics (<a href="https://www.2022.aclweb.org/" target="_blank" rel="noopener noreferrer">ACL-2022</a>)</p>
+
+<p><strong>Paper link</strong> : <a href="https://arxiv.org/abs/2203.10316" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2203.10316</a></p>
+
+<h2 id="research-motivation">Research Motivation</h2>
+<p>We use the following figure taken from the PaLM (<a href="https://arxiv.org/abs/2204.02311" target="_blank" rel="noopener noreferrer">Chowdhery et al., 2022</a>) paper as an example. This work performs prompting to solve the math word problem in a few-shot learning scenario. We can see if we give some samples with just questions and answers, we might not be able to obtain the correct answer. But if we give some more reasoning description, the model is able to predict reasoning description and also make a correct prediction. So it is good to have interpretable multi-step reasoning as output.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/chain-of-thought-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/chain-of-thought-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/chain-of-thought-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/chain-of-thought.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>Also, math word problem (MWP) solving is a straightforward application to evaluate such multi-step reasoning ability.</p>
+
+<h3 id="problem-description">Problem Description</h3>
+
+<p>Given a question, we need to solve the questions and obtain the numerical answer. In our dataset, we are also given the mathematical expression which leads to the corresponding answer.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: In a division sum , the remainder is \(8\) and the divisor is \(6\) times the quotient and is obtained by adding \(3\) to the thrice of the remainder. What is the dividend?</p>
+
+  <p><strong>Answer</strong>: \(129.5\)</p>
+
+  <p><strong>Mathematical Expression</strong>: \(\big ( {\textcolor{electronblue}{(8\times 3 + 3)}}\! \times \!  {\textcolor{electronblue}{(8 \times 3 + 3)}}   \!\div\! 6\big )\! +\! 8\)</p>
+</blockquote>
+
+<p>This example is taken from the MathQA (<a href="https://arxiv.org/abs/1905.13319" target="_blank" rel="noopener noreferrer">Amini et al., 2019</a>) dataset. We need to obtain the final dividend 129.5. The mathematical expression can be used for training supervision. 
+<!-- In our problem, we also have certain assumptions as in previous work. We assume the positions of quantities are known and also just consider the basic mathematical operators: addition( ), subtraction( ), multiplication( ), division( ), and exponential ( ). Other more complex operators can be further decomposed into these basic operators. --></p>
+
+<h3 id="existing-methods">Existing Methods</h3>
+
+<p>Existing work in MWP is mainly categorized into Seq2Seq and Seq2Tree. Traditional Seq2Seq models basically are pretty easy to implement and generalize to more complicated problems. But the disadvantages are that the performance is generally not better than the structured model and it is lack of interpretability. This line of research is still popular because of Transformers-based models which potentially have powerful language understanding ability.</p>
+
+<p>The typical approach of Seq2Tree is the Goal-Driven Tree-Structure (GTS) (<a href="https://www.ijcai.org/proceedings/2019/0736.pdf" target="_blank" rel="noopener noreferrer">Xie et al., 2019</a>), which is also the most common work that followed by other research efforts on MWP. In tree-based generation models, we structure the expression in tree form and follow a pre-order traversal in tree generation as shown in the Figure below. We keep generating the operators until we reach the leaves which are the quantities.</p>
+
+<p>The Nice thing is that it gives us a binary tree structure, but it is also counter-intuitive and contains repetitive computations. Take these two blue and dashed boxes for instance, we can see this expression \(8\times 3+3\) is generated twice, but we can actually reuse it without generating it again. Under the Seq2Tree framework, we are not able to do so.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/tree_generation-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/tree_generation-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/tree_generation-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/tree_generation.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h2 id="deductive-reasoning">Deductive Reasoning</h2>
+
+<p>In our proposed approach, we want to solve this problem in a step-by-step and interpretable manner as shown in the Figure below.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/deductive_procedure-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/deductive_procedure-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/deductive_procedure-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/deductive_procedure.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The first two steps give us the divisor. The third step computes the quotient. We can see that the results of the first two steps can be used at the fourth step for the final dividend computation.</p>
+
+<p>Overall, our deductive procedure has the following advantages:</p>
+
+<ol>
+  <li>Reduce the number of computation steps by reusing the previous expressions.</li>
+  <li>More explanability with step-by-step expression computation</li>
+  <li>Generating the complete expression rather than a single operator or quantity. Such a process requires the model to be more accurate during training.</li>
+</ol>
+
+<p>In addition, similar to diffusion models, we can actually start from the intermediate step and continue to perform inference at the intermediate step.</p>
+
+<h3 id="deductive-systems">Deductive Systems</h3>
+
+<p><strong>Model Input</strong>: the quantities presented in the question and the complete constant set, which is represented by \(Q\).</p>
+
+\[Q=Q^{(t=0)}= \{ q_1, q_2, \cdots,q_m \}\]
+
+<p>Expressions are represented by:</p>
+
+\[e_{i,j,op}^{(t)} = q_i \xrightarrow[]{op} q_j ~~~q_i, q_j  \in \mathcal{Q}^{(t-1)}\]
+
+<p>Indicate the mathematical operations from \(q_i\) to \(q_j\). The underlying representation \(e_{i,j,op}^{(t)}\) is directed. For those non-commutative operators, such as subtraction and division, we use an additional reverse direction to represent such operators. Here we can use “\(-_{reverse}\)” to represent \(q_j - q_i\).</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/derivation-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/derivation-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/derivation-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/derivation.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>From the perspective of formal deductive systems, we can use the above derivation to represent the procedure. Such deductive process is similar to the transition-based system in dependency parsing task. From time \(t\) to \(t+1\), the difference between states is an additional new expression \(e_{i,j,op}^{(t)}\), and this new expression will be a new candidate quantity at the next state.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/state_change-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/state_change-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/state_change-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/state_change.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The above figure visualizes the evolution of the states. We can see that, we size of the state increases with the increase of time step \(t\).</p>
+
+<h3 id="model-implementation">Model Implementation</h3>
+
+<p>First, we use pre-trained language models such as BERT or Roberta to obtain vector representation of quantities. We then perform inference on top of these quantity representations. Here, we use an example to visualize the inference process.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/model_impl-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/model_impl-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/model_impl-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/model_impl.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>At the first step, we obtain the joint representation between and by simple concatenation between their quantity representations. We then apply an operator-specific feed-forward network to obtain the vector representation of the mathematical expression . Thus, this new expression will become the new candidate quantity . Potentially, we might obtain incorrect expressions, such as . Thus, we need to score all the possible expressions and find the optimal expression to be the new quantity . Finally, at , we arrive at the expression .</p>
+
+<p>One of the advantages of this implementation is that we can incorporate prior knowledge as constraints. For example, if the expression is not allowed, we can simply remove this expression from the candidate set.</p>
+
+<p>Note that, the number of all the possible candidates at different timestep is different. This actually makes it challenging for us to perform beam search during inference. Because the probability distribution at different time steps will be unbalanced.</p>
+
+<h2 id="experiments">Experiments</h2>
+
+<p>We mainly conduct experiments on four public datasets: MAWPS, Math23k, MathQA and SVAMP. In this blog, we just show the comparison with the state-of-the-art approaches under the same setting (i.e., using BERT/Roberta language models.). Our best variant is the Roberta-Deductive Reasoner and we did not apply the beam search strategy. The compared approaches are all using beam search with beam size of 5.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/table-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/table-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/table-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/table.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>Overall, our accuracy on the final numerical answer is significantly better than previous Seq2Tree work. We mainly attribute the reason to the fact that we enforce the model to predict the complete expression rather than a single operator or quantity. However, the absolute accuracy is not really high, especially on MathQA and SVAMP.</p>
+
+<p>We further conduct analysis to investigate the difficulties in SVAMP. Details can be found in the paper. We found that the constraint introduced above has significantly improved the performance on the SVAMP dataset. The constraint is simply disallowing the appearance of negative values. This constraint improves our BERT-based Reasoner by 7 points and 2 points for Roberta-based Reasoner.</p>
+
+<h2 id="interpretable-analysis">Interpretable Analysis</h2>
+
+<p>In this example, we would like to showcase how we can interpret the model predictions.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: There are 255 apple trees in the orchard. <span style="color:red"><em>Planting another 35 pear trees makes the number exactly the same as the apple trees.</em></span> If every 20 pear trees are planted in a row, how many rows can be planted in total?</p>
+
+  <p><strong>Answer</strong>: 11.    <strong>Gold Expression</strong>: \((255 - 35) \div 20\).        <strong>Predicted Expression</strong>: \((255 + 35) \div 20\)</p>
+
+  <p><strong>Deductive Scores</strong>: Prob('255+35=290') = 0.068 &gt; Prob('255-35=220') = 0.062</p>
+</blockquote>
+
+<p>At the first step of prediction, we can see the model make a mistake by predicting the subtraction as addition. The error can be actually located by the sentence marked in red. We suspect that the "planting another" statement misleads the model to make an "addition" prediction. We then want to revise that sentence and make it convey more accurate semantics. The italic sentence below is the revised sentence.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: There are 255 apple trees in the orchard. <em>The number of pear trees is 35 fewer than the apple trees.</em> If every 20 pear trees are planted in a row, how many rows can be planted in total?_</p>
+
+  <p>Prob(255+35=290) = 0.061 &lt; Prob(255-35=220) = 0.067</p>
+</blockquote>
+
+<p>Through the word "fewer", we hope the model understands that this part should be a subtraction. This study shows how interpretable predictions help us understand our model behavior.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>Our deductive system is structurally more efficient compared to the tree-based model and is able to provide explainable solving steps. Furthermore, we are able to incorporate prior knowledge as constraints to improve the model performance. Theoretically, the underlying deductive system can not only apply to math word problem solving but also other tasks that require multi-step reasoning and structure predictions.</p>
+
+<p>We also have certain limitations under this framework: the memory consumption is high when we have many mathematical operators and constants. In addition, it is still challenging to efficiently apply beam search in our framework because of the unbalanced distribution at each time step.</p>
+
+<h2 id="references">References</h2>
+<p>Bengio, Yoshua, Yann Lecun, and Geoffrey Hinton. "Deep learning for AI." <em>Communications of the ACM</em> 64.7 (2021): 58-65.</p>
+
+<p>Daniel, Kahneman. "Thinking, fast and slow." (2017).</p>
+
+<p>Chowdhery, Aakanksha, et al. "Palm: Scaling language modeling with pathways." <em>arXiv preprint arXiv:2204.02311</em> (2022).</p>
+
+<p>Amini, Aida, et al. "MathQA: Towards Interpretable Math Word Problem Solving with Operation-Based Formalisms." <em>Proceedings of NAACL,</em> 2019.</p>
+
+<p>Xie, Zhipeng, and Shichao Sun. "A Goal-Driven Tree-Structured Neural Model for Math Word Problems." Proceedings of <em>IJCAI</em>. 2019.</p>
+
+  </article><div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'allan-disqus-com';
+      var disqus_identifier = '/blog/2022/reasoning';
+      var disqus_title      = "Deductive Reasoning (for Math Word Problem Solving)";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener noreferrer">comments powered by Disqus.</a>
+</noscript>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        © Copyright 2024 Zhanming (Allan) Jie. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
+
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootsrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    
+  </body>
+</html>
+

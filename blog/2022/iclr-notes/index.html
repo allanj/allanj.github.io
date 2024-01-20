@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+    <!-- Website verification -->
+    <meta name="google-site-verification" content="0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw" />
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zhanming (Allan) Jie | Paper Reading Notes on ICLR-2022 Conference</title>
+    <meta name="author" content="Zhanming (Allan) Jie" />
+    <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+" />
+    <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔠</text></svg>">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://allanj.github.io/blog/2022/iclr-notes/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://allanj.github.io/"><span class="font-weight-bold">Zhanming</span> (Allan)  Jie</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">About</a>
+              </li>
+              
+              <!-- Blog -->
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">Blog</a>
+              </li>
+
+              <!-- Other pages -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/activities/">Activities</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="/publications/">Publications</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="/software/">Software</a>
+              </li>
+
+              <!-- Toogle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- _layouts/post.html -->
+
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Paper Reading Notes on ICLR-2022 Conference</h1>
+    <p class="post-meta">May 4, 2022</p>
+    <p class="post-tags">
+      <a href="/blog/2022"> <i class="fas fa-calendar fa-sm"></i> 2022 </a>
+        ·  
+        <a href="/blog/category/nlp">
+          <i class="fas fa-tag fa-sm"></i> nlp</a>  
+          
+
+    </p>
+  </header>
+
+  <article class="post-content">
+    <p>I was fortunate to find some time and virually attend some of the poster and oral sessions in <a href="https://iclr.cc/" target="_blank" rel="noopener noreferrer">ICLR-2022</a>. 
+I’d like to share some the research works that I had read in the conference. Hope you may find such information helpful and get your interest to further read more papers in ICLR-2022. 
+I broadly divided these papers into three categories: <strong>training strategy</strong>, <strong>symbolic learning</strong> and <strong>interpretability</strong>. 
+Finally, I also make a list of certain papers that I’m interested but I did not find time to attend their sessions.</p>
+
+<h2 id="table-of-content">Table of Content</h2>
+<h5 id="training-strategy">Training Strategy</h5>
+<ul>
+  <li><a href="#trans-encoder">TRANS-ENCODER: Unsupervised sentence-pair modeling through self- and mutual-distillations</a></li>
+  <li><a href="#weighted-training-for-cross-task-learning">Weighted Training for Cross-Task Learning</a></li>
+  <li><a href="#finetuned-language-models-are-zero-shot-learners">Finetuned Language Models are Zero-Shot Learners</a></li>
+  <li><a href="#towards-understanding-the-data-dependency-of-mixup-style-training">Towards Understanding the Data Dependency of Mixup-style Training</a></li>
+  <li><a href="#the-rich-get-richer-disparate-impact-of-semi-supervised-learning">The Rich Get Richer: Disparate Impact of Semi-Supervised Learning</a></li>
+  <li><a href="#adaaug-learning-class--and-instance-adaptive-data-augmentation-policies">AdaAug: Learning Class- and Instance-adaptive Data Augmentation Policies</a></li>
+</ul>
+
+<h5 id="symbolic-learning-and-structured-prediction">Symbolic Learning and Structured Prediction</h5>
+<ul>
+  <li><a href="#safe-neurosymbolic-learning-with-differentiable-symbolic-execution">Safe Neurosymbolic Learning with Differentiable Symbolic Execution</a></li>
+  <li><a href="#constraining-linear-chain-crfs-to-regular-languages">Constraining Linear-chain CRFs to Regular Languages</a></li>
+</ul>
+
+<h5 id="interpretability">Interpretability</h5>
+<ul>
+  <li><a href="#how-do-vision-transformers-work">How Do Vision Transformers Work?</a></li>
+  <li><a href="#discovering-latent-concepts-learned-in-bert">Discovering Latent Concepts Learned in BERT</a></li>
+</ul>
+
+<h2 id="training-strategy-1">Training Strategy</h2>
+<h4 id="trans-encoder">TRANS-ENCODER</h4>
+<p>The first research work I read is “<em><a href="https://arxiv.org/abs/2109.13059" target="_blank" rel="noopener noreferrer">TRANS-ENCODER: Unsupervised sentence-pair modeling through self- and mutual-distillations</a></em>” by <a href="http://fangyuliu.me/about.html" target="_blank" rel="noopener noreferrer">Fangyu Liu</a> from University of Cambridge.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/25-04-transencoder-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/25-04-transencoder-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/25-04-transencoder-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/25-04-transencoder.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>They proposed a distillation training mechanism to incorporate both <code class="language-plaintext highlighter-rouge">bi-encoder</code> and <code class="language-plaintext highlighter-rouge">cross-encoder</code> for unsupervised sentence representation learning. 
+Given the different advantages of <code class="language-plaintext highlighter-rouge">bi-encoder</code> and <code class="language-plaintext highlighter-rouge">cross-encoder</code>, they perform iterative distillation between the bi-encoder and cross-encoder. Such a method is able to improvement the performance of unsuperivsed STS by at most 5 points.</p>
+
+<p>Some <strong>insights</strong> after talking to the authors:</p>
+<ol>
+  <li>The amount of unlabeled pairs also matters as the performance would not always increase.</li>
+  <li>Such a framework can be generalized to disitillation among multiple model architectures (\(\geq 2\)).</li>
+  <li>There is another paper by Google (called “<a href="https://arxiv.org/abs/2203.05482" target="_blank" rel="noopener noreferrer">Model Soups</a>”) mentions that averaging the parameters of models with different hyperparameters can further improve the performance. In this work, the author also mentioned to me that they try something similar and have certain improvements as well.</li>
+</ol>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="weighted-training-for-cross-task-learning"><a href="https://arxiv.org/pdf/2105.14095.pdf" target="_blank" rel="noopener noreferrer">Weighted Training for Cross-Task Learning</a></h4>
+<p>This work is by <a href="https://sxc.moe/" target="_blank" rel="noopener noreferrer">Shuxiao Chen</a> from University of Pennsylvania.
+They proposed a weighted training framework under the scenario that we have limited data in the target task but abundant data in the source tasks. 
+In this poster, their example target task is name entity recognition (NER) while the source task can be part-of-speech (POS) tagging.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-weighted-training.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The training mechansim is pretty intuitve:</p>
+<blockquote>
+  <p>Adaptively up-weight relevant source tasks and down-weight irrelevant source tasks.</p>
+</blockquote>
+
+<p>They have a theoretical proof (<code class="language-plaintext highlighter-rouge">Theorem 3.1</code>) in their paper to show this training scheme is able to converge and the error is bounded by certain variables.
+(The mathematical proof is pretty long and readers can refer to the papers if interested.) 
+One of them is <code class="language-plaintext highlighter-rouge">task distance</code>, which measure how close the target task and source task are.
+Of course, if the two tasks are far away from each other, the improvements would not be so significant as in the results.</p>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="finetuned-language-models-are-zero-shot-learners"><a href="https://arxiv.org/abs/2109.01652" target="_blank" rel="noopener noreferrer">Finetuned Language Models are Zero-Shot Learners</a></h4>
+<p>I just attended this talk by <a href="https://jasonwei20.github.io/" target="_blank" rel="noopener noreferrer">Jason Wei</a>. As shown in the summary, researchers from Google show  that we can obtain better zero-shot performance by finetuning the (large) language models on other tasks with instruction tuning.
+Basically, we design some instruction templates as shown in the center of the poster, and finetune the model.
+In my opinion, the instructions are pretty similar to prompts in terms of implementation.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="towards-understanding-the-data-dependency-of-mixup-style-training"><a href="https://arxiv.org/abs/2110.07647" target="_blank" rel="noopener noreferrer">Towards Understanding the Data Dependency of Mixup-style Training</a></h4>
+<p>This work by Muthu investigates the vanilla mixup-style training and gives some insights on when mixup fails and succeed. 
+By reading the <code class="language-plaintext highlighter-rouge">background</code> in this poster, we know that we can mix up the two labels during training for the mixup representation. 
+However, there would be a problem if such a representation actually has a different label other than these two labels, which they call <code class="language-plaintext highlighter-rouge">inter-class collinearity</code>.
+Interestingly, they also show that we can learn a better boundary using the mixup-style training in the visualization (with \(\alpha =1\)).</p>
+
+<p>The hyperparmeter \(\alpha\) corresponds to the mixing density in our training data. If we have a higher alpha, that means we have a higher concentration on mixup. 
+This is also the case why the last plot has sort of sharper boundary  than the plot with \(\alpha =1\).</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-towards-understand-mixup.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="the-rich-get-richer-disparate-impact-of-semi-supervised-learning"><a href="https://arxiv.org/abs/2110.06282" target="_blank" rel="noopener noreferrer">The Rich Get Richer: Disparate Impact of Semi-Supervised Learning</a></h4>
+<p>This work also shows the disparate impacts of deploying semi-supervised learning (SSL). 
+“<em>Rich get richer and poor get poorer</em>” means that a model would achieve lower accuracy after SSL if the model originally gives us “low” accuracy. 
+In other words, we would get higher accuracy after SSL if the original accuracy is also “high”. 
+They quantified the comparison by a <code class="language-plaintext highlighter-rouge">benifit ratio</code> as shown in the poster. 
+They adopt a simple SSL framework and prove that the error is bounded by the disparity of the baseline, which strongly relates to the noise rate of the unlabeled data.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-rich-get-richer.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="adaaug-learning-class--and-instance-adaptive-data-augmentation-policies"><a href="https://openreview.net/forum?id=rWXfFogxRJN" target="_blank" rel="noopener noreferrer">AdaAug: Learning Class- and Instance-adaptive Data Augmentation Policies</a></h4>
+<p>This work on data augmentation is by Tsz-Him Cheung from HKUST. 
+I like the key idea that they train a parameterized network on the validation dataset to learn the hyperparameters.
+Specifically, in Figure 2, the network parameterized by \(h_\gamma\) is used to predict the hyperparameters for selecting the augmentation strategies.</p>
+<ol>
+  <li>They train the model on the training data as shown in the upper architecture, but freezing the parameters of \(h_\gamma\).</li>
+  <li>They train the parameters of  \(h_\gamma\) on the validation data, but freezing the parameters of those blue modules.
+In this way, they can try to select the best augmentation strategy in a trainable way. 
+But of course, we might doubt that the amount of validation data could be a potential issue.</li>
+</ol>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/28-04-adaaug-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/28-04-adaaug-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/28-04-adaaug-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/28-04-adaaug.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+<h2 id="symbolic-learning-and-structured-prediction-1">Symbolic Learning and Structured Prediction</h2>
+<h4 id="safe-neurosymbolic-learning-with-differentiable-symbolic-execution"><a href="https://arxiv.org/abs/2203.07671" target="_blank" rel="noopener noreferrer">Safe Neurosymbolic Learning with Differentiable Symbolic Execution</a></h4>
+<p>Different from symbolic reasoning in NLP,  this work is about learning the neural network within an executable program. 
+To be even more specific, this is called “<em>symbolic transition system</em>” (Manna &amp; Pnueli, 2012). 
+This work is by <a href="https://cxyang1997.github.io/" target="_blank" rel="noopener noreferrer">Chenxi Yang</a> from the University of Texas at Austin.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-safe-neurosymbolic.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><strong>Problem</strong>: learn the neural network parameters embedded in a program and minimize the error (\(\min Q(\theta)\)) to fit the training dataset.</p>
+
+<p><strong>Method</strong>: layout the symbolic execution graph and sample the trajectory over this graph. 
+The sampling process also allows us to train the whole system in differentiable way though the system has non-differentiable operations.</p>
+
+<p><strong>Insight</strong>: As we can see in the final results, this approach is 100% safe  on the thermostat dataset even without any training data. 
+Because we can directly sample from the execution graph rather than relying on the training data.</p>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="constraining-linear-chain-crfs-to-regular-languages"><a href="https://arxiv.org/abs/2106.07306" target="_blank" rel="noopener noreferrer">Constraining Linear-chain CRFs to Regular Languages</a></h4>
+<p>I’m always interested in structured prediction, the title attracts me to have a chat with the author, Sean Papay from University of Stuttgart.
+They start with a finite state automata and build the CRF graphical model according to that “language”. 
+To be more specific, there are certain constraints, for example:</p>
+<ol>
+  <li>The state \(q_2\) cannot go to state \(q_4\) with an action of <code class="language-plaintext highlighter-rouge">Patient</code>.</li>
+</ol>
+
+<p>IMO, it is also pretty similar to a constrained CRF where we design certain constriants with our prior knowledge.
+But I didn’t fully read the papers, I could be misunderstanding some of the key content here.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/28-04-constraining-linear-crf.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+<h2 id="interpretability-1">Interpretability</h2>
+
+<h4 id="how-do-vision-transformers-work"><a href="https://arxiv.org/pdf/2202.06709.pdf" target="_blank" rel="noopener noreferrer">How Do Vision Transformers Work?</a></h4>
+<p>This paper presented some empirical findings through some pretty nice figures. 
+I listed some of their key findings here:</p>
+<ol>
+  <li>Figure 1: ViT has smoother loss lanscape than ResNet because of the <code class="language-plaintext highlighter-rouge">softmax</code>.</li>
+  <li>The learning trajectory of parameters of ViT is also smooth compared to the one in ResNet.</li>
+  <li>Multi-head Self Attentions (MSAs) are low-pass filter but Convolutions are high-pass filter.
+The original paper also compare more state-of-the-art architectures such as Swin Transformers. 
+Read the paper and it might be helpful if you are looking for a vision encoder which is suitable for a specific dataset.</li>
+</ol>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/how-do-vision-transformers-work.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="discovering-latent-concepts-learned-in-bert"><a href="https://openreview.net/forum?id=POTMtpYI1xH" target="_blank" rel="noopener noreferrer">Discovering Latent Concepts Learned in BERT</a></h4>
+<p>The last poster I read in the conference is more about findings in BERT. 
+They perform clustering for the word presentations given by BERT/Roberta. 
+The same words in different contexts might have different semantic meaning as well.
+Similar to some previous findings, they also show the representations in the upper layers convey more semantic information while the representations 
+at lower level convey syntactic information. 
+They manually annotate a dataset with 174 concept labels and a total of 1 million annotated instances. 
+Though they did not have any downstream experiments, the research efforts here is apprecitated and could benefit our research community.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/27-04-discover-latent.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h2 id="others">Others</h2>
+<p>Here comes a list of papers in my mind while going through the above posters.</p>
+<ol>
+  <li><a href="https://openreview.net/pdf?id=0EXmFzUn5I" target="_blank" rel="noopener noreferrer">Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting</a></li>
+  <li>
+<a href="https://arxiv.org/abs/2110.05679" target="_blank" rel="noopener noreferrer">Large Language Models Can Be Strong Differentially Private Learners</a>
+    <ul>
+      <li>This looks like a new technique to me: “Differentially Private (DP) learning”. 
+As as explained by a friend Xiaosen Zheng, differentially private is about learning a model that does not expose the privacy. 
+For example in membership inference attack, a good attacker can always tell if a sample is from the training set. 
+Differentially private learning is trying to defend from this attacks. 
+This paper show that the hyperparameters are the reason of why previous DP methods fail.</li>
+    </ul>
+  </li>
+  <li><a href="https://arxiv.org/abs/2110.02037" target="_blank" rel="noopener noreferrer">Autoregressive Diffusion Model</a></li>
+  <li><a href="https://arxiv.org/abs/2107.13349" target="_blank" rel="noopener noreferrer">Self-Supervised Inference in State-Space Models</a></li>
+  <li><a href="https://openreview.net/forum?id=N0n_QyQ5lBF" target="_blank" rel="noopener noreferrer">Unsupervised Vision-Language Grammar Induction with Shared Structure Modeling</a></li>
+  <li><a href="https://openreview.net/forum?id=ckZY7DGa7FQ" target="_blank" rel="noopener noreferrer">A Fine-Tuning Approach to Belief State Modeling</a></li>
+  <li><a href="https://arxiv.org/abs/2110.04121" target="_blank" rel="noopener noreferrer">On the limitations of multimodal VAEs</a></li>
+  <li><a href="https://arxiv.org/abs/2203.08509" target="_blank" rel="noopener noreferrer">Differentiable DAG Sampling</a></li>
+  <li><a href="https://arxiv.org/abs/2204.03084" target="_blank" rel="noopener noreferrer">Knowledge Infused Decoding</a></li>
+  <li><a href="https://arxiv.org/abs/2110.05025" target="_blank" rel="noopener noreferrer">Self-supervised Learning is More Robust to Dataset Imbalance</a></li>
+  <li><a href="https://openreview.net/forum?id=OjPmfr9GkVv" target="_blank" rel="noopener noreferrer">Enhancing Cross-lingual Transfer by Manifold Mixup</a></li>
+  <li><a href="https://arxiv.org/abs/2202.06709" target="_blank" rel="noopener noreferrer">How Do Vision Transformers Work?</a></li>
+</ol>
+
+
+  </article><div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'allan-disqus-com';
+      var disqus_identifier = '/blog/2022/iclr-notes';
+      var disqus_title      = "Paper Reading Notes on ICLR-2022 Conference";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener noreferrer">comments powered by Disqus.</a>
+</noscript>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        © Copyright 2024 Zhanming (Allan) Jie. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
+
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootsrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    
+  </body>
+</html>
+
