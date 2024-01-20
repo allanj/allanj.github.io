@@ -9,7 +9,7 @@ nav: true
 
 
 ### Conference Papers
-1. Trung Quoc Luong\*, Xinbo Zhang\*, **Zhanming Jie**\*, Peng Sun, Xiaoran Jin, and Hang Li. "[_Design of Chain-of-Thought in Math Problem Solving_](https://arxiv.org/abs/2401.08967)" In Arxiv Preprint, 2024. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_ReFT) 
+1. Trung Quoc Luong\*, Xinbo Zhang\*, **Zhanming Jie**\*, Peng Sun, Xiaoran Jin, and Hang Li. "[_ReFT: Reasoning with Reinforced Fine-Tuning_](https://arxiv.org/abs/2401.08967)" In Arxiv Preprint, 2024. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_ReFT) 
 
 2. **Zhanming Jie**\*, Trung Quoc Luong\*, Xinbo Zhang\*, Xiaoran Jin, and Hang Li. "[_Design of Chain-of-Thought in Math Problem Solving_](https://arxiv.org/abs/2309.11054)" In Arxiv Preprint, 2023. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_cot_design) 
 
