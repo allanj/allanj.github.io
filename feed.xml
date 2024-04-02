@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://allanj.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://allanj.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-04-02T23:56:48+08:00</updated><id>https://allanj.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+</subtitle><entry><title type="html">(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning</title><link href="https://allanj.github.io/blog/2024/mistake-paper/" rel="alternate" type="text/html" title="(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning" /><published>2024-04-02T03:59:00+08:00</published><updated>2024-04-02T03:59:00+08:00</updated><id>https://allanj.github.io/blog/2024/mistake-paper</id><content type="html" xml:base="https://allanj.github.io/blog/2024/mistake-paper/"><![CDATA[<h1 id="summary">Summary</h1>
+
+<p>This paper delves into the capacity of Large Language Models (LLMs) to learn from their errors, especially in tasks requiring reasoning. It introduces <strong>COTERRORSET</strong>, a novel benchmark comprising questions designed to elicit both correct responses and errors. The research presents two innovative approaches:</p>
+
+<ul>
+  <li><strong>Self-Rethinking Prompting</strong>: Encourages models to reconsider their answers upon making similar errors.</li>
+  <li><strong>Mistake Tuning</strong>: Involves fine-tuning the models using both correct and incorrect examples.</li>
+</ul>
+
+<p>These methods aim to harness the educational potential of errors, with the goal of refining the reasoning abilities of LLMs by analyzing the nature and causes of their mistakes.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-summary.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h1 id="methodology">Methodology</h1>
+
+<h2 id="dataset-coterrorset">Dataset: COTERRORSET</h2>
+<p>This dataset is curated by engaging with the LLM PaLM2 in a unique process:</p>
+
+<ol>
+  <li>PaLM2 is requested to answer questions and provide justifications.</li>
+  <li>Both accurate answers and errors are then fed back to PaLM2, prompting it to reflect on and explain its mistakes. These explanations form the COTERRORSET benchmark.</li>
+</ol>
+
+<h2 id="approaches">Approaches</h2>
+<p>The paper outlines the concepts of <strong>Self-Rethinking</strong> and <strong>Mistake Tuning</strong>. Initially, the relationship between these two strategies appears unclear. However, Figure 1 suggests a sequential application: Mistake Tuning is followed by Self-Rethinking.</p>
+
+<h3 id="self-rethinking">Self-Rethinking</h3>
+<p>This involves a “backward-checking” phase, where the LLM reviews its reasoning process, specifically focusing on previously identified error types. Although not extensively detailed, this phase implies that the LLM reassesses and corrects its reasoning without external input.</p>
+
+<h3 id="mistake-tuning">Mistake Tuning</h3>
+<p>The essence of this approach is straightforward: it employs two prefixes, “[CORRECT RATIONALE]” and “[INCORRECT RATIONALE]”, for fine-tuning the model on both accurate and erroneous justifications. This method, despite its simplicity, raises questions about its elegance and effectiveness.</p>
+
+<h1 id="results">Results</h1>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res1.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res2.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h1 id="comments">Comments</h1>
+<ol>
+  <li>The concept of Self-Rethinking closely mirrors the “Reflexion” approach outlined by Shinn et al., 2023, albeit in a more foundational form.</li>
+  <li>Despite Figure 1 suggesting the potential for integrating both approaches, the experimental design treats them separately.</li>
+  <li>Evaluating these strategies independently may dilute the perceived significance of the study’s contributions.</li>
+</ol>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[Summary]]></summary></entry><entry><title type="html">Troubleshooting Issues with GPU Experiments on Google Cloud (Bus Error)</title><link href="https://allanj.github.io/blog/2024/gcp/" rel="alternate" type="text/html" title="Troubleshooting Issues with GPU Experiments on Google Cloud (Bus Error)" /><published>2024-01-20T03:59:00+08:00</published><updated>2024-01-20T03:59:00+08:00</updated><id>https://allanj.github.io/blog/2024/gcp</id><content type="html" xml:base="https://allanj.github.io/blog/2024/gcp/"><![CDATA[<p>Recently, I conducted experiments on Google Cloud using the A100-40GB GPU. Initially, I faced numerous program crashes, some of which occurred without any error messages, making it challenging to identify the root cause. Occasionally, there were specific error messages such as:</p>
+
+<ol>
+  <li>No space left</li>
+  <li>Bus Error</li>
+  <li>Generation of numerous <code class="language-plaintext highlighter-rouge">core.python</code> files.</li>
+</ol>
+
+<h1 id="possible-solutions">Possible Solutions</h1>
+
+<p>I explored various potential causes, including issues with my image, PyTorch version, CUDA, and DeepSpeed version. However, none of these turned out to be the actual problem.</p>
+
+<p>After extensive searching online, I discovered that the issue was related to insufficient space on <code class="language-plaintext highlighter-rouge">/dev/shm</code>. It turned out that my <code class="language-plaintext highlighter-rouge">/dev/shm</code> had only 64MB of space.</p>
+
+<p>To address this problem, there are two solutions:</p>
+
+<p>If you are using Docker, you can set the shm size using the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--shm-size</span> 40G
+</code></pre></div></div>
+
+<p>If you are not using Docker, you need to mount a larger size to <code class="language-plaintext highlighter-rouge">/dev/shm</code>.</p>
+
+<p>Note: Sometimes setting <code class="language-plaintext highlighter-rouge">num_workers = 0 </code>for the dataloader might work, but it can result in slower performance.</p>
+
+<h1 id="related-links">Related Links</h1>
+
+<ol>
+  <li><a href="https://discuss.huggingface.co/t/importing-datacollator-gives-me-a-bus-error/25489">https://discuss.huggingface.co/t/importing-datacollator-gives-me-a-bus-error/25489</a></li>
+  <li><a href="https://github.com/facebookresearch/mmf/issues/877">https://github.com/facebookresearch/mmf/issues/877</a></li>
+  <li><a href="https://github.com/pytorch/pytorch/issues/5247">https://github.com/pytorch/pytorch/issues/5247</a></li>
+  <li><a href="https://blog.csdn.net/ybdesire/article/details/134604587">https://blog.csdn.net/ybdesire/article/details/134604587</a></li>
+</ol>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[Recently, I conducted experiments on Google Cloud using the A100-40GB GPU. Initially, I faced numerous program crashes, some of which occurred without any error messages, making it challenging to identify the root cause. Occasionally, there were specific error messages such as:]]></summary></entry><entry><title type="html">My Personal Practice in ACL Paper Formatting</title><link href="https://allanj.github.io/blog/2022/paper-writing/" rel="alternate" type="text/html" title="My Personal Practice in ACL Paper Formatting" /><published>2022-07-31T03:59:00+08:00</published><updated>2022-07-31T03:59:00+08:00</updated><id>https://allanj.github.io/blog/2022/paper-writing</id><content type="html" xml:base="https://allanj.github.io/blog/2022/paper-writing/"><![CDATA[<p>This post summarizes some personal practice in formatting ACL-style papers. It can 
+such as content of each section and formatting in writing ACL-style papers. The following can serve as a reference for beginners but may not apply to all types of writing in general as the situation for different topics/papers would be different.</p>
+
+<h1 id="figure">Figure</h1>
+
+<ol>
+  <li>
+    <p><strong>Tikz</strong>: I often draw figures/chart with the <code class="language-plaintext highlighter-rouge">tikz</code> package as the visualization makes the figure seem like built-in rather than embedded. 
+Getting started with this package can be very painful. But once you gets your hand dirty, you would feel much faster to draw.</p>
+
+    <p>One of my favorite figures when I started using <code class="language-plaintext highlighter-rouge">tikz</code> is the dynamic programming inference in Eisner’s dependency parsing algorithm. The figure is partially shown below.</p>
+  </li>
+</ol>
+<div>  
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/paper-writing/dynamic-programming-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/paper-writing/dynamic-programming-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/paper-writing/dynamic-programming-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/paper-writing/dynamic-programming.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<ol>
+  <li>
+    <p><strong>Matplotlib</strong>: this is useful when we try to convey a much more comprehensive message via the visualization using matplotlib rather than just table. We all know that sometimes table cannot really share what we want to express to the readers. For example, heatmap and bar chart. (Note that, <code class="language-plaintext highlighter-rouge">tikz</code> can help you with that too.)</p>
+  </li>
+  <li>
+    <p><strong>Draw.io</strong>: I often use this tool to prototype some figures because it is quite easy to use and user-friendly. I also saw some papers draw pretty nice figure using this tool.</p>
+  </li>
+</ol>
+
+<p><em>Tips</em>: Sometimes if you find the figures in arxiv papers are attractive, you may be able to download the latex files to check out their tex files for the actual image code/files.</p>
+
+<h1 id="table">Table</h1>
+<ul>
+  <li>My advisor suggested us use the <strong>booktabs</strong> package. Check out this blog for introduction. <a href="https://nhigham.com/2019/11/19/better-latex-tables-with-booktabs/">https://nhigham.com/2019/11/19/better-latex-tables-with-booktabs/</a></li>
+  <li>Dashline: <code class="language-plaintext highlighter-rouge">\cdashlinelr{1-4}</code> add a dash line from column 1 to 4.</li>
+</ul>
+
+<h1 id="content-structure">Content Structure</h1>
+<p>The abstract and introduction are probably the most important sections that we need to pay attention to.</p>
+<ul>
+  <li><strong>Abstract</strong>: Make your motivation clear and go straight to what you propose/present. Try to elaborate how exciting your research is.</li>
+  <li>
+    <p><strong>Introduction</strong>: Again, explain your motivation in details and try to make it clear. Then, how are you going to propose something to solve the problems that mentioned in the motivation. It would be good to have a figure to illustrate “such motivation and your proposed solution”.</p>
+
+    <p>Usually the figure could be quite effective to make reviewer quickly understand what you are trying to do since figure is usually something capture our attention first. You definitely want to make it nice, clear, and exciting.</p>
+  </li>
+</ul>
+
+<h1 id="overcome-the-page-limit">Overcome the Page Limit</h1>
+<p>We often put too much content which go over the 4/8-page limit in ACL papers. Here are some of the tips people usually use to squeeze the space when they submit the paper.</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">adjustbox</code>: basically, you can adjust your figure/table with the number <code class="language-plaintext highlighter-rouge">0.95</code> below. The scale can be set within <code class="language-plaintext highlighter-rouge">[0,1]</code>. <code class="language-plaintext highlighter-rouge">1</code> means fit the size of the comumn
+    <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">\begin{figure}</span>
+   <span class="k">\adjustbox</span><span class="p">{</span>max width=0.95<span class="k">\linewidth</span><span class="p">}{</span>
+     <span class="c">% your figure/table</span>
+   <span class="p">}</span>
+<span class="nt">\end{figure}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">vspace</code>: it is only suggested to squeeze the space between caption and figure/table, space between caption and following content.
+    <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">\begin{figure}</span>
+ ....
+  <span class="k">\vspace</span><span class="p">{</span>-2mm<span class="p">}</span>
+  <span class="k">\caption</span><span class="p">{</span>Your image/table caption<span class="p">}</span>
+<span class="nt">\end{figure}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Squeezed Itemized/enumerate</strong>: the original <code class="language-plaintext highlighter-rouge">itemize</code> takes a too much space and not really elegant presented in the paper. We simply use a squeeze version below
+    <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">% first define some new commands</span>
+<span class="c">%</span>
+<span class="k">\newcommand</span><span class="p">{</span><span class="k">\squishlist</span><span class="p">}{</span>
+<span class="nt">\begin{list}</span><span class="p">{$</span><span class="nv">\bullet</span><span class="p">$}</span>
+<span class="p">{</span>   <span class="k">\setlength</span><span class="p">{</span><span class="k">\itemsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\parsep</span><span class="p">}{</span>3pt<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\topsep</span><span class="p">}{</span>3pt<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\partopsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\leftmargin</span><span class="p">}{</span>1.5em<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\labelwidth</span><span class="p">}{</span>1em<span class="p">}</span>
+   <span class="k">\setlength</span><span class="p">{</span><span class="k">\labelsep</span><span class="p">}{</span>0.5em<span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
+<span class="c">%</span>
+<span class="k">\newcounter</span><span class="p">{</span>Lcount<span class="p">}</span>
+<span class="k">\newcommand</span><span class="p">{</span><span class="k">\squishlisttwo</span><span class="p">}{</span>
+<span class="nt">\begin{list}</span><span class="p">{</span><span class="k">\arabic</span><span class="p">{</span>Lcount<span class="p">}</span>. <span class="p">}</span>
+  <span class="p">{</span> <span class="k">\usecounter</span><span class="p">{</span>Lcount<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\itemsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\parsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\topsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\partopsep</span><span class="p">}{</span>0pt<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\leftmargin</span><span class="p">}{</span>2em<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\labelwidth</span><span class="p">}{</span>1.5em<span class="p">}</span>
+ <span class="k">\setlength</span><span class="p">{</span><span class="k">\labelsep</span><span class="p">}{</span>0.5em<span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
+<span class="c">%</span>
+<span class="k">\newcommand</span><span class="p">{</span><span class="k">\squishend</span><span class="p">}{</span><span class="nt">\end{list}</span> <span class="p">}</span>
+<span class="c">%</span>
+<span class="c">% to use the new command below</span>
+<span class="c">% create an itemize list</span>
+<span class="k">\squishlist</span>
+  <span class="k">\item</span> this is the first item
+<span class="k">\squishend</span>
+<span class="c">%</span>
+<span class="c">% create an enumerate list</span>
+<span class="k">\squishlist</span>2
+  <span class="k">\item</span> this is the first item
+<span class="k">\squishend</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Equation</strong>: Someitmes the equations (<em>i.e.</em>, <code class="language-plaintext highlighter-rouge">{equation}</code> package) rendered by Latex takes too much space. We can use the following script to replace <code class="language-plaintext highlighter-rouge">equation</code>
+    <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">\begin{center}</span>
+  <span class="nt">\begin{tabular}</span><span class="p">{</span>c<span class="p">}</span>
+  <span class="p">$</span><span class="nb">
+      x </span><span class="o">+</span><span class="nb"> y </span><span class="o">=</span><span class="nb"> </span><span class="m">2</span><span class="nb">
+  </span><span class="p">$</span>
+  <span class="nt">\end{tabular}</span>
+<span class="nt">\end{center}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Simple Latex Tricks</strong>:
+    <ul>
+      <li>use <code class="language-plaintext highlighter-rouge">\S</code> to represent Section</li>
+      <li>Use smaller font size if your figure is too large. Overleaf shows a nice family of <a href="https://www.overleaf.com/learn/latex/Font_sizes%2C_families%2C_and_styles">commands</a> for different font size.</li>
+      <li>Use footnote to describe something not really important but still meaningful.</li>
+    </ul>
+  </li>
+</ol>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[This post summarizes some personal practice in formatting ACL-style papers. It can such as content of each section and formatting in writing ACL-style papers. The following can serve as a reference for beginners but may not apply to all types of writing in general as the situation for different topics/papers would be different.]]></summary></entry><entry><title type="html">Paper Reading Notes on ICLR-2022 Conference</title><link href="https://allanj.github.io/blog/2022/iclr-notes/" rel="alternate" type="text/html" title="Paper Reading Notes on ICLR-2022 Conference" /><published>2022-05-04T01:59:00+08:00</published><updated>2022-05-04T01:59:00+08:00</updated><id>https://allanj.github.io/blog/2022/iclr-notes</id><content type="html" xml:base="https://allanj.github.io/blog/2022/iclr-notes/"><![CDATA[<p>I was fortunate to find some time and virually attend some of the poster and oral sessions in <a href="https://iclr.cc/">ICLR-2022</a>. 
+I’d like to share some the research works that I had read in the conference. Hope you may find such information helpful and get your interest to further read more papers in ICLR-2022. 
+I broadly divided these papers into three categories: <strong>training strategy</strong>, <strong>symbolic learning</strong> and <strong>interpretability</strong>. 
+Finally, I also make a list of certain papers that I’m interested but I did not find time to attend their sessions.</p>
+
+<h2 id="table-of-content">Table of Content</h2>
+<h5 id="training-strategy">Training Strategy</h5>
+<ul>
+  <li><a href="#trans-encoder">TRANS-ENCODER: Unsupervised sentence-pair modeling through self- and mutual-distillations</a></li>
+  <li><a href="#weighted-training-for-cross-task-learning">Weighted Training for Cross-Task Learning</a></li>
+  <li><a href="#finetuned-language-models-are-zero-shot-learners">Finetuned Language Models are Zero-Shot Learners</a></li>
+  <li><a href="#towards-understanding-the-data-dependency-of-mixup-style-training">Towards Understanding the Data Dependency of Mixup-style Training</a></li>
+  <li><a href="#the-rich-get-richer-disparate-impact-of-semi-supervised-learning">The Rich Get Richer: Disparate Impact of Semi-Supervised Learning</a></li>
+  <li><a href="#adaaug-learning-class--and-instance-adaptive-data-augmentation-policies">AdaAug: Learning Class- and Instance-adaptive Data Augmentation Policies</a></li>
+</ul>
+
+<h5 id="symbolic-learning-and-structured-prediction">Symbolic Learning and Structured Prediction</h5>
+<ul>
+  <li><a href="#safe-neurosymbolic-learning-with-differentiable-symbolic-execution">Safe Neurosymbolic Learning with Differentiable Symbolic Execution</a></li>
+  <li><a href="#constraining-linear-chain-crfs-to-regular-languages">Constraining Linear-chain CRFs to Regular Languages</a></li>
+</ul>
+
+<h5 id="interpretability">Interpretability</h5>
+<ul>
+  <li><a href="#how-do-vision-transformers-work">How Do Vision Transformers Work?</a></li>
+  <li><a href="#discovering-latent-concepts-learned-in-bert">Discovering Latent Concepts Learned in BERT</a></li>
+</ul>
+
+<h2 id="training-strategy-1">Training Strategy</h2>
+<h4 id="trans-encoder">TRANS-ENCODER</h4>
+<p>The first research work I read is “<em><a href="https://arxiv.org/abs/2109.13059">TRANS-ENCODER: Unsupervised sentence-pair modeling through self- and mutual-distillations</a></em>” by <a href="http://fangyuliu.me/about.html">Fangyu Liu</a> from University of Cambridge.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/25-04-transencoder-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/25-04-transencoder-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/25-04-transencoder-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/25-04-transencoder.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>They proposed a distillation training mechanism to incorporate both <code class="language-plaintext highlighter-rouge">bi-encoder</code> and <code class="language-plaintext highlighter-rouge">cross-encoder</code> for unsupervised sentence representation learning. 
+Given the different advantages of <code class="language-plaintext highlighter-rouge">bi-encoder</code> and <code class="language-plaintext highlighter-rouge">cross-encoder</code>, they perform iterative distillation between the bi-encoder and cross-encoder. Such a method is able to improvement the performance of unsuperivsed STS by at most 5 points.</p>
+
+<p>Some <strong>insights</strong> after talking to the authors:</p>
+<ol>
+  <li>The amount of unlabeled pairs also matters as the performance would not always increase.</li>
+  <li>Such a framework can be generalized to disitillation among multiple model architectures (\(\geq 2\)).</li>
+  <li>There is another paper by Google (called “<a href="https://arxiv.org/abs/2203.05482">Model Soups</a>”) mentions that averaging the parameters of models with different hyperparameters can further improve the performance. In this work, the author also mentioned to me that they try something similar and have certain improvements as well.</li>
+</ol>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="weighted-training-for-cross-task-learning"><a href="https://arxiv.org/pdf/2105.14095.pdf">Weighted Training for Cross-Task Learning</a></h4>
+<p>This work is by <a href="https://sxc.moe/">Shuxiao Chen</a> from University of Pennsylvania.
+They proposed a weighted training framework under the scenario that we have limited data in the target task but abundant data in the source tasks. 
+In this poster, their example target task is name entity recognition (NER) while the source task can be part-of-speech (POS) tagging.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-weighted-training-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-weighted-training.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The training mechansim is pretty intuitve:</p>
+<blockquote>
+  <p>Adaptively up-weight relevant source tasks and down-weight irrelevant source tasks.</p>
+</blockquote>
+
+<p>They have a theoretical proof (<code class="language-plaintext highlighter-rouge">Theorem 3.1</code>) in their paper to show this training scheme is able to converge and the error is bounded by certain variables.
+(The mathematical proof is pretty long and readers can refer to the papers if interested.) 
+One of them is <code class="language-plaintext highlighter-rouge">task distance</code>, which measure how close the target task and source task are.
+Of course, if the two tasks are far away from each other, the improvements would not be so significant as in the results.</p>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="finetuned-language-models-are-zero-shot-learners"><a href="https://arxiv.org/abs/2109.01652">Finetuned Language Models are Zero-Shot Learners</a></h4>
+<p>I just attended this talk by <a href="https://jasonwei20.github.io/">Jason Wei</a>. As shown in the summary, researchers from Google show  that we can obtain better zero-shot performance by finetuning the (large) language models on other tasks with instruction tuning.
+Basically, we design some instruction templates as shown in the center of the poster, and finetune the model.
+In my opinion, the instructions are pretty similar to prompts in terms of implementation.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-finetuned-are-zeroshot.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="towards-understanding-the-data-dependency-of-mixup-style-training"><a href="https://arxiv.org/abs/2110.07647">Towards Understanding the Data Dependency of Mixup-style Training</a></h4>
+<p>This work by Muthu investigates the vanilla mixup-style training and gives some insights on when mixup fails and succeed. 
+By reading the <code class="language-plaintext highlighter-rouge">background</code> in this poster, we know that we can mix up the two labels during training for the mixup representation. 
+However, there would be a problem if such a representation actually has a different label other than these two labels, which they call <code class="language-plaintext highlighter-rouge">inter-class collinearity</code>.
+Interestingly, they also show that we can learn a better boundary using the mixup-style training in the visualization (with \(\alpha =1\)).</p>
+
+<p>The hyperparmeter \(\alpha\) corresponds to the mixing density in our training data. If we have a higher alpha, that means we have a higher concentration on mixup. 
+This is also the case why the last plot has sort of sharper boundary  than the plot with \(\alpha =1\).</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-towards-understand-mixup-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-towards-understand-mixup.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="the-rich-get-richer-disparate-impact-of-semi-supervised-learning"><a href="https://arxiv.org/abs/2110.06282">The Rich Get Richer: Disparate Impact of Semi-Supervised Learning</a></h4>
+<p>This work also shows the disparate impacts of deploying semi-supervised learning (SSL). 
+“<em>Rich get richer and poor get poorer</em>” means that a model would achieve lower accuracy after SSL if the model originally gives us “low” accuracy. 
+In other words, we would get higher accuracy after SSL if the original accuracy is also “high”. 
+They quantified the comparison by a <code class="language-plaintext highlighter-rouge">benifit ratio</code> as shown in the poster. 
+They adopt a simple SSL framework and prove that the error is bounded by the disparity of the baseline, which strongly relates to the noise rate of the unlabeled data.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-rich-get-richer-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-rich-get-richer.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="adaaug-learning-class--and-instance-adaptive-data-augmentation-policies"><a href="https://openreview.net/forum?id=rWXfFogxRJN">AdaAug: Learning Class- and Instance-adaptive Data Augmentation Policies</a></h4>
+<p>This work on data augmentation is by Tsz-Him Cheung from HKUST. 
+I like the key idea that they train a parameterized network on the validation dataset to learn the hyperparameters.
+Specifically, in Figure 2, the network parameterized by \(h_\gamma\) is used to predict the hyperparameters for selecting the augmentation strategies.</p>
+<ol>
+  <li>They train the model on the training data as shown in the upper architecture, but freezing the parameters of \(h_\gamma\).</li>
+  <li>They train the parameters of  \(h_\gamma\) on the validation data, but freezing the parameters of those blue modules.
+In this way, they can try to select the best augmentation strategy in a trainable way. 
+But of course, we might doubt that the amount of validation data could be a potential issue.</li>
+</ol>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/28-04-adaaug-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/28-04-adaaug-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/28-04-adaaug-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/28-04-adaaug.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+<h2 id="symbolic-learning-and-structured-prediction-1">Symbolic Learning and Structured Prediction</h2>
+<h4 id="safe-neurosymbolic-learning-with-differentiable-symbolic-execution"><a href="https://arxiv.org/abs/2203.07671">Safe Neurosymbolic Learning with Differentiable Symbolic Execution</a></h4>
+<p>Different from symbolic reasoning in NLP,  this work is about learning the neural network within an executable program. 
+To be even more specific, this is called “<em>symbolic transition system</em>” (Manna &amp; Pnueli, 2012). 
+This work is by <a href="https://cxyang1997.github.io/">Chenxi Yang</a> from the University of Texas at Austin.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/26-04-safe-neurosymbolic-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/26-04-safe-neurosymbolic.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><strong>Problem</strong>: learn the neural network parameters embedded in a program and minimize the error (\(\min Q(\theta)\)) to fit the training dataset.</p>
+
+<p><strong>Method</strong>: layout the symbolic execution graph and sample the trajectory over this graph. 
+The sampling process also allows us to train the whole system in differentiable way though the system has non-differentiable operations.</p>
+
+<p><strong>Insight</strong>: As we can see in the final results, this approach is 100% safe  on the thermostat dataset even without any training data. 
+Because we can directly sample from the execution graph rather than relying on the training data.</p>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="constraining-linear-chain-crfs-to-regular-languages"><a href="https://arxiv.org/abs/2106.07306">Constraining Linear-chain CRFs to Regular Languages</a></h4>
+<p>I’m always interested in structured prediction, the title attracts me to have a chat with the author, Sean Papay from University of Stuttgart.
+They start with a finite state automata and build the CRF graphical model according to that “language”. 
+To be more specific, there are certain constraints, for example:</p>
+<ol>
+  <li>The state \(q_2\) cannot go to state \(q_4\) with an action of <code class="language-plaintext highlighter-rouge">Patient</code>.</li>
+</ol>
+
+<p>IMO, it is also pretty similar to a constrained CRF where we design certain constriants with our prior knowledge.
+But I didn’t fully read the papers, I could be misunderstanding some of the key content here.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/28-04-constraining-linear-crf-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/28-04-constraining-linear-crf.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+<h2 id="interpretability-1">Interpretability</h2>
+
+<h4 id="how-do-vision-transformers-work"><a href="https://arxiv.org/pdf/2202.06709.pdf">How Do Vision Transformers Work?</a></h4>
+<p>This paper presented some empirical findings through some pretty nice figures. 
+I listed some of their key findings here:</p>
+<ol>
+  <li>Figure 1: ViT has smoother loss lanscape than ResNet because of the <code class="language-plaintext highlighter-rouge">softmax</code>.</li>
+  <li>The learning trajectory of parameters of ViT is also smooth compared to the one in ResNet.</li>
+  <li>Multi-head Self Attentions (MSAs) are low-pass filter but Convolutions are high-pass filter.
+The original paper also compare more state-of-the-art architectures such as Swin Transformers. 
+Read the paper and it might be helpful if you are looking for a vision encoder which is suitable for a specific dataset.</li>
+</ol>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/how-do-vision-transformers-work-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/how-do-vision-transformers-work.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h4 id="discovering-latent-concepts-learned-in-bert"><a href="https://openreview.net/forum?id=POTMtpYI1xH">Discovering Latent Concepts Learned in BERT</a></h4>
+<p>The last poster I read in the conference is more about findings in BERT. 
+They perform clustering for the word presentations given by BERT/Roberta. 
+The same words in different contexts might have different semantic meaning as well.
+Similar to some previous findings, they also show the representations in the upper layers convey more semantic information while the representations 
+at lower level convey syntactic information. 
+They manually annotate a dataset with 174 concept labels and a total of 1 million annotated instances. 
+Though they did not have any downstream experiments, the research efforts here is apprecitated and could benefit our research community.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/iclr-2022/27-04-discover-latent-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-2" src="/assets/img/iclr-2022/27-04-discover-latent.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p><a href="#table-of-content">&lt;Back to Table of Content&gt;</a></p>
+
+<h2 id="others">Others</h2>
+<p>Here comes a list of papers in my mind while going through the above posters.</p>
+<ol>
+  <li><a href="https://openreview.net/pdf?id=0EXmFzUn5I">Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting</a></li>
+  <li><a href="https://arxiv.org/abs/2110.05679">Large Language Models Can Be Strong Differentially Private Learners</a>
+    <ul>
+      <li>This looks like a new technique to me: “Differentially Private (DP) learning”. 
+As as explained by a friend Xiaosen Zheng, differentially private is about learning a model that does not expose the privacy. 
+For example in membership inference attack, a good attacker can always tell if a sample is from the training set. 
+Differentially private learning is trying to defend from this attacks. 
+This paper show that the hyperparameters are the reason of why previous DP methods fail.</li>
+    </ul>
+  </li>
+  <li><a href="https://arxiv.org/abs/2110.02037">Autoregressive Diffusion Model</a></li>
+  <li><a href="https://arxiv.org/abs/2107.13349">Self-Supervised Inference in State-Space Models</a></li>
+  <li><a href="https://openreview.net/forum?id=N0n_QyQ5lBF">Unsupervised Vision-Language Grammar Induction with Shared Structure Modeling</a></li>
+  <li><a href="https://openreview.net/forum?id=ckZY7DGa7FQ">A Fine-Tuning Approach to Belief State Modeling</a></li>
+  <li><a href="https://arxiv.org/abs/2110.04121">On the limitations of multimodal VAEs</a></li>
+  <li><a href="https://arxiv.org/abs/2203.08509">Differentiable DAG Sampling</a></li>
+  <li><a href="https://arxiv.org/abs/2204.03084">Knowledge Infused Decoding</a></li>
+  <li><a href="https://arxiv.org/abs/2110.05025">Self-supervised Learning is More Robust to Dataset Imbalance</a></li>
+  <li><a href="https://openreview.net/forum?id=OjPmfr9GkVv">Enhancing Cross-lingual Transfer by Manifold Mixup</a></li>
+  <li><a href="https://arxiv.org/abs/2202.06709">How Do Vision Transformers Work?</a></li>
+</ol>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[I was fortunate to find some time and virually attend some of the poster and oral sessions in ICLR-2022. I’d like to share some the research works that I had read in the conference. Hope you may find such information helpful and get your interest to further read more papers in ICLR-2022. I broadly divided these papers into three categories: training strategy, symbolic learning and interpretability. Finally, I also make a list of certain papers that I’m interested but I did not find time to attend their sessions.]]></summary></entry><entry><title type="html">Deductive Reasoning (for Math Word Problem Solving)</title><link href="https://allanj.github.io/blog/2022/reasoning/" rel="alternate" type="text/html" title="Deductive Reasoning (for Math Word Problem Solving)" /><published>2022-04-18T03:59:00+08:00</published><updated>2022-04-18T03:59:00+08:00</updated><id>https://allanj.github.io/blog/2022/reasoning</id><content type="html" xml:base="https://allanj.github.io/blog/2022/reasoning/"><![CDATA[<h2 id="introduction">Introduction</h2>
+
+<p>Large-scale pretrained language models GPT-3, have been achieving promising results on many NLP downstream tasks. However, most of these models are not able to give us the reasoning steps and the performance on the tasks require complex reasoning is still unsatisfactory (<a href="https://dl.acm.org/doi/pdf/10.1145/3448250?download=true">Bengio et al., 2021</a>). We propose a deductive reasoning approach and aim to achieve the reasoning ability as in <em>System 2</em> (<a href="http://dspace.vnbrims.org:13000/jspui/bitstream/123456789/2224/1/Daniel-Kahneman-Thinking-Fast-and-Slow-.pdf">Daniel 2017</a>).</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/paper_title-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/paper_title-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/paper_title-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/paper_title.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>This paper is accepted by the 60th Annual Meeting of the Association for Computational Linguistics (<a href="https://www.2022.aclweb.org/">ACL-2022</a>)</p>
+
+<p><strong>Paper link</strong> : <a href="https://arxiv.org/abs/2203.10316">https://arxiv.org/abs/2203.10316</a></p>
+
+<h2 id="research-motivation">Research Motivation</h2>
+<p>We use the following figure taken from the PaLM (<a href="https://arxiv.org/abs/2204.02311">Chowdhery et al., 2022</a>) paper as an example. This work performs prompting to solve the math word problem in a few-shot learning scenario. We can see if we give some samples with just questions and answers, we might not be able to obtain the correct answer. But if we give some more reasoning description, the model is able to predict reasoning description and also make a correct prediction. So it is good to have interpretable multi-step reasoning as output.</p>
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/chain-of-thought-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/chain-of-thought-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/chain-of-thought-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/chain-of-thought.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>Also, math word problem (MWP) solving is a straightforward application to evaluate such multi-step reasoning ability.</p>
+
+<h3 id="problem-description">Problem Description</h3>
+
+<p>Given a question, we need to solve the questions and obtain the numerical answer. In our dataset, we are also given the mathematical expression which leads to the corresponding answer.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: In a division sum , the remainder is \(8\) and the divisor is \(6\) times the quotient and is obtained by adding \(3\) to the thrice of the remainder. What is the dividend?</p>
+
+  <p><strong>Answer</strong>: \(129.5\)</p>
+
+  <p><strong>Mathematical Expression</strong>: \(\big ( {\textcolor{electronblue}{(8\times 3 + 3)}}\! \times \!  {\textcolor{electronblue}{(8 \times 3 + 3)}}   \!\div\! 6\big )\! +\! 8\)</p>
+</blockquote>
+
+<p>This example is taken from the MathQA (<a href="https://arxiv.org/abs/1905.13319">Amini et al., 2019</a>) dataset. We need to obtain the final dividend 129.5. The mathematical expression can be used for training supervision. 
+<!-- In our problem, we also have certain assumptions as in previous work. We assume the positions of quantities are known and also just consider the basic mathematical operators: addition( ), subtraction( ), multiplication( ), division( ), and exponential ( ). Other more complex operators can be further decomposed into these basic operators. --></p>
+
+<h3 id="existing-methods">Existing Methods</h3>
+
+<p>Existing work in MWP is mainly categorized into Seq2Seq and Seq2Tree. Traditional Seq2Seq models basically are pretty easy to implement and generalize to more complicated problems. But the disadvantages are that the performance is generally not better than the structured model and it is lack of interpretability. This line of research is still popular because of Transformers-based models which potentially have powerful language understanding ability.</p>
+
+<p>The typical approach of Seq2Tree is the Goal-Driven Tree-Structure (GTS) (<a href="https://www.ijcai.org/proceedings/2019/0736.pdf">Xie et al., 2019</a>), which is also the most common work that followed by other research efforts on MWP. In tree-based generation models, we structure the expression in tree form and follow a pre-order traversal in tree generation as shown in the Figure below. We keep generating the operators until we reach the leaves which are the quantities.</p>
+
+<p>The Nice thing is that it gives us a binary tree structure, but it is also counter-intuitive and contains repetitive computations. Take these two blue and dashed boxes for instance, we can see this expression \(8\times 3+3\) is generated twice, but we can actually reuse it without generating it again. Under the Seq2Tree framework, we are not able to do so.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/tree_generation-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/tree_generation-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/tree_generation-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/tree_generation.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h2 id="deductive-reasoning">Deductive Reasoning</h2>
+
+<p>In our proposed approach, we want to solve this problem in a step-by-step and interpretable manner as shown in the Figure below.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/deductive_procedure-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/deductive_procedure-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/deductive_procedure-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/deductive_procedure.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The first two steps give us the divisor. The third step computes the quotient. We can see that the results of the first two steps can be used at the fourth step for the final dividend computation.</p>
+
+<p>Overall, our deductive procedure has the following advantages:</p>
+
+<ol>
+  <li>Reduce the number of computation steps by reusing the previous expressions.</li>
+  <li>More explanability with step-by-step expression computation</li>
+  <li>Generating the complete expression rather than a single operator or quantity. Such a process requires the model to be more accurate during training.</li>
+</ol>
+
+<p>In addition, similar to diffusion models, we can actually start from the intermediate step and continue to perform inference at the intermediate step.</p>
+
+<h3 id="deductive-systems">Deductive Systems</h3>
+
+<p><strong>Model Input</strong>: the quantities presented in the question and the complete constant set, which is represented by \(Q\).</p>
+
+\[Q=Q^{(t=0)}= \{ q_1, q_2, \cdots,q_m \}\]
+
+<p>Expressions are represented by:</p>
+
+\[e_{i,j,op}^{(t)} = q_i \xrightarrow[]{op} q_j ~~~q_i, q_j  \in \mathcal{Q}^{(t-1)}\]
+
+<p>Indicate the mathematical operations from \(q_i\) to \(q_j\). The underlying representation \(e_{i,j,op}^{(t)}\) is directed. For those non-commutative operators, such as subtraction and division, we use an additional reverse direction to represent such operators. Here we can use “\(-_{reverse}\)” to represent \(q_j - q_i\).</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/derivation-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/derivation-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/derivation-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/derivation.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>From the perspective of formal deductive systems, we can use the above derivation to represent the procedure. Such deductive process is similar to the transition-based system in dependency parsing task. From time \(t\) to \(t+1\), the difference between states is an additional new expression \(e_{i,j,op}^{(t)}\), and this new expression will be a new candidate quantity at the next state.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/state_change-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/state_change-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/state_change-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/state_change.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>The above figure visualizes the evolution of the states. We can see that, we size of the state increases with the increase of time step \(t\).</p>
+
+<h3 id="model-implementation">Model Implementation</h3>
+
+<p>First, we use pre-trained language models such as BERT or Roberta to obtain vector representation of quantities. We then perform inference on top of these quantity representations. Here, we use an example to visualize the inference process.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/model_impl-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/model_impl-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/model_impl-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/model_impl.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>At the first step, we obtain the joint representation between and by simple concatenation between their quantity representations. We then apply an operator-specific feed-forward network to obtain the vector representation of the mathematical expression . Thus, this new expression will become the new candidate quantity . Potentially, we might obtain incorrect expressions, such as . Thus, we need to score all the possible expressions and find the optimal expression to be the new quantity . Finally, at , we arrive at the expression .</p>
+
+<p>One of the advantages of this implementation is that we can incorporate prior knowledge as constraints. For example, if the expression is not allowed, we can simply remove this expression from the candidate set.</p>
+
+<p>Note that, the number of all the possible candidates at different timestep is different. This actually makes it challenging for us to perform beam search during inference. Because the probability distribution at different time steps will be unbalanced.</p>
+
+<h2 id="experiments">Experiments</h2>
+
+<p>We mainly conduct experiments on four public datasets: MAWPS, Math23k, MathQA and SVAMP. In this blog, we just show the comparison with the state-of-the-art approaches under the same setting (i.e., using BERT/Roberta language models.). Our best variant is the Roberta-Deductive Reasoner and we did not apply the beam search strategy. The compared approaches are all using beam search with beam size of 5.</p>
+
+<div style="text-align:center;">
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/reasoning_blog/table-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/reasoning_blog/table-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/reasoning_blog/table-1400.webp" />
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/reasoning_blog/table.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+</div>
+
+<p>Overall, our accuracy on the final numerical answer is significantly better than previous Seq2Tree work. We mainly attribute the reason to the fact that we enforce the model to predict the complete expression rather than a single operator or quantity. However, the absolute accuracy is not really high, especially on MathQA and SVAMP.</p>
+
+<p>We further conduct analysis to investigate the difficulties in SVAMP. Details can be found in the paper. We found that the constraint introduced above has significantly improved the performance on the SVAMP dataset. The constraint is simply disallowing the appearance of negative values. This constraint improves our BERT-based Reasoner by 7 points and 2 points for Roberta-based Reasoner.</p>
+
+<h2 id="interpretable-analysis">Interpretable Analysis</h2>
+
+<p>In this example, we would like to showcase how we can interpret the model predictions.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: There are 255 apple trees in the orchard. <span style="color:red"><em>Planting another 35 pear trees makes the number exactly the same as the apple trees.</em></span> If every 20 pear trees are planted in a row, how many rows can be planted in total?</p>
+
+  <p><strong>Answer</strong>: 11.    <strong>Gold Expression</strong>: \((255 - 35) \div 20\).        <strong>Predicted Expression</strong>: \((255 + 35) \div 20\)</p>
+
+  <p><strong>Deductive Scores</strong>: Prob('255+35=290') = 0.068 &gt; Prob('255-35=220') = 0.062</p>
+</blockquote>
+
+<p>At the first step of prediction, we can see the model make a mistake by predicting the subtraction as addition. The error can be actually located by the sentence marked in red. We suspect that the "planting another" statement misleads the model to make an "addition" prediction. We then want to revise that sentence and make it convey more accurate semantics. The italic sentence below is the revised sentence.</p>
+
+<blockquote>
+  <p><strong>Question</strong>: There are 255 apple trees in the orchard. <em>The number of pear trees is 35 fewer than the apple trees.</em> If every 20 pear trees are planted in a row, how many rows can be planted in total?_</p>
+
+  <p>Prob(255+35=290) = 0.061 &lt; Prob(255-35=220) = 0.067</p>
+</blockquote>
+
+<p>Through the word "fewer", we hope the model understands that this part should be a subtraction. This study shows how interpretable predictions help us understand our model behavior.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>Our deductive system is structurally more efficient compared to the tree-based model and is able to provide explainable solving steps. Furthermore, we are able to incorporate prior knowledge as constraints to improve the model performance. Theoretically, the underlying deductive system can not only apply to math word problem solving but also other tasks that require multi-step reasoning and structure predictions.</p>
+
+<p>We also have certain limitations under this framework: the memory consumption is high when we have many mathematical operators and constants. In addition, it is still challenging to efficiently apply beam search in our framework because of the unbalanced distribution at each time step.</p>
+
+<h2 id="references">References</h2>
+<p>Bengio, Yoshua, Yann Lecun, and Geoffrey Hinton. "Deep learning for AI." <em>Communications of the ACM</em> 64.7 (2021): 58-65.</p>
+
+<p>Daniel, Kahneman. "Thinking, fast and slow." (2017).</p>
+
+<p>Chowdhery, Aakanksha, et al. "Palm: Scaling language modeling with pathways." <em>arXiv preprint arXiv:2204.02311</em> (2022).</p>
+
+<p>Amini, Aida, et al. "MathQA: Towards Interpretable Math Word Problem Solving with Operation-Based Formalisms." <em>Proceedings of NAACL,</em> 2019.</p>
+
+<p>Xie, Zhipeng, and Shichao Sun. "A Goal-Driven Tree-Structured Neural Model for Math Word Problems." Proceedings of <em>IJCAI</em>. 2019.</p>]]></content><author><name>Albert Einstein</name></author><category term="nlp" /><summary type="html"><![CDATA[Introduction]]></summary></entry></feed>
