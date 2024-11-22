@@ -20,7 +20,7 @@ social: true  # includes social icons at the bottom of the page
 ---
 
 
-NLP Scientist at [ByteDance AI Lab](https://ailab.bytedance.com/), Singapore. 
+NLP Scientist at ByteDance Research, Singapore. 
 I obtained my PhD degree from the [SUTD](https://sutd.edu.sg/) [StatNLP Group](https://statnlp-research.github.io/) supervised by Prof. [Wei Lu](https://istd.sutd.edu.sg/people/faculty/lu-wei). 
 I also interned at the [Allen Institute for AI](https://allenai.org/) under the supervision of [Pradeep Dasigi](https://pdasigi.github.io/) and [Ana Marasović](https://www.anamarasovic.com/). 
 

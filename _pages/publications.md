@@ -9,11 +9,15 @@ nav: true
 
 
 ### Conference Papers
-1. Trung Quoc Luong\*, Xinbo Zhang\*, **Zhanming Jie**\*, Peng Sun, Xiaoran Jin, and Hang Li. "[_ReFT: Reasoning with Reinforced Fine-Tuning_](https://arxiv.org/abs/2401.08967)" In Arxiv Preprint, 2024. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_ReFT) 
+1. Yuhui Xu, **Zhanming Jie**, Hanze Dong, Lei Wang, Xudong Lu, Aojun Zhou, Amrita Saha, Caiming Xiong, Doyen Sahoo. "[_Think: Thinner key cache by query-driven pruning_](https://arxiv.org/abs/2407.21018)", In Arixv 2024. [\[code\]](https://github.com/SalesforceAIResearch/ThinK)
 
-2. **Zhanming Jie**\*, Trung Quoc Luong\*, Xinbo Zhang\*, Xiaoran Jin, and Hang Li. "[_Design of Chain-of-Thought in Math Problem Solving_](https://arxiv.org/abs/2309.11054)" In Arxiv Preprint, 2023. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_cot_design) 
+2. Haoran Li, **Zhanming Jie**, Wei Lu, "[_Non-Autoregressive Machine Translation as Constrained HMM_](https://aclanthology.org/2024.findings-acl.735.pdf)", In Findings of ACL, 2024. 
 
-3. **Zhanming Jie** and Wei Lu. "[_Leveraging Training Data in Few-Shot Prompting for Numerical Reasoning_](https://arxiv.org/abs/2305.18170)" In Findings of ACL, 2023. [\[code\]](https://github.com/allanj/dynamic-pal)
+3. Trung Quoc Luong\*, Xinbo Zhang\*, **Zhanming Jie**\*, Peng Sun, Xiaoran Jin, and Hang Li. "[_ReFT: Reasoning with Reinforced Fine-Tuning_](https://arxiv.org/abs/2401.08967)" In ACL, 2024. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_ReFT) 
+
+4. **Zhanming Jie**\*, Trung Quoc Luong\*, Xinbo Zhang\*, Xiaoran Jin, and Hang Li. "[_Design of Chain-of-Thought in Math Problem Solving_](https://arxiv.org/abs/2309.11054)" In Arxiv Preprint, 2023. (\* _Equal Contributions_) [\[code\]](https://github.com/lqtrung1998/mwp_cot_design) 
+
+5. **Zhanming Jie** and Wei Lu. "[_Leveraging Training Data in Few-Shot Prompting for Numerical Reasoning_](https://arxiv.org/abs/2305.18170)" In Findings of ACL, 2023. [\[code\]](https://github.com/allanj/dynamic-pal)
 
 4. Shuwei Feng, Tianyang Zhan, **Zhanming Jie**, Trung Quoc Luong, Xiaoran Jin. "[_Sequence-to-Sequence Pre-training with Unified Modality Masking for Visual Document Understanding_](https://arxiv.org/abs/2305.10448)" In Arxiv. 2023. 
 
