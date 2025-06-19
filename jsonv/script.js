@@ -1,5 +1,6 @@
 const visualizeBtn = document.getElementById('visualize-btn');
 const toggleRawBtn = document.getElementById('toggle-raw-btn');
+const exportBtn = document.getElementById('export-btn');
 const jsonInput = document.getElementById('json-input');
 const jsonTree = document.getElementById('json-tree');
 
@@ -14,6 +15,31 @@ toggleRawBtn.addEventListener('click', () => {
     toggleRawBtn.classList.toggle('raw-strings-on', rawStrings);
     if (jsonData) {
         renderTree();
+    }
+});
+
+exportBtn.addEventListener('click', () => {
+    if (!jsonData) {
+        alert('Nothing to export. Please visualize some JSON first.');
+        return;
+    }
+
+    try {
+        const jsonString = JSON.stringify(jsonData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+    } catch (error) {
+        alert('Failed to export JSON.');
+        console.error(error);
     }
 });
 
