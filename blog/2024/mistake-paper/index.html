@@ -2,7 +2,7 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://allanj.github.io/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
     <!-- Website verification -->
     <meta name="google-site-verification" content="0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw" />
@@ -11,9 +11,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Zhanming (Allan) Jie | Page not found</title>
+    <title>Zhanming (Allan) Jie | (Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning</title>
     <meta name="author" content="Zhanming (Allan) Jie" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+" />
     <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website" />
 
 
@@ -34,7 +35,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔠</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://allanj.github.io/404.html">
+    <link rel="canonical" href="https://allanj.github.io/blog/2024/mistake-paper/">
     
     <!-- Dark Mode -->
     
@@ -73,7 +74,7 @@
               </li>
               
               <!-- Blog -->
-              <li class="nav-item ">
+              <li class="nav-item active">
                 <a class="nav-link" href="/blog/">Blog</a>
               </li>
 
@@ -103,20 +104,128 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <!-- page.html -->
-        <div class="post">
+      <!-- _layouts/post.html -->
 
-          <header class="post-header">
-            <h1 class="post-title">Page not found</h1>
-            <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
-          </header>
+<div class="post">
 
-          <article>
-            <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://allanj.github.io/">here</a>.</p>
+  <header class="post-header">
+    <h1 class="post-title">(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning</h1>
+    <p class="post-meta">April 2, 2024</p>
+    <p class="post-tags">
+      <a href="/blog/2024"> <i class="fas fa-calendar fa-sm"></i> 2024 </a>
+        ·  
+        <a href="/blog/category/nlp">
+          <i class="fas fa-tag fa-sm"></i> nlp</a>  
+          
 
-          </article>
+    </p>
+  </header>
 
-        </div>
+  <article class="post-content">
+    <h1 id="summary">Summary</h1>
+
+<p>This paper delves into the capacity of Large Language Models (LLMs) to learn from their errors, especially in tasks requiring reasoning. It introduces <strong>COTERRORSET</strong>, a novel benchmark comprising questions designed to elicit both correct responses and errors. The research presents two innovative approaches:</p>
+
+<ul>
+  <li>
+<strong>Self-Rethinking Prompting</strong>: Encourages models to reconsider their answers upon making similar errors.</li>
+  <li>
+<strong>Mistake Tuning</strong>: Involves fine-tuning the models using both correct and incorrect examples.</li>
+</ul>
+
+<p>These methods aim to harness the educational potential of errors, with the goal of refining the reasoning abilities of LLMs by analyzing the nature and causes of their mistakes.</p>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-summary.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h1 id="methodology">Methodology</h1>
+
+<h2 id="dataset-coterrorset">Dataset: COTERRORSET</h2>
+<p>This dataset is curated by engaging with the LLM PaLM2 in a unique process:</p>
+
+<ol>
+  <li>PaLM2 is requested to answer questions and provide justifications.</li>
+  <li>Both accurate answers and errors are then fed back to PaLM2, prompting it to reflect on and explain its mistakes. These explanations form the COTERRORSET benchmark.</li>
+</ol>
+
+<h2 id="approaches">Approaches</h2>
+<p>The paper outlines the concepts of <strong>Self-Rethinking</strong> and <strong>Mistake Tuning</strong>. Initially, the relationship between these two strategies appears unclear. However, Figure 1 suggests a sequential application: Mistake Tuning is followed by Self-Rethinking.</p>
+
+<h3 id="self-rethinking">Self-Rethinking</h3>
+<p>This involves a “backward-checking” phase, where the LLM reviews its reasoning process, specifically focusing on previously identified error types. Although not extensively detailed, this phase implies that the LLM reassesses and corrects its reasoning without external input.</p>
+
+<h3 id="mistake-tuning">Mistake Tuning</h3>
+<p>The essence of this approach is straightforward: it employs two prefixes, “[CORRECT RATIONALE]” and “[INCORRECT RATIONALE]”, for fine-tuning the model on both accurate and erroneous justifications. This method, despite its simplicity, raises questions about its elegance and effectiveness.</p>
+
+<h1 id="results">Results</h1>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res1.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<div>
+        <figure>
+
+  <picture>
+    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-480.webp"></source>
+    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-800.webp"></source>
+    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-1400.webp"></source>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res2.png" data-zoomable="">
+
+  </picture>
+
+</figure>
+
+</div>
+
+<h1 id="comments">Comments</h1>
+<ol>
+  <li>The concept of Self-Rethinking closely mirrors the “Reflexion” approach outlined by Shinn et al., 2023, albeit in a more foundational form.</li>
+  <li>Despite Figure 1 suggesting the potential for integrating both approaches, the experimental design treats them separately.</li>
+  <li>Evaluating these strategies independently may dilute the perceived significance of the study’s contributions.</li>
+</ol>
+
+  </article><div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'allan-disqus-com';
+      var disqus_identifier = '/blog/2024/mistake-paper';
+      var disqus_title      = "(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener noreferrer">comments powered by Disqus.</a>
+</noscript>
+
+</div>
 
     </div>
 
