@@ -9,6 +9,40 @@ p, h1, h2, h3, h4, h5, h6, em, div, li, span, strong {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+// Readable body copy: slightly larger text and roomier line-height.
+body {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.post .post-content,
+article {
+  p, li {
+    line-height: 1.6;
+  }
+}
+
+// Role / affiliation subtitle under the name on the about page.
+.post-header .desc {
+  color: var(--global-text-color-light);
+  font-size: 1.1rem;
+  margin-top: 0.4rem;
+  strong {
+    color: var(--global-theme-color);
+  }
+}
+
+// Section headings on the publications page (Conference / Journal).
+.publications h2.bib-section-title {
+  color: var(--global-theme-color);
+  font-size: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--global-divider-color);
+  padding-bottom: 0.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
 hr {
   border-top: 1px solid var(--global-divider-color);
 }
@@ -241,8 +275,9 @@ blockquote {
 .social {
   text-align: center;
   .contact-icons {
-    font-size: 4rem;
+    font-size: 2.6rem;
     a {
+      margin: 0 0.35rem;
       i::before {
         color: var(--global-text-color);
         transition-property: all 0.2s ease-in-out;
