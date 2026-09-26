@@ -1,0 +1,191 @@
+---
+import type { Role } from '../data/site';
+
+interface Edu {
+  period: string;
+  title: string;
+  org: string;
+  orgUrl?: string;
+  summary: string;
+  award?: string;
+  link?: string;
+}
+interface Props {
+  roles: Role[];
+  education?: Edu[];
+  compact?: boolean;
+}
+const { roles, education = [], compact = false } = Astro.props;
+
+// Deterministic, decorative "commit hashes".
+const hash = (s: string) => {
+  let h = 0x811c9dc5;
+  for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 0x01000193) >>> 0;
+  return h.toString(16).padStart(8, '0').slice(0, 7);
+};
+---
+
+<ol class:list={['gitlog', { compact }]}>
+  {
+    roles.map((r) => (
+      <li class:list={['commit', { head: r.head }]} data-reveal>
+        <span class="node" aria-hidden="true" />
+        <div class="body">
+          <p class="l1 mono">
+            <span class="hash">{hash(r.org + r.period)}</span>
+            {r.head && <span class="ref">(HEAD → main)</span>}
+            <span class="period">{r.period}</span>
+          </p>
+          <h3>
+            {r.title} <span class="at">@</span>{' '}
+            {r.orgUrl ? (
+              <a class="link" href={r.orgUrl} target="_blank" rel="noopener">
+                {r.org}
+              </a>
+            ) : (
+              r.org
+            )}
+            <span class="place mono">{r.place}</span>
+          </h3>
+          <p class="summary">{r.summary}</p>
+        </div>
+      </li>
+    ))
+  }
+  {
+    education.map((e) => (
+      <li class="commit tag" data-reveal>
+        <span class="node" aria-hidden="true" />
+        <div class="body">
+          <p class="l1 mono">
+            <span class="hash">{hash(e.org + e.period)}</span>
+            <span class="ref tagref">(tag: phd)</span>
+            <span class="period">{e.period}</span>
+          </p>
+          <h3>
+            {e.title} <span class="at">@</span>{' '}
+            {e.orgUrl ? (
+              <a class="link" href={e.orgUrl} target="_blank" rel="noopener">
+                {e.org}
+              </a>
+            ) : (
+              e.org
+            )}
+          </h3>
+          <p class="summary">
+            {e.summary}
+            {e.award && <span class="award mono">★ {e.award}</span>}
+          </p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .gitlog {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .gitlog::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 7px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent-line), var(--line-2) 30%, var(--line-2) 85%, transparent);
+  }
+  .commit {
+    position: relative;
+    display: grid;
+    grid-template-columns: 15px minmax(0, 1fr);
+    gap: 22px;
+    padding-bottom: 30px;
+  }
+  .commit:last-child {
+    padding-bottom: 0;
+  }
+  .node {
+    position: relative;
+    z-index: 1;
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+    border: 1.5px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+  .head .node {
+    border-color: var(--accent-fill);
+    background: var(--accent-fill);
+    box-shadow: 0 0 0 5px var(--accent-soft);
+  }
+  .tag .node {
+    border-radius: 3px;
+    transform: rotate(45deg) scale(0.85);
+    border-color: var(--warm);
+  }
+  .l1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .hash {
+    color: var(--warm);
+  }
+  .ref {
+    color: var(--accent);
+  }
+  .tagref {
+    color: var(--warm);
+  }
+  .period {
+    color: var(--text-2);
+  }
+  h3 {
+    margin-top: 6px;
+    font-size: 19px;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+  }
+  .at {
+    color: var(--faint);
+    font-weight: 400;
+  }
+  .place {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--faint);
+  }
+  .summary {
+    max-width: 70ch;
+    margin-top: 6px;
+    color: var(--text-2);
+    font-size: 15px;
+  }
+  .award {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+    color: var(--warm);
+  }
+  .compact .summary {
+    font-size: 14.5px;
+  }
+  @media (max-width: 480px) {
+    .commit {
+      gap: 14px;
+    }
+    .place {
+      display: block;
+      margin: 2px 0 0;
+    }
+  }
+</style>

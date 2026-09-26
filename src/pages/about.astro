@@ -1,0 +1,362 @@
+---
+import { Picture } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Timeline from '../components/Timeline.astro';
+import Base from '../layouts/Base.astro';
+import { education, experience, repos, service, site, socials, talks } from '../data/site';
+import { withLiveStars } from '../lib/github';
+
+const liveRepos = await withLiveStars(repos);
+---
+
+<Base
+  title="About"
+  description="About Zhanming (Allan) Jie — Research Scientist at ByteDance Seed working on LLM agents and reinforcement learning. Experience, education, service, open source and talks."
+>
+  <header class="page-head grid-bg">
+    <div class="wrap head-grid">
+      <div>
+        <p class="eyebrow"><span class="idx">~/</span>about</p>
+        <h1>Hi, I’m Allan.</h1>
+        <div class="bio">
+          <p>
+            I’m a Research Scientist at <a class="link" href={site.orgUrl} target="_blank" rel="noopener">ByteDance Seed</a> in
+            Singapore, working on <strong>LLM agents and reinforcement learning</strong>. I’m a core contributor to
+            <a class="link" href="https://github.com/ByteDance-Seed/Seed-Prover" target="_blank" rel="noopener">Seed-Prover</a>, a
+            family of Lean 4 theorem provers trained with large-scale agentic RL — Seed-Prover reached an IMO-certified,
+            silver-medal-level score at IMO 2025, and Seed-Prover 1.5 proves 88% of PutnamBench.
+          </p>
+          <p>
+            I’m especially interested in agentic RL: long-horizon credit assignment, reward design, and learning from
+            experience.
+          </p>
+          <p>
+            Before Seed, I was a Research Scientist at <strong>Salesforce AI Research</strong>, working on efficient long-context
+            inference (ThinK, an ICLR 2025 Spotlight), and an NLP Scientist at <strong>ByteDance AI Lab</strong>, working on
+            mathematical reasoning with language models — including ReFT, which brings reinforcement learning to chain-of-thought
+            fine-tuning.
+          </p>
+          <p>
+            I received my Ph.D. from the Singapore University of Technology and Design, advised by
+            Prof. Wei Lu
+            in the <a class="link" href="https://statnlp-research.github.io/" target="_blank" rel="noopener">StatNLP</a> group, where
+            I built structured models for named entity recognition and semantic parsing; the thesis received SUTD’s Best Thesis
+            Award. Along the way I interned at the
+            <a class="link" href="https://allenai.org/" target="_blank" rel="noopener">Allen Institute for AI</a> and at Alibaba.
+          </p>
+        </div>
+        <p class="links">
+          {
+            socials.map((s) => (
+              <a class="btn" href={s.href} target={s.id === 'email' ? undefined : '_blank'} rel="noopener me">
+                <Icon name={s.id === 'orcid' ? 'file' : s.id} />
+                {s.label}
+              </a>
+            ))
+          }
+        </p>
+      </div>
+      <figure class="portrait card ticks">
+        <Picture
+          src={portrait}
+          formats={['avif', 'webp']}
+          widths={[360, 540, 720]}
+          sizes="(max-width: 860px) 70vw, 360px"
+          alt="Portrait of Zhanming (Allan) Jie"
+          loading="eager"
+        />
+        <figcaption class="mono">
+          <span>fig. 1 — the author</span>
+          <span><Icon name="pin" size={11} /> SG</span>
+        </figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section class="section" id="experience">
+    <div class="wrap">
+      <SectionHead idx="01" label="experience" title="Experience & education" />
+      <Timeline roles={experience} education={education} />
+    </div>
+  </section>
+
+  <section class="section" id="service">
+    <div class="wrap two">
+      <div>
+        <SectionHead idx="02" label="service" title="Service" />
+        <dl class="kv">
+          {
+            service.map((s) => (
+              <div>
+                <dt class="mono">{s.role}</dt>
+                <dd>{s.venues}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div id="talks">
+        <SectionHead idx="03" label="talks & docs" title="Talks & documents" />
+        <ul class="docs">
+          {
+            talks.map((t) => (
+              <li>
+                <a href={t.href} class="doc">
+                  <time class="mono">{t.date.replace('-', '.')}</time>
+                  <span>{t.title}</span>
+                  <span class="mono kind">slides · pdf</span>
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/files/research_statement.pdf" class="doc">
+              <time class="mono">2022.09</time>
+              <span>Research statement: Structured Reasoning</span>
+              <span class="mono kind">pdf</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/allanj/phd-thesis" class="doc" target="_blank" rel="noopener">
+              <time class="mono">2020</time>
+              <span>Ph.D. thesis: Leveraging Dependency Trees for Structured Prediction</span>
+              <span class="mono kind">github ↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="open-source">
+    <div class="wrap">
+      <SectionHead idx="04" label="open source" title="Open source">
+        <a class="link mono small" href="https://github.com/allanj" target="_blank" rel="noopener">github.com/allanj →</a>
+      </SectionHead>
+      <div class="repos">
+        {
+          liveRepos.map((r) => (
+            <a class="repo card ticks" href={`https://github.com/${r.repo}`} target="_blank" rel="noopener" data-reveal>
+              <p class="r-top mono">
+                <Icon name="github" size={14} />
+                <span class="r-owner">{r.repo.split('/')[0]}/</span>
+                <span class="r-name">{r.name}</span>
+              </p>
+              <p class="r-blurb">{r.blurb}</p>
+              <p class="r-meta mono">
+                <span>★ {r.stars.toLocaleString('en-US')}</span>
+                <span>{r.lang}</span>
+              </p>
+            </a>
+          ))
+        }
+        <a class="repo card ticks" href="https://github.com/sutd-statnlp/statnlp-neural" target="_blank" rel="noopener" data-reveal>
+          <p class="r-top mono">
+            <Icon name="github" size={14} />
+            <span class="r-owner">sutd-statnlp/</span>
+            <span class="r-name">statnlp-neural</span>
+          </p>
+          <p class="r-blurb">Hypergraph-based structured prediction framework from StatNLP — I was an active maintainer.</p>
+          <p class="r-meta mono"><span>maintainer</span><span>Java</span></p>
+        </a>
+        <a class="repo card ticks" href="/jsonv/" data-reveal>
+          <p class="r-top mono">
+            <Icon name="code" size={14} />
+            <span class="r-owner">tools/</span>
+            <span class="r-name">jsonv</span>
+          </p>
+          <p class="r-blurb">A tiny in-browser JSON visualizer with collapsible trees — handy for inspecting model outputs.</p>
+          <p class="r-meta mono"><span>web tool</span><span>JS</span></p>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(48px, 8vw, 96px);
+    border-bottom: 1px solid var(--line);
+  }
+  .head-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+  h1 {
+    margin: 14px 0 24px;
+    font-size: clamp(40px, 6.4vw, 72px);
+    letter-spacing: -0.05em;
+  }
+  .bio {
+    display: grid;
+    gap: 16px;
+    max-width: 66ch;
+    color: var(--text-2);
+    font-size: 17.5px;
+    line-height: 1.7;
+  }
+  .bio strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .portrait {
+    margin: 8px 0 0;
+    padding: 10px;
+  }
+  .portrait :global(img) {
+    width: 100%;
+    aspect-ratio: 9 / 10;
+    object-fit: cover;
+    border-radius: 6px;
+    filter: grayscale(1) contrast(1.06) brightness(0.96);
+    transition: filter 0.6s var(--ease);
+  }
+  .portrait:hover :global(img) {
+    filter: none;
+  }
+  .portrait figcaption span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .portrait figcaption {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 4px 2px;
+    font-size: 11px;
+    color: var(--faint);
+  }
+  @media (max-width: 860px) {
+    .head-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .portrait {
+      order: -1;
+      width: min(280px, 70vw);
+    }
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 88px);
+  }
+  .kv {
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+  .kv div {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .kv dt {
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .kv dd {
+    margin: 6px 0 0;
+    color: var(--text-2);
+    font-size: 15px;
+  }
+  .docs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .doc {
+    display: grid;
+    grid-template-columns: 66px minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+    transition: background 0.2s, padding 0.3s var(--ease);
+  }
+  .doc time,
+  .doc .kind {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .doc:hover {
+    background: var(--surface);
+    padding-inline: 12px;
+  }
+  .doc:hover span:not(.kind) {
+    color: var(--accent);
+  }
+  @media (max-width: 860px) {
+    .two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .doc {
+      grid-template-columns: 56px minmax(0, 1fr);
+    }
+    .doc .kind {
+      display: none;
+    }
+  }
+
+  .repos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 14px;
+  }
+  .repo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+  .r-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    min-width: 0;
+  }
+  .r-top :global(svg) {
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .r-owner {
+    color: var(--muted);
+  }
+  .r-name {
+    color: var(--text);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .repo:hover .r-name {
+    color: var(--accent);
+  }
+  .r-blurb {
+    color: var(--text-2);
+    font-size: 14.5px;
+  }
+  .r-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: auto;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .small {
+    font-size: 12.5px;
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+import Icon from '../components/Icon.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — goal not found" description="This page doesn't exist.">
+  <section class="nf grid-bg">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">404</span>/ not found</p>
+      <h1>No proof of this page.</h1>
+      <pre class="err card ticks mono" aria-label="Lean-style error message"><span class="e">error:</span> unknown identifier '<span class="id" data-path>this_page</span>'
+  <span class="dim">--&gt;</span> allanj.github.io:404:0
+   <span class="dim">|</span>
+   <span class="dim">|</span>   exact <span class="id" data-path2>this_page</span>
+   <span class="dim">|</span>         <span class="e">^^^^^^^^^</span>
+   <span class="dim">=</span> <span class="h">help:</span> try <span class="k">exact?</span> — or search with <span class="k">⌘K</span></pre>
+      <p class="actions">
+        <a class="btn btn-primary" href="/">Home <Icon name="arrow-right" /></a>
+        <a class="btn" href="/publications/">Publications</a>
+        <a class="btn" href="/blog/">Writing</a>
+        <button class="btn" type="button" data-palette-open><Icon name="search" /> Search</button>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: clamp(64px, 12vw, 140px);
+    min-height: 60vh;
+  }
+  h1 {
+    margin: 14px 0 28px;
+    font-size: clamp(36px, 6vw, 64px);
+    letter-spacing: -0.045em;
+  }
+  .err {
+    max-width: 640px;
+    margin: 0;
+    padding: 20px 22px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text-2);
+  }
+  .e {
+    color: #ff7a8a;
+    font-weight: 600;
+  }
+  .id {
+    color: var(--warm);
+  }
+  .dim {
+    color: var(--faint);
+  }
+  .h {
+    color: var(--cool);
+  }
+  .k {
+    color: var(--accent);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+</style>
+
+<script>
+  const slug =
+    decodeURIComponent(location.pathname)
+      .replace(/^\/|\/$/g, '')
+      .replace(/[^\w/.-]/g, '')
+      .replace(/[/.-]/g, '_')
+      .slice(0, 28) || 'this_page';
+  document.querySelectorAll('[data-path], [data-path2]').forEach((el) => (el.textContent = slug));
+  const caret = [...document.querySelectorAll('.err .e')].at(-1);
+  if (caret) caret.textContent = '^'.repeat(Math.max(3, slug.length));
+</script>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#07080a"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#2a303b" stroke-width="3"/>
+  <path d="M17 18h-5v28h5M47 18h5v28h-5" fill="none" stroke="#c5f24c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="32" y="41" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="21" font-weight="700" fill="#e8eaee">aj</text>
+</svg>

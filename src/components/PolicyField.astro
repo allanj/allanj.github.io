@@ -1,0 +1,190 @@
+---
+// Decorative background: a grid of short vectors following a slowly drifting flow field.
+// Vectors near the "reward" (the pointer, or a wandering point when there is none)
+// turn toward it and light up — a policy field converging on reward.
+---
+
+<div class="field" aria-hidden="true">
+  <canvas data-field></canvas>
+</div>
+
+<style>
+  .field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(120% 90% at 60% 35%, #000 30%, transparent 78%);
+    mask-image: radial-gradient(120% 90% at 60% 35%, #000 30%, transparent 78%);
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-field]');
+  const ctx = canvas?.getContext('2d');
+  if (canvas && ctx) {
+    const host = canvas.parentElement!.parentElement!; // the hero section
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const STEP = 30;
+    const LEN = 8;
+    const RADIUS = 240;
+
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
+    let base = '';
+    let accent = '';
+    let running = false;
+    let visible = true;
+    let raf = 0;
+    const pointer = { x: -1e4, y: -1e4, active: false, t: 0 };
+    const reward = { x: 0, y: 0 };
+
+    function readColors() {
+      const cs = getComputedStyle(document.documentElement);
+      base = cs.getPropertyValue('--line-2').trim() || '#2a303b';
+      accent = cs.getPropertyValue('--accent').trim() || '#c5f24c';
+    }
+
+    function resize() {
+      const r = canvas!.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = r.width;
+      h = r.height;
+      canvas!.width = Math.round(w * dpr);
+      canvas!.height = Math.round(h * dpr);
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (!pointer.active) {
+        reward.x = w * 0.72;
+        reward.y = h * 0.4;
+      }
+    }
+
+    // cheap smooth pseudo-noise field (sum of sines), returns an angle
+    const flow = (x: number, y: number, t: number) =>
+      Math.sin(x * 0.0042 + t * 0.6) * 1.3 + Math.cos(y * 0.0051 - t * 0.45) * 1.1 + Math.sin((x + y) * 0.0019 + t * 0.3);
+
+    function draw(time: number) {
+      const t = time * 0.00022;
+      if (!pointer.active) {
+        // wander on a slow Lissajous path
+        reward.x = w * (0.62 + 0.22 * Math.sin(t * 1.3));
+        reward.y = h * (0.42 + 0.26 * Math.sin(t * 1.9 + 1));
+      } else {
+        reward.x += (pointer.x - reward.x) * 0.12;
+        reward.y += (pointer.y - reward.y) * 0.12;
+      }
+      ctx!.clearRect(0, 0, w, h);
+      ctx!.lineWidth = 1.2;
+      ctx!.lineCap = 'round';
+      const cols = Math.ceil(w / STEP) + 1;
+      const rows = Math.ceil(h / STEP) + 1;
+      const hot: [number, number, number, number, number][] = [];
+
+      ctx!.strokeStyle = base;
+      ctx!.globalAlpha = 0.75;
+      ctx!.beginPath();
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = i * STEP + (j % 2 ? STEP / 2 : 0);
+          const y = j * STEP;
+          let a = flow(x, y, t);
+          const dx = reward.x - x;
+          const dy = reward.y - y;
+          const d = Math.hypot(dx, dy);
+          const k = Math.max(0, 1 - d / RADIUS);
+          if (k > 0) {
+            const target = Math.atan2(dy, dx);
+            // shortest-arc blend toward the reward direction
+            let diff = target - a;
+            diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+            a += diff * Math.min(1, k * 1.6);
+            hot.push([x, y, a, k, LEN * (1 + k * 0.9)]);
+            continue;
+          }
+          const cx = Math.cos(a) * LEN * 0.5;
+          const cy = Math.sin(a) * LEN * 0.5;
+          ctx!.moveTo(x - cx, y - cy);
+          ctx!.lineTo(x + cx, y + cy);
+        }
+      }
+      ctx!.stroke();
+
+      ctx!.strokeStyle = accent;
+      for (const [x, y, a, k, len] of hot) {
+        ctx!.globalAlpha = 0.25 + k * 0.75;
+        const cx = Math.cos(a) * len * 0.5;
+        const cy = Math.sin(a) * len * 0.5;
+        ctx!.beginPath();
+        ctx!.moveTo(x - cx, y - cy);
+        ctx!.lineTo(x + cx, y + cy);
+        ctx!.stroke();
+      }
+      // the reward itself
+      ctx!.globalAlpha = 0.9;
+      ctx!.fillStyle = accent;
+      ctx!.beginPath();
+      ctx!.arc(reward.x, reward.y, 2.5, 0, Math.PI * 2);
+      ctx!.fill();
+      ctx!.globalAlpha = 0.25;
+      ctx!.beginPath();
+      ctx!.arc(reward.x, reward.y, 9 + Math.sin(time * 0.004) * 2, 0, Math.PI * 2);
+      ctx!.strokeStyle = accent;
+      ctx!.stroke();
+      ctx!.globalAlpha = 1;
+    }
+
+    function loop(time: number) {
+      if (!running) return;
+      draw(time);
+      raf = requestAnimationFrame(loop);
+    }
+    function start() {
+      if (running || reduce) return;
+      running = true;
+      raf = requestAnimationFrame(loop);
+    }
+    function stop() {
+      running = false;
+      cancelAnimationFrame(raf);
+    }
+    function sync() {
+      if (visible && !document.hidden) start();
+      else stop();
+    }
+
+    readColors();
+    resize();
+    draw(0);
+    sync();
+
+    new ResizeObserver(() => {
+      resize();
+      if (!running) draw(performance.now());
+    }).observe(canvas);
+    new IntersectionObserver((entries) => {
+      visible = entries[0]?.isIntersecting ?? true;
+      sync();
+    }).observe(canvas);
+    document.addEventListener('visibilitychange', sync);
+    window.addEventListener('themechange', () => {
+      requestAnimationFrame(() => {
+        readColors();
+        if (!running) draw(performance.now());
+      });
+    });
+
+    host.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      const r = canvas.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+      pointer.active = true;
+    });
+    host.addEventListener('pointerleave', () => (pointer.active = false));
+  }
+</script>

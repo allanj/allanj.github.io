@@ -1,0 +1,465 @@
+---
+import 'katex/dist/katex.min.css';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import Icon from '../components/Icon.astro';
+import { fmtDate, postUrl, readingTime } from '../lib/posts';
+import Base from './Base.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  headings: MarkdownHeading[];
+  prev?: CollectionEntry<'blog'>;
+  next?: CollectionEntry<'blog'>;
+}
+const { post, headings, prev, next } = Astro.props;
+const { title, description, pubDate, updatedDate, tags } = post.data;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const minutes = readingTime(post.body);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@type': 'Person', name: 'Zhanming (Allan) Jie', url: 'https://allanj.github.io' },
+  mainEntityOfPage: new URL(postUrl(post), Astro.site).href,
+};
+---
+
+<Base title={title} description={description} type="article" published={pubDate} jsonLd={jsonLd}>
+  <article class="post">
+    <header class="post-head grid-bg">
+      <div class="wrap narrow">
+        <a class="back mono" href="/blog/">← cd ../writing</a>
+        <p class="meta mono">
+          <time datetime={pubDate.toISOString()}>{fmtDate(pubDate, 'long')}</time>
+          <span class="dot">·</span>
+          <span>{minutes} min read</span>
+          {
+            updatedDate && (
+              <>
+                <span class="dot">·</span>
+                <span>updated {fmtDate(updatedDate)}</span>
+              </>
+            )
+          }
+        </p>
+        <h1>{title}</h1>
+        <p class="desc">{description}</p>
+        {
+          tags.length > 0 && (
+            <p class="tags">
+              {tags.map((t) => (
+                <span class="chip">#{t}</span>
+              ))}
+            </p>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="wrap body-grid">
+      <div class="prose" data-prose>
+        <slot />
+      </div>
+      {
+        toc.length > 2 && (
+          <aside class="toc" aria-label="Table of contents">
+            <p class="mono toc-h">on this page</p>
+            <ol>
+              {toc.map((h) => (
+                <li class={`d${h.depth}`}>
+                  <a href={`#${h.slug}`} data-toc={h.slug}>
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        )
+      }
+    </div>
+
+    <nav class="wrap narrow pager" aria-label="More posts">
+      {
+        prev ? (
+          <a class="card ticks pg" href={postUrl(prev)}>
+            <span class="mono lbl">← older</span>
+            <span class="pg-t">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a class="card ticks pg right" href={postUrl(next)}>
+            <span class="mono lbl">newer →</span>
+            <span class="pg-t">{next.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </article>
+
+  <dialog class="lightbox" data-lightbox aria-label="Image preview">
+    <button class="lb-close" type="button" aria-label="Close preview"><Icon name="close" size={18} /></button>
+    <img alt="" data-lightbox-img />
+  </dialog>
+</Base>
+
+<style>
+  .post-head {
+    padding-block: clamp(40px, 7vw, 80px) clamp(32px, 5vw, 56px);
+    border-bottom: 1px solid var(--line);
+  }
+  .narrow {
+    max-width: calc(760px + var(--gutter) * 2);
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .dot {
+    color: var(--faint);
+  }
+  h1 {
+    margin: 14px 0 16px;
+    font-size: clamp(32px, 5vw, 52px);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  .desc {
+    max-width: 62ch;
+    color: var(--text-2);
+    font-size: 18px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+  }
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 760px) 220px;
+    justify-content: center;
+    gap: 64px;
+    padding-block: clamp(36px, 6vw, 64px);
+  }
+  .toc {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    font-size: 13px;
+  }
+  .toc-h {
+    margin-bottom: 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--line);
+  }
+  .toc li a {
+    display: block;
+    padding: 5px 0 5px 14px;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .toc li.d3 a {
+    padding-left: 26px;
+    font-size: 12.5px;
+  }
+  .toc li a:hover {
+    color: var(--text);
+  }
+  .toc li a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  @media (max-width: 1100px) {
+    .body-grid {
+      grid-template-columns: minmax(0, 760px);
+    }
+    .toc {
+      display: none;
+    }
+  }
+
+  /* ───── prose ───── */
+  .prose {
+    min-width: 0;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-2);
+  }
+  .prose :global(> * + *) {
+    margin-top: 1.1em;
+  }
+  .prose :global(h2),
+  .prose :global(h3),
+  .prose :global(h4),
+  .prose :global(h5) {
+    color: var(--text);
+    scroll-margin-top: 90px;
+  }
+  .prose :global(h1) {
+    margin-top: 2em;
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: -0.03em;
+  }
+  .prose :global(h2) {
+    margin-top: 2.2em;
+    padding-top: 0.2em;
+    font-size: 26px;
+    letter-spacing: -0.03em;
+  }
+  .prose :global(h2)::before {
+    content: '## ';
+    font-family: var(--font-mono);
+    font-size: 0.7em;
+    font-weight: 400;
+    color: var(--accent);
+    vertical-align: 0.12em;
+  }
+  .prose :global(h3) {
+    margin-top: 1.8em;
+    font-size: 20px;
+  }
+  .prose :global(h4),
+  .prose :global(h5) {
+    margin-top: 1.6em;
+    font-size: 17.5px;
+  }
+  .prose :global(p),
+  .prose :global(li) {
+    text-wrap: pretty;
+  }
+  .prose :global(strong),
+  .prose :global(b) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .prose :global(a) {
+    color: var(--text);
+    background-image: linear-gradient(var(--accent-line), var(--accent-line));
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    overflow-wrap: anywhere;
+    transition: color 0.2s;
+  }
+  .prose :global(a:hover) {
+    color: var(--accent);
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.4em;
+  }
+  .prose :global(li + li) {
+    margin-top: 0.35em;
+  }
+  .prose :global(li::marker) {
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+  .prose :global(blockquote) {
+    margin-inline: 0;
+    padding: 14px 20px;
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--surface);
+    color: var(--text-2);
+  }
+  .prose :global(blockquote > * + *) {
+    margin-top: 0.7em;
+  }
+  .prose :global(:not(pre) > code) {
+    padding: 0.12em 0.4em;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 0.86em;
+  }
+  .prose :global(pre) {
+    margin-inline: 0;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface) !important;
+    font-size: 13.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+  }
+  .prose :global(.astro-code),
+  .prose :global(.astro-code span) {
+    color: var(--shiki-dark);
+  }
+  :global(html[data-theme='light']) .prose :global(.astro-code),
+  :global(html[data-theme='light']) .prose :global(.astro-code span) {
+    color: var(--shiki-light);
+  }
+  .prose :global(img) {
+    display: block;
+    margin-inline: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    cursor: zoom-in;
+  }
+  .prose :global(hr) {
+    border: 0;
+    border-top: 1px dashed var(--line-2);
+    margin-block: 2.4em;
+  }
+  .prose :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .prose :global(.katex) {
+    font-size: 1.06em;
+    color: var(--text);
+  }
+  .prose :global(.katex-display) {
+    margin: 1.2em 0;
+    padding: 6px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* ───── pager ───── */
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding-bottom: clamp(56px, 8vw, 96px);
+  }
+  .pg {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px;
+  }
+  .pg.right {
+    text-align: right;
+  }
+  .lbl {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .pg-t {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .pg:hover .pg-t {
+    color: var(--accent);
+  }
+  @media (max-width: 640px) {
+    .pager {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ───── lightbox ───── */
+  .lightbox {
+    max-width: min(1400px, 96vw);
+    max-height: 94vh;
+    padding: 0;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    background: #fff;
+    overflow: auto;
+  }
+  .lightbox::backdrop {
+    background: rgb(4 5 7 / 0.82);
+    backdrop-filter: blur(4px);
+  }
+  .lightbox img {
+    display: block;
+    max-width: none;
+    width: auto;
+    max-height: none;
+    cursor: zoom-out;
+  }
+  .lb-close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  // image lightbox
+  const lb = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+  const lbImg = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  document.querySelector('[data-prose]')?.addEventListener('click', (e) => {
+    const img = (e.target as HTMLElement).closest('img');
+    if (!img || !lb || !lbImg) return;
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    lb.showModal();
+  });
+  lb?.addEventListener('click', () => lb.close());
+
+  // scroll-spy for the TOC
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+  if (links.length) {
+    const targets = links.map((a) => document.getElementById(a.dataset.toc!)).filter(Boolean) as HTMLElement[];
+    const setActive = () => {
+      let current = targets[0];
+      for (const t of targets) if (t.getBoundingClientRect().top < 140) current = t;
+      links.forEach((a) => a.classList.toggle('active', a.dataset.toc === current?.id));
+    };
+    setActive();
+    window.addEventListener('scroll', setActive, { passive: true });
+  }
+</script>

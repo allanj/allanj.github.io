@@ -1,0 +1,621 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '../components/Icon.astro';
+import LeanHero from '../components/LeanHero.astro';
+import PaperItem from '../components/PaperItem.astro';
+import PolicyField from '../components/PolicyField.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Timeline from '../components/Timeline.astro';
+import Base from '../layouts/Base.astro';
+import { papers } from '../data/publications';
+import { education, experience, highlights, interests, metrics, news, site, socials } from '../data/site';
+import { fmtDate, postUrl, readingTime } from '../lib/posts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+const recent = papers.slice(0, 6);
+const firstYear = Math.min(...papers.map((p) => p.year));
+const shownNews = news.slice(0, 7);
+const olderNews = news.slice(7);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Zhanming Jie',
+  alternateName: ['Allan Jie', 'Zhanming (Allan) Jie'],
+  url: site.url,
+  image: `${site.url}/og.png`,
+  jobTitle: site.role,
+  worksFor: { '@type': 'Organization', name: site.org, url: site.orgUrl },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Singapore University of Technology and Design' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Singapore' },
+  knowsAbout: ['Large language models', 'Reinforcement learning', 'LLM agents', 'Automated theorem proving', 'Lean 4', 'Natural language processing'],
+  sameAs: socials.filter((s) => s.id !== 'email').map((s) => s.href),
+};
+---
+
+<Base jsonLd={jsonLd}>
+  <!-- ───────────── hero ───────────── -->
+  <section class="hero grid-bg">
+    <PolicyField />
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow status">
+          <span class="pulse"></span>
+          <span>{site.role} @ <a class="link" href={site.orgUrl} target="_blank" rel="noopener">{site.org}</a></span>
+          <span class="sep">·</span>
+          <span><Icon name="pin" size={12} class="pin" /> {site.location}</span>
+        </p>
+        <h1 class="name">
+          Zhanming <span class="aka">(Allan)</span> Jie
+        </h1>
+        <p class="lede">
+          I build language-model agents that <span class="serif">reason</span>, <span class="serif">prove</span>, and
+          <span class="serif">act</span> — trained with reinforcement learning at scale.
+        </p>
+        <p class="sub">
+          Currently working on agentic RL and formal theorem proving in Lean 4 as part of the Seed-Prover team. Previously at
+          Salesforce AI Research and ByteDance AI Lab; Ph.D. from SUTD.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="/publications/">Publications <Icon name="arrow-right" /></a>
+          <a class="btn" href={socials[0].href} target="_blank" rel="noopener"><Icon name="scholar" /> Scholar</a>
+          <a class="btn" href={socials[1].href} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>
+          <a class="btn" href="/about/"><Icon name="file" /> About &amp; CV</a>
+        </div>
+        <dl class="stats mono">
+          <div><dt>citations</dt><dd>{(metrics.citations / 1000).toFixed(1)}k+</dd></div>
+          <div><dt>h-index</dt><dd>{metrics.hIndex}</dd></div>
+          <div><dt>papers</dt><dd>{papers.length}</dd></div>
+          <div><dt>since</dt><dd>{firstYear}</dd></div>
+        </dl>
+      </div>
+      <div class="hero-lean">
+        <LeanHero />
+        <p class="fig mono" aria-hidden="true">
+          fig. 0 — a policy field converging on a reward<span class="hover-only">; your cursor is the reward</span>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── research ───────────── -->
+  <section class="section" id="research">
+    <div class="wrap">
+      <SectionHead idx="01" label="research" title="What I work on" />
+      <div class="interests">
+        {
+          interests.map((it, i) => (
+            <article class="interest card ticks" data-reveal style={`transition-delay:${i * 60}ms`}>
+              <p class="mono i-idx">0{i + 1}</p>
+              <h3>{it.title}</h3>
+              <p class="i-blurb">{it.blurb}</p>
+              <p class="i-tags">
+                {it.tags.map((t) => (
+                  <span class="chip">{t}</span>
+                ))}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── highlights ───────────── -->
+  <section class="section" id="highlights">
+    <div class="wrap">
+      <SectionHead idx="02" label="highlights" title="Selected work">
+        <a class="link mono small" href="/publications/">all publications →</a>
+      </SectionHead>
+      <div class="hl-grid">
+        {
+          highlights.map((h, i) => (
+            <article class:list={['hl card ticks', { big: i < 2 }]} data-reveal>
+              <p class="mono kicker">{h.kicker}</p>
+              <h3>{h.title}</h3>
+              <p class="hl-blurb">{h.blurb}</p>
+              <dl class="hl-stats">
+                {h.stats.map((s) => (
+                  <div>
+                    <dd class="mono">{s.value}</dd>
+                    <dt>{s.label}</dt>
+                  </div>
+                ))}
+              </dl>
+              <p class="hl-links mono">
+                {h.links.map((l) => (
+                  <a href={l.href} target="_blank" rel="noopener">
+                    {l.label} <Icon name="arrow-up-right" size={12} />
+                  </a>
+                ))}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── papers + log ───────────── -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead idx="03" label="papers" title="Recent papers" />
+        <div class="recent">
+          {recent.map((p) => <PaperItem paper={p} compact />)}
+        </div>
+        <a class="btn more-btn" href="/publications/">Browse all {papers.length} papers <Icon name="arrow-right" /></a>
+      </div>
+      <div id="news">
+        <SectionHead idx="04" label="log" title="News" />
+        <ol class="log">
+          {
+            shownNews.map((n) => (
+              <li>
+                <time class="mono">{n.date.replace('-', '.')}</time>
+                <span class:list={['tag mono', n.tag]}>{n.tag}</span>
+                <p set:html={n.html} />
+              </li>
+            ))
+          }
+        </ol>
+        {
+          olderNews.length > 0 && (
+            <details class="older">
+              <summary class="mono">git log --all  ·  {olderNews.length} older entries</summary>
+              <ol class="log">
+                {olderNews.map((n) => (
+                  <li>
+                    <time class="mono">{n.date.replace('-', '.')}</time>
+                    <span class:list={['tag mono', n.tag]}>{n.tag}</span>
+                    <p set:html={n.html} />
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── trajectory ───────────── -->
+  <section class="section" id="trajectory">
+    <div class="wrap">
+      <SectionHead idx="05" label="trajectory" title="Where I’ve been">
+        <a class="link mono small" href="/about/#experience">full CV →</a>
+      </SectionHead>
+      <Timeline roles={experience} education={education} compact />
+    </div>
+  </section>
+
+  <!-- ───────────── writing ───────────── -->
+  <section class="section" id="writing">
+    <div class="wrap">
+      <SectionHead idx="06" label="writing" title="Notes & posts">
+        <a class="link mono small" href="/blog/">all posts →</a>
+      </SectionHead>
+      <ul class="posts">
+        {
+          posts.map((p) => (
+            <li>
+              <a href={postUrl(p)} class="post-row" data-reveal>
+                <time class="mono">{fmtDate(p.data.pubDate)}</time>
+                <span class="p-title">{p.data.title}</span>
+                <span class="p-meta mono">{readingTime(p.body)} min</span>
+                <Icon name="arrow-right" size={16} class="p-arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* hero */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 104px);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .status {
+    flex-wrap: wrap;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12.5px;
+    color: var(--text-2);
+  }
+  .status .sep {
+    color: var(--faint);
+  }
+  @media (max-width: 480px) {
+    .status .sep {
+      display: none;
+    }
+  }
+  .status :global(.pin) {
+    display: inline;
+    vertical-align: -1px;
+  }
+  .name {
+    margin: 22px 0 22px;
+    font-size: clamp(44px, 7.6vw, 88px);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+  .aka {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--muted);
+  }
+  .lede {
+    max-width: 30ch;
+    font-size: clamp(20px, 2.3vw, 26px);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .lede .serif {
+    color: var(--accent);
+    font-size: 1.12em;
+  }
+  .sub {
+    max-width: 52ch;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 15.5px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 36px 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    width: fit-content;
+    max-width: 100%;
+  }
+  .stats div {
+    padding: 10px 18px;
+    border-right: 1px solid var(--line);
+  }
+  .stats div:last-child {
+    border-right: 0;
+  }
+  .stats dt {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .stats dd {
+    margin: 2px 0 0;
+    font-size: 18px;
+    color: var(--text);
+  }
+  .hover-only {
+    display: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hover-only {
+      display: inline;
+    }
+  }
+  .fig {
+    margin-top: 12px;
+    text-align: right;
+    font-size: 11px;
+    color: var(--faint);
+  }
+  @media (max-width: 980px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fig {
+      text-align: left;
+    }
+  }
+  @media (max-width: 480px) {
+    .stats div {
+      padding: 8px 12px;
+    }
+    .stats dd {
+      font-size: 16px;
+    }
+  }
+
+  /* research */
+  .interests {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .interest {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+  }
+  .i-idx {
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .interest h3 {
+    font-size: 21px;
+  }
+  .i-blurb {
+    color: var(--text-2);
+    font-size: 15px;
+  }
+  .i-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  /* highlights */
+  .hl-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .hl {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 26px;
+    overflow: hidden;
+  }
+  .hl.big {
+    background: radial-gradient(120% 90% at 100% 0%, var(--accent-soft), transparent 55%), var(--surface);
+  }
+  .kicker {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .hl h3 {
+    font-size: clamp(24px, 2.6vw, 32px);
+    letter-spacing: -0.035em;
+  }
+  .hl-blurb {
+    color: var(--text-2);
+    font-size: 15px;
+    max-width: 58ch;
+  }
+  .hl-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin: 8px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line-2);
+  }
+  .hl-stats div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .hl-stats dd {
+    margin: 0;
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    color: var(--text);
+  }
+  .hl.big .hl-stats dd {
+    color: var(--accent);
+  }
+  .hl-stats dt {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .hl-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 12.5px;
+  }
+  .hl-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-2);
+  }
+  .hl-links a:hover {
+    color: var(--accent);
+  }
+
+  /* papers + log */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 88px);
+  }
+  .recent {
+    border-top: 1px solid var(--line);
+  }
+  .more-btn {
+    margin-top: 24px;
+  }
+  .log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .log li {
+    display: grid;
+    grid-template-columns: 62px 64px minmax(0, 1fr);
+    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+  }
+  .log time {
+    padding-top: 2px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .log .tag {
+    align-self: start;
+    justify-self: start;
+    margin-top: 2px;
+    padding: 0 6px;
+    border: 1px solid var(--line-2);
+    border-radius: 4px;
+    font-size: 10.5px;
+    line-height: 18px;
+    color: var(--muted);
+  }
+  .log .tag.release,
+  .log .tag.award {
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+  .log .tag.career {
+    color: var(--cool);
+    border-color: color-mix(in srgb, var(--cool) 40%, transparent);
+  }
+  .log p {
+    color: var(--text-2);
+  }
+  .log p :global(a) {
+    color: var(--text);
+    background-image: linear-gradient(var(--accent-line), var(--accent-line));
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+  }
+  .log p :global(a:hover) {
+    color: var(--accent);
+  }
+  .log p :global(b) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .older summary {
+    padding: 14px 0;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+  }
+  .older summary::-webkit-details-marker {
+    display: none;
+  }
+  .older summary::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .older[open] summary::before {
+    content: '▾ ';
+  }
+  .older summary:hover {
+    color: var(--text);
+  }
+  .older .log {
+    border-top: 0;
+  }
+
+  /* writing */
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .post-row {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto 20px;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.25s, padding 0.3s var(--ease);
+  }
+  .post-row time,
+  .p-meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .p-title {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+  .post-row :global(.p-arrow) {
+    color: var(--faint);
+    transition: transform 0.3s var(--ease), color 0.2s;
+  }
+  .post-row:hover {
+    background: var(--surface);
+    padding-inline: 14px;
+  }
+  .post-row:hover .p-title {
+    color: var(--accent);
+  }
+  .post-row:hover :global(.p-arrow) {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .small {
+    font-size: 12.5px;
+  }
+
+  @media (max-width: 860px) {
+    .interests,
+    .hl-grid,
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .post-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 4px 16px;
+    }
+    .post-row time {
+      grid-column: 1 / -1;
+    }
+    .post-row :global(.p-arrow) {
+      display: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .interest,
+    .hl {
+      padding: 20px;
+    }
+    .log li {
+      grid-template-columns: 56px minmax(0, 1fr);
+    }
+    .log .tag {
+      display: none;
+    }
+  }
+</style>

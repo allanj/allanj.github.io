@@ -1,0 +1,368 @@
+---
+import Icon from '../components/Icon.astro';
+import PaperItem from '../components/PaperItem.astro';
+import Base from '../layouts/Base.astro';
+import { isMe, papers, topics } from '../data/publications';
+import { metrics, socials } from '../data/site';
+
+const years = [...new Set(papers.map((p) => p.year))].sort((a, b) => b - a);
+const counts = Object.fromEntries(topics.map((t) => [t.id, papers.filter((p) => p.topics.includes(t.id)).length]));
+const usedTopics = topics.filter((t) => counts[t.id] > 0);
+const firstAuthor = papers.filter((p) => isMe(p.authors[0]) || p.equal?.some(isMe)).length;
+const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journal').length;
+---
+
+<Base
+  title="Publications"
+  description="Publications by Zhanming (Allan) Jie on LLM agents, reinforcement learning, reasoning, theorem proving, and structured prediction."
+>
+  <header class="page-head grid-bg">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">~/</span>publications</p>
+      <h1>Publications</h1>
+      <p class="lede">
+        From structured prediction and NER, through math reasoning and RL fine-tuning, to Lean 4 theorem proving and LLM agents.
+        Also on <a class="link" href={socials[0].href} target="_blank" rel="noopener">Google Scholar</a>.
+      </p>
+      <dl class="stats mono">
+        <div><dt>total</dt><dd>{papers.length}</dd></div>
+        <div><dt>peer-reviewed</dt><dd>{venues}</dd></div>
+        <div><dt>first / co-first</dt><dd>{firstAuthor}</dd></div>
+        <div><dt>citations</dt><dd>{metrics.citations.toLocaleString('en-US')}</dd></div>
+        <div><dt>h-index</dt><dd>{metrics.hIndex}</dd></div>
+      </dl>
+      <p class="asof mono">citation metrics: Google Scholar, {metrics.asOf}</p>
+    </div>
+  </header>
+
+  <section class="wrap body">
+    <div class="controls" data-controls>
+      <label class="search">
+        <Icon name="search" size={15} />
+        <input type="search" placeholder="Filter by title, author, venue…" aria-label="Filter publications" data-q />
+        <kbd>/</kbd>
+      </label>
+      <div class="chips" role="group" aria-label="Filter by topic">
+        <button type="button" class="fchip" aria-pressed="true" data-topic="all">All <span>{papers.length}</span></button>
+        {
+          usedTopics.map((t) => (
+            <button type="button" class="fchip" aria-pressed="false" data-topic={t.id}>
+              {t.label} <span>{counts[t.id]}</span>
+            </button>
+          ))
+        }
+      </div>
+      <label class="toggle mono">
+        <input type="checkbox" data-first />
+        <span class="sw" aria-hidden="true"></span>
+        first / co-first author only
+      </label>
+    </div>
+
+    <p class="status mono" aria-live="polite" data-status></p>
+
+    <div class="years">
+      {
+        years.map((y) => (
+          <section class="year-block" data-year-block={y}>
+            <h2 class="year mono">{y}</h2>
+            <div class="items">
+              {papers
+                .filter((p) => p.year === y)
+                .map((p) => (
+                  <div data-search={`${p.title} ${p.aka ?? ''} ${p.authors.join(' ')} ${p.venue} ${p.venueFull} ${p.year}`.toLowerCase()}>
+                    <PaperItem paper={p} />
+                  </div>
+                ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+    <p class="empty mono" data-empty hidden>No papers match — try another filter.</p>
+    <p class="legend mono">* equal contribution · long author lists are abbreviated — click the count to expand</p>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(48px, 8vw, 96px) clamp(36px, 5vw, 56px);
+    border-bottom: 1px solid var(--line);
+  }
+  h1 {
+    margin: 14px 0 16px;
+    font-size: clamp(40px, 6.4vw, 72px);
+    letter-spacing: -0.05em;
+  }
+  .lede {
+    max-width: 62ch;
+    color: var(--text-2);
+    font-size: 18px;
+  }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 32px 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    width: fit-content;
+    max-width: 100%;
+  }
+  .stats div {
+    padding: 10px 18px;
+    border-right: 1px solid var(--line);
+  }
+  .stats div:last-child {
+    border-right: 0;
+  }
+  .stats dt {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .stats dd {
+    margin: 2px 0 0;
+    font-size: 20px;
+    color: var(--text);
+  }
+  .asof {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .body {
+    padding-block: 32px clamp(56px, 8vw, 104px);
+  }
+  .controls {
+    display: grid;
+    gap: 14px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 520px;
+    height: 42px;
+    padding: 0 10px 0 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--muted);
+    transition: border-color 0.2s;
+  }
+  .search:focus-within {
+    border-color: var(--accent-line);
+  }
+  .search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+  }
+  .search input::-webkit-search-cancel-button {
+    filter: grayscale(1);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .fchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-2);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .fchip span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .fchip:hover {
+    border-color: var(--accent-line);
+    color: var(--text);
+  }
+  .fchip[aria-pressed='true'] {
+    border-color: var(--accent-fill);
+    background: var(--accent-fill);
+    color: var(--accent-ink);
+    font-weight: 550;
+  }
+  .fchip[aria-pressed='true'] span {
+    color: var(--accent-ink);
+    opacity: 0.65;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sw {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--surface-2);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .sw::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: transform 0.25s var(--ease), background 0.2s;
+  }
+  .toggle input:checked + .sw {
+    background: var(--accent-fill);
+    border-color: var(--accent-fill);
+  }
+  .toggle input:checked + .sw::after {
+    transform: translateX(14px);
+    background: var(--accent-ink);
+  }
+  .toggle input:focus-visible + .sw {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .status {
+    min-height: 18px;
+    margin: 16px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .year-block {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 24px;
+  }
+  .year-block[hidden] {
+    display: none;
+  }
+  .year {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    padding-top: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .items > div[hidden] {
+    display: none;
+  }
+  .empty {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--muted);
+  }
+  .legend {
+    margin-top: 28px;
+    font-size: 11.5px;
+    color: var(--faint);
+  }
+  @media (max-width: 720px) {
+    .year-block {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .year {
+      position: static;
+      padding-top: 24px;
+    }
+    .stats div {
+      padding: 8px 12px;
+    }
+    .stats dd {
+      font-size: 17px;
+    }
+  }
+</style>
+
+<script>
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  const first = document.querySelector<HTMLInputElement>('[data-first]')!;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-topic]')];
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-search]')];
+  const blocks = [...document.querySelectorAll<HTMLElement>('[data-year-block]')];
+  const status = document.querySelector<HTMLElement>('[data-status]')!;
+  const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+  let topic = 'all';
+
+  function apply() {
+    const terms = q.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const row of rows) {
+      const paper = row.querySelector<HTMLElement>('[data-paper]')!;
+      const okTopic = topic === 'all' || paper.dataset.topics!.split(' ').includes(topic);
+      const okFirst = !first.checked || paper.dataset.first === '1';
+      const okQ = terms.every((t) => row.dataset.search!.includes(t));
+      row.hidden = !(okTopic && okFirst && okQ);
+      if (!row.hidden) shown++;
+    }
+    for (const b of blocks) b.hidden = !b.querySelector('[data-search]:not([hidden])');
+    empty.hidden = shown > 0;
+    const filtered = shown !== rows.length;
+    status.textContent = filtered ? `showing ${shown} of ${rows.length}` : '';
+    const url = new URL(location.href);
+    topic === 'all' ? url.searchParams.delete('topic') : url.searchParams.set('topic', topic);
+    history.replaceState(null, '', url);
+  }
+
+  chips.forEach((c) =>
+    c.addEventListener('click', () => {
+      topic = c.dataset.topic!;
+      chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+      apply();
+    }),
+  );
+  q.addEventListener('input', apply);
+  first.addEventListener('change', apply);
+
+  // deep link: /publications/?topic=theorem-proving
+  const initial = new URL(location.href).searchParams.get('topic');
+  const chip = chips.find((c) => c.dataset.topic === initial);
+  if (chip) chip.click();
+
+  // "/" focuses the filter here (instead of opening the palette)
+  window.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === '/' && document.activeElement !== q && !(e.target as HTMLElement).closest('input, textarea')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        q.focus();
+      }
+    },
+    { capture: true },
+  );
+</script>

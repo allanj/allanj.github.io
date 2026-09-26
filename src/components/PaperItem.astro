@@ -1,0 +1,227 @@
+---
+import { isMe, type Paper } from '../data/publications';
+import { bibtex } from '../lib/bibtex';
+
+interface Props {
+  paper: Paper;
+  compact?: boolean;
+}
+const { paper: p, compact = false } = Astro.props;
+
+const primary = p.links.paper ?? p.links.arxiv ?? p.links.pdf;
+const MAX = 9;
+const long = p.authors.length > MAX;
+const meIdx = p.authors.findIndex(isMe);
+// Long team lists: first two, the owner, the last one.
+const shortList: (string | null)[] = long
+  ? [p.authors[0], p.authors[1], null, ...(meIdx > 1 && meIdx < p.authors.length - 1 ? [p.authors[meIdx], null] : []), p.authors.at(-1)!]
+  : p.authors;
+
+const linkLabels: [keyof Paper['links'], string][] = [
+  ['paper', 'paper'],
+  ['arxiv', 'arXiv'],
+  ['pdf', 'pdf'],
+  ['code', 'code'],
+  ['slides', 'slides'],
+  ['project', 'blog ↗'],
+  ['blog', 'walkthrough'],
+];
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+// Rendered as one string so template whitespace never sneaks in before the commas.
+const authorHTML = (list: (string | null)[]) =>
+  list
+    .map((a) =>
+      a === null
+        ? '<span class="ellip">…</span>'
+        : (isMe(a) ? `<b class="me">${esc(a)}</b>` : esc(a)) + (p.equal?.includes(a) ? '<sup class="eq">*</sup>' : ''),
+    )
+    .join(', ');
+
+const links = linkLabels.filter(([k]) => p.links[k]).map(([k, label]) => ({ href: p.links[k]!, label, internal: p.links[k]!.startsWith('/') }));
+---
+
+<article class:list={['paper', { compact }]} data-paper data-topics={p.topics.join(' ')} data-year={p.year} data-type={p.type} data-first={isMe(p.authors[0]) || (p.equal?.some(isMe) ?? false) ? '1' : '0'}>
+  <div class="meta mono">
+    <span class="venue">{p.venue}</span>
+    {p.award && <span class="award">★ {p.award}</span>}
+    {p.aka && <span class="aka">aka {p.aka}</span>}
+  </div>
+  <h3 class="title">
+    {primary ? <a href={primary} target="_blank" rel="noopener">{p.title}</a> : p.title}
+  </h3>
+  <p class="authors">
+    <span class="short" set:html={authorHTML(shortList)} />
+    {
+      long && (
+        <>
+          <span class="full" hidden set:html={authorHTML(p.authors)} />
+          <button class="more mono" type="button" data-expand data-count={p.authors.length} aria-expanded="false">
+            {p.authors.length} authors
+          </button>
+        </>
+      )
+    }
+  </p>
+  {(p.authorNote || p.equal) && !compact && (
+    <p class="note mono">{p.authorNote ?? '* equal contribution'}</p>
+  )}
+  <div class="links mono">
+    {
+      links.map((l) => (
+        <a href={l.href} target={l.internal ? undefined : '_blank'} rel={l.internal ? undefined : 'noopener'}>
+          {l.label}
+        </a>
+      ))
+    }
+    {!compact && (
+      <button type="button" class="bib" data-bib={bibtex(p)} aria-label={`Copy BibTeX for ${p.title}`}>
+        bibtex
+      </button>
+    )}
+  </div>
+</article>
+
+<style>
+  .paper {
+    position: relative;
+    display: grid;
+    gap: 6px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11.5px;
+  }
+  .venue {
+    color: var(--accent);
+  }
+  .award {
+    color: var(--warm);
+  }
+  .aka {
+    color: var(--muted);
+  }
+  .title {
+    font-size: 17px;
+    font-weight: 550;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+  }
+  .title a {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s var(--ease), color 0.2s;
+  }
+  .title a:hover {
+    color: var(--accent);
+    background-size: 100% 1px;
+  }
+  .authors {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .authors :global(.me) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .authors :global(.eq) {
+    color: var(--accent);
+    margin-left: 1px;
+  }
+  .authors :global(.ellip) {
+    color: var(--faint);
+  }
+  .more {
+    margin-left: 8px;
+    padding: 1px 7px;
+    border: 1px dashed var(--line-2);
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .more:hover {
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+  .note {
+    font-size: 11.5px;
+    color: var(--faint);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .links a,
+  .links button {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 9px;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-2);
+    font: inherit;
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .links a:hover,
+  .links button:hover {
+    border-color: var(--accent-line);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .links button.copied {
+    color: var(--accent-ink);
+    background: var(--accent-fill);
+    border-color: var(--accent-fill);
+  }
+  .compact {
+    padding: 16px 0;
+  }
+  .compact .title {
+    font-size: 16px;
+  }
+</style>
+
+<script>
+  // One delegated handler per page (Astro bundles component scripts once).
+  document.addEventListener('click', async (e) => {
+    const el = e.target as HTMLElement;
+    const expand = el.closest<HTMLButtonElement>('[data-expand]');
+    if (expand) {
+      const box = expand.parentElement!;
+      const open = expand.getAttribute('aria-expanded') !== 'true';
+      box.querySelector<HTMLElement>('.short')!.hidden = open;
+      box.querySelector<HTMLElement>('.full')!.hidden = !open;
+      expand.setAttribute('aria-expanded', String(open));
+      expand.textContent = open ? 'collapse' : `${expand.dataset.count} authors`;
+      return;
+    }
+    const bib = el.closest<HTMLButtonElement>('[data-bib]');
+    if (bib) {
+      try {
+        await navigator.clipboard.writeText(bib.dataset.bib ?? '');
+        bib.textContent = 'copied ✓';
+        bib.classList.add('copied');
+        setTimeout(() => {
+          bib.textContent = 'bibtex';
+          bib.classList.remove('copied');
+        }, 1600);
+      } catch {
+        bib.textContent = 'copy failed';
+      }
+    }
+  });
+</script>

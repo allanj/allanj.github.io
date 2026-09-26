@@ -1,0 +1,437 @@
+---
+import Icon from './Icon.astro';
+
+// A tiny, hand-tokenised Lean 4 "proof" about the site owner. Each line is a list of
+// [tokenClass, text]; `goals[i]` is the infoview state *after* line i has elaborated.
+type Tok = [string, string];
+const lines: Tok[][] = [
+  [['kw', 'import'], ['', ' '], ['ty', 'Mathlib']],
+  [],
+  [['cm', '/-- Allan Jie · ByteDance Seed -/']],
+  [['kw', 'theorem'], ['', ' '], ['def', 'allan_jie'], ['op', ' : ∃ '], ['v', 'm'], ['op', ' : '], ['ty', 'LLM'], ['op', ',']],
+  [['', '    '], ['ty', 'Reasons'], ['', ' '], ['v', 'm'], ['op', ' ∧ '], ['ty', 'Proves'], ['', ' '], ['v', 'm'], ['op', ' ∧ '], ['ty', 'Acts'], ['', ' '], ['v', 'm'], ['op', ' := '], ['kw', 'by']],
+  [['', '  '], ['kw', 'refine'], ['op', ' ⟨'], ['v', 'π'], ['op', ', '], ['hole', '?_'], ['op', ', '], ['hole', '?_'], ['op', ', '], ['hole', '?_'], ['op', '⟩']],
+  [['', '  '], ['op', '· '], ['kw', 'exact'], ['', ' '], ['fn', 'reft'], ['', '            '], ['cm', "-- ACL '24"]],
+  [['', '  '], ['op', '· '], ['kw', 'exact'], ['', ' '], ['fn', 'seed_prover'], ['', '     '], ['cm', '-- Lean 4']],
+  [['', '  '], ['op', '· '], ['kw', 'apply'], ['', ' '], ['fn', 'agentic_rl']],
+  [['', '    '], ['kw', 'simp'], ['op', ' ['], ['fn', 'learn_from_experience'], ['op', ']']],
+];
+
+type Goal = { case?: string; hyps?: string[]; target: string };
+const G = (target: string, c?: string, hyps?: string[]): Goal => ({ target, case: c, hyps });
+const goals: (Goal[] | null)[] = [
+  null,
+  null,
+  null,
+  null,
+  [G('∃ m, Reasons m ∧ Proves m ∧ Acts m')],
+  [G('Reasons π', 'refine_1'), G('Proves π', 'refine_2'), G('Acts π', 'refine_3')],
+  [G('Proves π', 'refine_2'), G('Acts π', 'refine_3')],
+  [G('Acts π', 'refine_3')],
+  [G('∀ τ : Trajectory, Improves π τ', 'h')],
+  [],
+];
+---
+
+<figure class="lean card ticks" data-lean aria-label="Animated Lean 4 proof">
+  <div class="titlebar">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="tab mono"><span class="lang">lean</span> AllanJie.lean</span>
+    <button class="replay" type="button" data-lean-replay aria-label="Replay the proof animation">
+      <Icon name="replay" size={14} />
+    </button>
+  </div>
+
+  <pre class="code mono" aria-hidden="true"><code data-lean-code>{
+    lines.map((l) => (
+      <span class="ln">{l.map(([cls, text]) => (cls ? <span class={cls}>{text}</span> : text))}</span>
+    ))
+  }</code></pre>
+
+  <div class="infoview" aria-hidden="true">
+    <div class="iv-head mono">
+      <span>Lean Infoview</span>
+      <span class="iv-pos" data-lean-pos>AllanJie.lean:1:0</span>
+    </div>
+    <div class="iv-body mono" data-lean-goals>
+      <div class="done"><span class="badge">✓</span>No goals</div>
+      <div class="done-sub">theorem allan_jie proved · 0 sorries</div>
+    </div>
+  </div>
+
+  <figcaption class="statusbar mono">
+    <span><span class="dot ok" data-lean-dot></span> Lean 4 · Mathlib</span>
+    <span data-lean-status>Ln 10, Col 33</span>
+  </figcaption>
+
+  <p class="sr-only">
+    A Lean 4 snippet proving the playful theorem allan_jie: there exists a language model that reasons, proves and acts —
+    discharged by ReFT, Seed-Prover and agentic reinforcement learning.
+  </p>
+
+  <script type="application/json" data-lean-data set:html={JSON.stringify({ lines, goals })} />
+</figure>
+
+<style>
+  .lean {
+    margin: 0;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 38px;
+    padding: 0 8px 0 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line-2);
+  }
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .tab .lang {
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 10.5px;
+  }
+  .replay {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .replay:hover {
+    background: var(--surface-2);
+    color: var(--accent);
+  }
+  .code {
+    margin: 0;
+    padding: 16px 16px 14px 0;
+    min-height: calc(10 * 1.7em + 30px);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    counter-reset: ln;
+    scrollbar-width: none;
+  }
+  .code :global(.ln) {
+    display: block;
+    white-space: pre;
+    min-height: 1.7em;
+  }
+  .code :global(.ln)::before {
+    counter-increment: ln;
+    content: counter(ln);
+    display: inline-block;
+    width: 38px;
+    padding-right: 14px;
+    text-align: right;
+    color: var(--faint);
+    user-select: none;
+  }
+  .code :global(.ln.cur) {
+    background: linear-gradient(90deg, var(--accent-soft), transparent 70%);
+  }
+  .code :global(.kw) {
+    color: var(--syn-kw);
+  }
+  .code :global(.def) {
+    color: var(--syn-def);
+    font-weight: 600;
+  }
+  .code :global(.ty) {
+    color: var(--syn-type);
+  }
+  .code :global(.fn) {
+    color: var(--text);
+  }
+  .code :global(.v) {
+    color: var(--text-2);
+    font-style: italic;
+  }
+  .code :global(.op) {
+    color: var(--syn-op);
+  }
+  .code :global(.cm) {
+    color: var(--syn-comment);
+    font-style: italic;
+  }
+  .code :global(.hole) {
+    color: var(--syn-hole);
+  }
+  .code :global(.caret) {
+    display: inline-block;
+    width: 0.55em;
+    height: 1.15em;
+    margin-left: 1px;
+    vertical-align: -0.2em;
+    background: var(--accent-fill);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  .infoview {
+    border-top: 1px solid var(--line);
+    background: var(--bg-raise);
+  }
+  .iv-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 14px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--faint);
+    border-bottom: 1px dashed var(--line);
+  }
+  .iv-pos {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .iv-body {
+    padding: 12px 14px 14px;
+    min-height: 140px;
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+  .iv-body :global(.muted) {
+    color: var(--muted);
+  }
+  .iv-body :global(.count) {
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .iv-body :global(.goal) {
+    padding: 2px 0 6px;
+    animation: fadein 0.35s var(--ease);
+  }
+  .iv-body :global(.goal + .goal) {
+    border-top: 1px dotted var(--line);
+    padding-top: 6px;
+  }
+  .iv-body :global(.case) {
+    color: var(--syn-kw);
+  }
+  .iv-body :global(.hyp) {
+    color: var(--text-2);
+  }
+  .iv-body :global(.turnstile) {
+    color: var(--accent);
+    margin-right: 0.5ch;
+  }
+  .iv-body :global(.done) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent);
+    font-weight: 600;
+    animation: fadein 0.4s var(--ease);
+  }
+  .iv-body :global(.done .badge) {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent-fill);
+    color: var(--accent-ink);
+    font-size: 12px;
+  }
+  .iv-body :global(.done-sub) {
+    margin-top: 8px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+  }
+  .statusbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .statusbar .dot,
+  .statusbar :global(.dot) {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: var(--warm);
+    vertical-align: 0;
+    transition: background 0.3s;
+  }
+  .statusbar :global(.dot.ok) {
+    background: var(--accent-fill);
+  }
+  @media (max-width: 480px) {
+    .code {
+      font-size: 11.5px;
+    }
+    .code :global(.ln)::before {
+      width: 28px;
+      padding-right: 10px;
+    }
+    .iv-body {
+      font-size: 11.5px;
+      min-height: 128px;
+    }
+  }
+</style>
+
+<script>
+  type Tok = [string, string];
+  type Goal = { case?: string; hyps?: string[]; target: string };
+
+  const root = document.querySelector<HTMLElement>('[data-lean]');
+  if (root) {
+    const { lines, goals } = JSON.parse(root.querySelector('[data-lean-data]')!.textContent!) as {
+      lines: Tok[][];
+      goals: (Goal[] | null)[];
+    };
+    const codeEl = root.querySelector<HTMLElement>('[data-lean-code]')!;
+    const goalsEl = root.querySelector<HTMLElement>('[data-lean-goals]')!;
+    const posEl = root.querySelector<HTMLElement>('[data-lean-pos]')!;
+    const statusEl = root.querySelector<HTMLElement>('[data-lean-status]')!;
+    const dotEl = root.querySelector<HTMLElement>('[data-lean-dot]')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const lineLen = (l: Tok[]) => l.reduce((n, [, t]) => n + [...t].length, 0);
+
+    // render the first `n` characters of a line
+    function lineHTML(l: Tok[], n = Infinity) {
+      let out = '';
+      let left = n;
+      for (const [cls, text] of l) {
+        if (left <= 0) break;
+        const chars = [...text];
+        const part = chars.slice(0, left).join('');
+        left -= chars.length;
+        out += cls ? `<span class="${cls}">${esc(part)}</span>` : esc(part);
+      }
+      return out;
+    }
+
+    // Lines are server-rendered in their final state (no-JS fallback); the script replays them.
+    const lineEls = [...codeEl.querySelectorAll<HTMLElement>('.ln')];
+
+    function renderGoals(state: Goal[] | null, lineIdx: number) {
+      posEl.textContent = `AllanJie.lean:${lineIdx + 1}:${lineLen(lines[lineIdx] ?? [])}`;
+      if (state === null) {
+        goalsEl.innerHTML = '<span class="muted">elaborating…</span>';
+        return;
+      }
+      if (state.length === 0) {
+        goalsEl.innerHTML =
+          '<div class="done"><span class="badge">✓</span>No goals</div>' +
+          '<div class="done-sub">theorem allan_jie proved · 0 sorries</div>';
+        dotEl.classList.add('ok');
+        return;
+      }
+      const head = `<div class="count">${state.length} goal${state.length > 1 ? 's' : ''}</div>`;
+      goalsEl.innerHTML =
+        head +
+        state
+          .map(
+            (g) =>
+              `<div class="goal">${g.case ? `<div><span class="case">case</span> ${esc(g.case)}</div>` : ''}${(g.hyps ?? [])
+                .map((h) => `<div class="hyp">${esc(h)}</div>`)
+                .join('')}<div><span class="turnstile">⊢</span>${esc(g.target)}</div></div>`,
+          )
+          .join('');
+    }
+
+    let run = 0;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    function showFinal() {
+      lineEls.forEach((el, i) => (el.innerHTML = lineHTML(lines[i])));
+      renderGoals([], lines.length - 1);
+      statusEl.textContent = `Ln ${lines.length}, Col ${lineLen(lines[lines.length - 1]) + 1}`;
+    }
+
+    async function play() {
+      const id = ++run;
+      dotEl.classList.remove('ok');
+      lineEls.forEach((el) => {
+        el.innerHTML = '';
+        el.classList.remove('cur');
+      });
+      renderGoals(null, 0);
+      await sleep(350);
+      for (let i = 0; i < lines.length; i++) {
+        if (id !== run) return;
+        const el = lineEls[i];
+        lineEls.forEach((x) => x.classList.toggle('cur', x === el));
+        const total = lineLen(lines[i]);
+        const isComment = lines[i][0]?.[0] === 'cm';
+        for (let c = 0; c <= total; c++) {
+          if (id !== run) return;
+          el.innerHTML = lineHTML(lines[i], c) + '<span class="caret"></span>';
+          statusEl.textContent = `Ln ${i + 1}, Col ${c + 1}`;
+          const ch = [...lines[i].map(([, t]) => t).join('')][c] ?? '';
+          await sleep(ch === ' ' ? 8 : isComment ? 14 : 26 + Math.random() * 30);
+        }
+        el.innerHTML = lineHTML(lines[i]);
+        if (goals[i] !== undefined && goals[i] !== null) {
+          await sleep(140);
+          renderGoals(goals[i], i);
+        }
+        await sleep(total === 0 ? 60 : 240);
+      }
+      lineEls[lines.length - 1].innerHTML = lineHTML(lines[lines.length - 1]) + '<span class="caret"></span>';
+    }
+
+    root.querySelector('[data-lean-replay]')?.addEventListener('click', () => (reduce ? showFinal() : play()));
+
+    if (reduce) {
+      showFinal();
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            play();
+          }
+        },
+        { threshold: 0.3 },
+      );
+      io.observe(root);
+    }
+  }
+</script>

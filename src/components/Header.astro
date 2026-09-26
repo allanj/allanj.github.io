@@ -1,0 +1,283 @@
+---
+import { nav } from '../data/site';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a href="/" class="brand" aria-label="Allan Jie — home">
+      <span class="mark mono" aria-hidden="true"><span class="br">[</span>aj<span class="br">]</span></span>
+      <span class="brand-name">Allan Jie</span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a href={item.href} class:list={['nav-link', { active: isActive(item.href) }]} aria-current={isActive(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="tools">
+      <button class="search-btn" type="button" data-palette-open aria-label="Search and jump (Command K)">
+        <Icon name="search" size={14} />
+        <span class="search-label">Search</span>
+        <span class="keys" aria-hidden="true"><kbd data-mod>⌘</kbd><kbd>K</kbd></span>
+      </button>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle color theme">
+        <Icon name="sun" size={16} class="i-sun" />
+        <Icon name="moon" size={16} class="i-moon" />
+      </button>
+      <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle aria-label="Open menu">
+        <Icon name="menu" size={18} class="i-open" />
+        <Icon name="close" size={18} class="i-close" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <nav class="wrap" aria-label="Mobile">
+      <a href="/" class="m-link"><span class="mono idx">00</span>Home</a>
+      {
+        nav.map((item, i) => (
+          <a href={item.href} class="m-link" aria-current={isActive(item.href) ? 'page' : undefined}>
+            <span class="mono idx">{String(i + 1).padStart(2, '0')}</span>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+  }
+  .site-header.scrolled,
+  .site-header.open {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 64px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    height: 30px;
+    padding: 0 7px;
+    border: 1px solid var(--line-2);
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--surface);
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .mark .br {
+    color: var(--accent);
+  }
+  .brand:hover .mark {
+    border-color: var(--accent-line);
+  }
+  .brand-name {
+    font-size: 15px;
+  }
+  .links {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .nav-link {
+    position: relative;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 14px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-link:hover {
+    color: var(--text);
+    background: var(--surface);
+  }
+  .nav-link.active {
+    color: var(--text);
+  }
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .search-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 6px 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .search-btn:hover {
+    border-color: var(--accent-line);
+    color: var(--text);
+  }
+  .keys {
+    display: inline-flex;
+    gap: 3px;
+  }
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line-2);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .icon-btn:hover {
+    border-color: var(--accent-line);
+    color: var(--text);
+  }
+  /* sun shows in dark mode (click → light), moon in light mode */
+  :global(.i-moon) {
+    display: none;
+  }
+  :global(html[data-theme='light'] .i-moon) {
+    display: block;
+  }
+  :global(html[data-theme='light'] .i-sun) {
+    display: none;
+  }
+  .menu-btn {
+    display: none;
+  }
+  .menu-btn :global(.i-close) {
+    display: none;
+  }
+  .site-header.open .menu-btn :global(.i-close) {
+    display: block;
+  }
+  .site-header.open .menu-btn :global(.i-open) {
+    display: none;
+  }
+  .mobile-menu {
+    border-top: 1px solid var(--line);
+    padding-block: 8px 16px;
+  }
+  .m-link {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--line);
+  }
+  .m-link .idx {
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .m-link[aria-current='page'] {
+    color: var(--accent);
+  }
+
+  @media (max-width: 760px) {
+    .links {
+      display: none;
+    }
+    .tools {
+      margin-left: auto;
+    }
+    .search-label,
+    .keys {
+      display: none;
+    }
+    .search-btn {
+      width: 34px;
+      padding: 0;
+      justify-content: center;
+    }
+    .menu-btn {
+      display: inline-grid;
+    }
+  }
+  @media (min-width: 761px) {
+    .mobile-menu {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (menu) menu.hidden = !open;
+    header?.classList.toggle('open', open);
+  });
+
+  // theme: explicit choice wins over the OS preference and is remembered
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.dataset.theme === 'light' ? 'light' : 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+    window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+  });
+
+  // show Ctrl instead of ⌘ off Apple platforms
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) {
+    document.querySelectorAll('[data-mod]').forEach((el) => (el.textContent = 'Ctrl'));
+  }
+</script>

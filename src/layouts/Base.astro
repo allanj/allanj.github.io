@@ -1,0 +1,135 @@
+---
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import CommandPalette, { type PaletteItem } from '../components/CommandPalette.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { papers } from '../data/publications';
+import { nav, site, socials } from '../data/site';
+import { postUrl } from '../lib/posts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  published?: Date;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description = site.description, image = '/og.png', type = 'website', published, jsonLd } = Astro.props;
+const fullTitle = title ? `${title} · Allan Jie` : `${site.name} — ${site.role}, ${site.org}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const items: PaletteItem[] = [
+  { group: 'Pages', title: 'Home', href: '/', hint: '/' },
+  ...nav.map((n) => ({ group: 'Pages' as const, title: n.label, href: n.href, hint: n.href })),
+  { group: 'Pages', title: 'JSON visualizer', href: '/jsonv/', hint: '/jsonv/', keywords: 'tool json viewer' },
+  { group: 'Sections', title: 'Research focus', href: '/#research', hint: 'home', keywords: 'interests agents rl lean' },
+  { group: 'Sections', title: 'Highlights', href: '/#highlights', hint: 'home', keywords: 'seed-prover featured' },
+  { group: 'Sections', title: 'News', href: '/#news', hint: 'home', keywords: 'updates log' },
+  { group: 'Sections', title: 'Experience', href: '/about/#experience', hint: 'about', keywords: 'cv career timeline bytedance salesforce' },
+  { group: 'Sections', title: 'Service', href: '/about/#service', hint: 'about', keywords: 'reviewer program committee activities' },
+  { group: 'Sections', title: 'Open source', href: '/about/#open-source', hint: 'about', keywords: 'software github code' },
+  { group: 'Actions', title: 'Toggle light / dark theme', action: 'theme', hint: 'theme' },
+  { group: 'Actions', title: 'Copy email address', action: 'copy-email', hint: site.email },
+  ...papers.map((p) => ({
+    group: 'Papers' as const,
+    title: p.title,
+    hint: p.venue,
+    href: p.links.paper ?? p.links.arxiv ?? '/publications/',
+    external: Boolean(p.links.paper ?? p.links.arxiv),
+    keywords: `${p.aka ?? ''} ${p.authors.join(' ')} ${p.topics.join(' ')} ${p.year}${p.featured ? ' featured' : ''}`,
+  })),
+  ...posts.map((p) => ({
+    group: 'Writing' as const,
+    title: p.data.title,
+    hint: p.data.pubDate.toISOString().slice(0, 7),
+    href: postUrl(p),
+    keywords: p.data.tags.join(' '),
+  })),
+  ...socials
+    .filter((s) => s.id !== 'email')
+    .map((s) => ({ group: 'Links' as const, title: s.label, hint: s.handle, href: s.href, external: true })),
+  { group: 'Links', title: 'RSS feed', hint: '/rss.xml', href: '/rss.xml' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="author" content={site.name} />
+    <meta name="google-site-verification" content={site.googleSiteVerification} />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Allan Jie — Writing" href="/rss.xml" />
+    <link rel="preload" href="/fonts/sym-mono-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title ?? site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? site.name} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        try {
+          const t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') root.dataset.theme = t;
+        } catch {}
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <CommandPalette items={items} />
+
+    <script>
+      // Reveal-on-scroll for elements marked [data-reveal].
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('in'));
+      }
+    </script>
+  </body>
+</html>
