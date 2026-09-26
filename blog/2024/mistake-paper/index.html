@@ -1,273 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <!-- Head -->
-  <head>    <!-- Metadata, OpenGraph and Schema.org -->
-    
-    <!-- Website verification -->
-    <meta name="google-site-verification" content="0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw" />
-
-    <!-- Standard metadata -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Zhanming (Allan) Jie | (Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning</title>
-    <meta name="author" content="Zhanming (Allan) Jie" />
-    <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
-" />
-    <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website" />
-
-
-    <!-- Bootstrap & MDB -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
-
-    <!-- Fonts & Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
-
-    <!-- Code Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
-
-    <!-- Styles -->
-    
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔠</text></svg>">
-    
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://allanj.github.io/blog/2024/mistake-paper/">
-    
-    <!-- Dark Mode -->
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
-
-    <script src="/assets/js/theme.js"></script>
-    <script src="/assets/js/dark_mode.js"></script>
-    
-
-  </head>
-
-  <!-- Body -->
-  <body class="fixed-top-nav ">
-
-    <!-- Header -->
-    <header>
-
-      <!-- Nav Bar -->
-      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
-        <div class="container">
-          <a class="navbar-brand title font-weight-lighter" href="https://allanj.github.io/"><span class="font-weight-bold">Zhanming</span> (Allan)  Jie</a>
-          <!-- Navbar Toggle -->
-          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar top-bar"></span>
-            <span class="icon-bar middle-bar"></span>
-            <span class="icon-bar bottom-bar"></span>
-          </button>
-
-          <div class="collapse navbar-collapse text-right" id="navbarNav">
-            <ul class="navbar-nav ml-auto flex-nowrap">
-
-              <!-- About -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/">About</a>
-              </li>
-              
-              <!-- Blog -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/blog/">Blog</a>
-              </li>
-
-              <!-- Other pages -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/activities/">Activities</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/publications/">Publications</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/software/">Software</a>
-              </li>
-
-              <!-- Toogle theme mode -->
-              <div class="toggle-container">
-                <a id="light-toggle">
-                  <i class="fas fa-moon"></i>
-                  <i class="fas fa-sun"></i>
-                </a>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <!-- Content -->
-    <div class="container mt-5">
-      <!-- _layouts/post.html -->
-
-<div class="post">
-
-  <header class="post-header">
-    <h1 class="post-title">(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning</h1>
-    <p class="post-meta">April 2, 2024</p>
-    <p class="post-tags">
-      <a href="/blog/2024"> <i class="fas fa-calendar fa-sm"></i> 2024 </a>
-        ·  
-        <a href="/blog/category/nlp">
-          <i class="fas fa-tag fa-sm"></i> nlp</a>  
-          
-
-    </p>
-  </header>
-
-  <article class="post-content">
-    <h1 id="summary">Summary</h1>
-
-<p>This paper delves into the capacity of Large Language Models (LLMs) to learn from their errors, especially in tasks requiring reasoning. It introduces <strong>COTERRORSET</strong>, a novel benchmark comprising questions designed to elicit both correct responses and errors. The research presents two innovative approaches:</p>
-
-<ul>
-  <li>
-<strong>Self-Rethinking Prompting</strong>: Encourages models to reconsider their answers upon making similar errors.</li>
-  <li>
-<strong>Mistake Tuning</strong>: Involves fine-tuning the models using both correct and incorrect examples.</li>
-</ul>
-
-<p>These methods aim to harness the educational potential of errors, with the goal of refining the reasoning abilities of LLMs by analyzing the nature and causes of their mistakes.</p>
-
-<div>
-        <figure>
-
-  <picture>
-    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-480.webp"></source>
-    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-800.webp"></source>
-    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-summary-1400.webp"></source>
-    <!-- Fallback to the original file -->
-    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-summary.png" data-zoomable="">
-
-  </picture>
-
-</figure>
-
-</div>
-
-<h1 id="methodology">Methodology</h1>
-
-<h2 id="dataset-coterrorset">Dataset: COTERRORSET</h2>
-<p>This dataset is curated by engaging with the LLM PaLM2 in a unique process:</p>
-
-<ol>
-  <li>PaLM2 is requested to answer questions and provide justifications.</li>
-  <li>Both accurate answers and errors are then fed back to PaLM2, prompting it to reflect on and explain its mistakes. These explanations form the COTERRORSET benchmark.</li>
-</ol>
-
-<h2 id="approaches">Approaches</h2>
-<p>The paper outlines the concepts of <strong>Self-Rethinking</strong> and <strong>Mistake Tuning</strong>. Initially, the relationship between these two strategies appears unclear. However, Figure 1 suggests a sequential application: Mistake Tuning is followed by Self-Rethinking.</p>
-
-<h3 id="self-rethinking">Self-Rethinking</h3>
-<p>This involves a “backward-checking” phase, where the LLM reviews its reasoning process, specifically focusing on previously identified error types. Although not extensively detailed, this phase implies that the LLM reassesses and corrects its reasoning without external input.</p>
-
-<h3 id="mistake-tuning">Mistake Tuning</h3>
-<p>The essence of this approach is straightforward: it employs two prefixes, “[CORRECT RATIONALE]” and “[INCORRECT RATIONALE]”, for fine-tuning the model on both accurate and erroneous justifications. This method, despite its simplicity, raises questions about its elegance and effectiveness.</p>
-
-<h1 id="results">Results</h1>
-
-<div>
-        <figure>
-
-  <picture>
-    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-480.webp"></source>
-    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-800.webp"></source>
-    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res1-1400.webp"></source>
-    <!-- Fallback to the original file -->
-    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res1.png" data-zoomable="">
-
-  </picture>
-
-</figure>
-
-</div>
-
-<div>
-        <figure>
-
-  <picture>
-    <source media="(max-width: 480px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-480.webp"></source>
-    <source media="(max-width: 800px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-800.webp"></source>
-    <source media="(max-width: 1400px)" srcset="/assets/img/mistake_paper/2024-03-paper-res2-1400.webp"></source>
-    <!-- Fallback to the original file -->
-    <img class="img-fluid rounded z-depth-1" src="/assets/img/mistake_paper/2024-03-paper-res2.png" data-zoomable="">
-
-  </picture>
-
-</figure>
-
-</div>
-
-<h1 id="comments">Comments</h1>
-<ol>
-  <li>The concept of Self-Rethinking closely mirrors the “Reflexion” approach outlined by Shinn et al., 2023, albeit in a more foundational form.</li>
-  <li>Despite Figure 1 suggesting the potential for integrating both approaches, the experimental design treats them separately.</li>
-  <li>Evaluating these strategies independently may dilute the perceived significance of the study’s contributions.</li>
-</ol>
-
-  </article><div id="disqus_thread"></div>
-    <script type="text/javascript">
-      var disqus_shortname  = 'allan-disqus-com';
-      var disqus_identifier = '/blog/2024/mistake-paper';
-      var disqus_title      = "(Paper Reading) Can LLMs Learn from Previous Mistakes? Investigating LLMs Errors to Boost for Reasoning";
-      (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Paper Reading: Can LLMs Learn from Previous Mistakes? · Allan Jie</title><meta name="description" content="Notes on COTERRORSET, self-rethinking prompting and mistake tuning — and how it relates to Reflexion."><link rel="canonical" href="https://allanj.github.io/blog/2024/mistake-paper/"><meta name="author" content="Zhanming (Allan) Jie"><meta name="google-site-verification" content="0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw"><meta name="theme-color" content="#07080a"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Allan Jie — Writing" href="/rss.xml"><link rel="preload" href="/fonts/sym-mono-400.woff2" as="font" type="font/woff2" crossorigin><meta property="og:type" content="article"><meta property="og:site_name" content="Zhanming (Allan) Jie"><meta property="og:title" content="Paper Reading: Can LLMs Learn from Previous Mistakes?"><meta property="og:description" content="Notes on COTERRORSET, self-rethinking prompting and mistake tuning — and how it relates to Reflexion."><meta property="og:url" content="https://allanj.github.io/blog/2024/mistake-paper/"><meta property="og:image" content="https://allanj.github.io/og.png"><meta property="article:published_time" content="2024-04-01T00:00:00.000Z"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Paper Reading: Can LLMs Learn from Previous Mistakes?"><meta name="twitter:description" content="Notes on COTERRORSET, self-rethinking prompting and mistake tuning — and how it relates to Reflexion."><meta name="twitter:image" content="https://allanj.github.io/og.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Paper Reading: Can LLMs Learn from Previous Mistakes?","description":"Notes on COTERRORSET, self-rethinking prompting and mistake tuning — and how it relates to Reflexion.","datePublished":"2024-04-01T00:00:00.000Z","dateModified":"2024-04-01T00:00:00.000Z","author":{"@type":"Person","name":"Zhanming (Allan) Jie","url":"https://allanj.github.io"},"mainEntityOfPage":"https://allanj.github.io/blog/2024/mistake-paper/"}</script><script>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        try {
+          const t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') root.dataset.theme = t;
+        } catch {}
       })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener noreferrer">comments powered by Disqus.</a>
-</noscript>
-
-</div>
-
-    </div>
-
-    <!-- Footer -->    
-    <footer class="fixed-bottom">
-      <div class="container mt-0">
-        © Copyright 2025 Zhanming (Allan) Jie. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
-
-      </div>
-    </footer>
-
-    <!-- JavaScripts -->
-    <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    <!-- Bootsrap & MDB scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
-
-    <!-- Masonry & imagesLoaded -->
-  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
-    
-  <!-- Medium Zoom JS -->
-  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
-  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
-  <script src="/assets/js/common.js"></script>
-
-    <!-- MathJax -->
-  <script type="text/javascript">
-    window.MathJax = {
-      tex: {
-        tags: 'ams'
-      }
-    };
-  </script>
-  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
-  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-
-    
-  </body>
-</html>
-
+    </script><link rel="stylesheet" href="/_astro/_..CudySu0h.css"><link rel="stylesheet" href="/_astro/Base.4sr-6hwf.css"></head> <body> <a class="skip-link" href="#main">Skip to content</a> <header class="site-header" data-header data-astro-cid-nen7h5rs> <div class="wrap bar" data-astro-cid-nen7h5rs> <a href="/" class="brand" aria-label="Allan Jie — home" data-astro-cid-nen7h5rs> <span class="mark mono" aria-hidden="true" data-astro-cid-nen7h5rs><span class="br" data-astro-cid-nen7h5rs>[</span>aj<span class="br" data-astro-cid-nen7h5rs>]</span></span> <span class="brand-name" data-astro-cid-nen7h5rs>Allan Jie</span> </a> <nav class="links" aria-label="Primary" data-astro-cid-nen7h5rs> <a href="/about/" class="nav-link" data-astro-cid-nen7h5rs> About </a><a href="/publications/" class="nav-link" data-astro-cid-nen7h5rs> Publications </a><a href="/blog/" class="nav-link active" aria-current="page" data-astro-cid-nen7h5rs> Writing </a> </nav> <div class="tools" data-astro-cid-nen7h5rs> <button class="search-btn" type="button" data-palette-open aria-label="Search and jump (Command K)" data-astro-cid-nen7h5rs> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm9 2-4.35-4.35"></path> </svg> <span class="search-label" data-astro-cid-nen7h5rs>Search</span> <span class="keys" aria-hidden="true" data-astro-cid-nen7h5rs><kbd data-mod data-astro-cid-nen7h5rs>⌘</kbd><kbd data-astro-cid-nen7h5rs>K</kbd></span> </button> <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle color theme" data-astro-cid-nen7h5rs> <svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"></path> </svg> <svg class="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path> </svg> </button> <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle aria-label="Open menu" data-astro-cid-nen7h5rs> <svg class="i-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> <svg class="i-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> </div> <div id="mobile-menu" class="mobile-menu" hidden data-astro-cid-nen7h5rs> <nav class="wrap" aria-label="Mobile" data-astro-cid-nen7h5rs> <a href="/" class="m-link" data-astro-cid-nen7h5rs><span class="mono idx" data-astro-cid-nen7h5rs>00</span>Home</a> <a href="/about/" class="m-link" data-astro-cid-nen7h5rs> <span class="mono idx" data-astro-cid-nen7h5rs>01</span> About </a><a href="/publications/" class="m-link" data-astro-cid-nen7h5rs> <span class="mono idx" data-astro-cid-nen7h5rs>02</span> Publications </a><a href="/blog/" class="m-link" aria-current="page" data-astro-cid-nen7h5rs> <span class="mono idx" data-astro-cid-nen7h5rs>03</span> Writing </a> </nav> </div> </header><script type="module">var e=document.querySelector(`[data-header]`),t=()=>e?.classList.toggle(`scrolled`,window.scrollY>8);t(),window.addEventListener(`scroll`,t,{passive:!0});var n=document.querySelector(`[data-menu-toggle]`),r=document.getElementById(`mobile-menu`);n?.addEventListener(`click`,()=>{let t=n.getAttribute(`aria-expanded`)!==`true`;n.setAttribute(`aria-expanded`,String(t)),n.setAttribute(`aria-label`,t?`Close menu`:`Open menu`),r&&(r.hidden=!t),e?.classList.toggle(`open`,t)}),document.querySelector(`[data-theme-toggle]`)?.addEventListener(`click`,()=>{let e=document.documentElement,t=(e.dataset.theme===`light`?`light`:`dark`)==`dark`?`light`:`dark`;e.dataset.theme=t;try{localStorage.setItem(`theme`,t)}catch{}window.dispatchEvent(new CustomEvent(`themechange`,{detail:t}))}),/Mac|iPhone|iPad/.test(navigator.platform)||document.querySelectorAll(`[data-mod]`).forEach(e=>e.textContent=`Ctrl`);</script> <main id="main">  <article class="post" data-astro-cid-g5songws> <header class="post-head grid-bg" data-astro-cid-g5songws> <div class="wrap narrow" data-astro-cid-g5songws> <a class="back mono" href="/blog/" data-astro-cid-g5songws>← cd ../writing</a> <p class="meta mono" data-astro-cid-g5songws> <time datetime="2024-04-01T00:00:00.000Z" data-astro-cid-g5songws>April 1, 2024</time> <span class="dot" data-astro-cid-g5songws>·</span> <span data-astro-cid-g5songws>1 min read</span>  </p> <h1 data-astro-cid-g5songws>Paper Reading: Can LLMs Learn from Previous Mistakes?</h1> <p class="desc" data-astro-cid-g5songws>Notes on COTERRORSET, self-rethinking prompting and mistake tuning — and how it relates to Reflexion.</p> <p class="tags" data-astro-cid-g5songws> <span class="chip" data-astro-cid-g5songws>#reasoning</span><span class="chip" data-astro-cid-g5songws>#reading-notes</span> </p> </div> </header> <div class="wrap body-grid" data-astro-cid-g5songws> <div class="prose" data-prose data-astro-cid-g5songws>  <h2 id="summary">Summary</h2>
+<p>This paper delves into the capacity of Large Language Models (LLMs) to learn from their errors, especially in tasks requiring reasoning. It introduces <strong>COTERRORSET</strong>, a novel benchmark comprising questions designed to elicit both correct responses and errors. The research presents two innovative approaches:</p>
+<ul>
+<li><strong>Self-Rethinking Prompting</strong>: Encourages models to reconsider their answers upon making similar errors.</li>
+<li><strong>Mistake Tuning</strong>: Involves fine-tuning the models using both correct and incorrect examples.</li>
+</ul>
+<p>These methods aim to harness the educational potential of errors, with the goal of refining the reasoning abilities of LLMs by analyzing the nature and causes of their mistakes.</p>
+<p><img alt="2024 03 paper summary" loading="lazy" decoding="async" width="614" height="468" src="/_astro/2024-03-paper-summary.3bET7aAn_ZTxufj.webp"></p>
+<h2 id="methodology">Methodology</h2>
+<h3 id="dataset-coterrorset">Dataset: COTERRORSET</h3>
+<p>This dataset is curated by engaging with the LLM PaLM2 in a unique process:</p>
+<ol>
+<li>PaLM2 is requested to answer questions and provide justifications.</li>
+<li>Both accurate answers and errors are then fed back to PaLM2, prompting it to reflect on and explain its mistakes. These explanations form the COTERRORSET benchmark.</li>
+</ol>
+<h3 id="approaches">Approaches</h3>
+<p>The paper outlines the concepts of <strong>Self-Rethinking</strong> and <strong>Mistake Tuning</strong>. Initially, the relationship between these two strategies appears unclear. However, Figure 1 suggests a sequential application: Mistake Tuning is followed by Self-Rethinking.</p>
+<h4 id="self-rethinking">Self-Rethinking</h4>
+<p>This involves a “backward-checking” phase, where the LLM reviews its reasoning process, specifically focusing on previously identified error types. Although not extensively detailed, this phase implies that the LLM reassesses and corrects its reasoning without external input.</p>
+<h4 id="mistake-tuning">Mistake Tuning</h4>
+<p>The essence of this approach is straightforward: it employs two prefixes, “[CORRECT RATIONALE]” and “[INCORRECT RATIONALE]”, for fine-tuning the model on both accurate and erroneous justifications. This method, despite its simplicity, raises questions about its elegance and effectiveness.</p>
+<h2 id="results">Results</h2>
+<p><img alt="2024 03 paper res1" loading="lazy" decoding="async" width="1580" height="266" src="/_astro/2024-03-paper-res1.BND8oTBf_ZrB3YA.webp"></p>
+<p><img alt="2024 03 paper res2" loading="lazy" decoding="async" width="818" height="412" src="/_astro/2024-03-paper-res2.dG1_gjX3_Z13H9Jj.webp"></p>
+<h2 id="comments">Comments</h2>
+<ol>
+<li>The concept of Self-Rethinking closely mirrors the “Reflexion” approach outlined by Shinn et al., 2023, albeit in a more foundational form.</li>
+<li>Despite Figure 1 suggesting the potential for integrating both approaches, the experimental design treats them separately.</li>
+<li>Evaluating these strategies independently may dilute the perceived significance of the study’s contributions.</li>
+</ol>
+  </div> <aside class="toc" aria-label="Table of contents" data-astro-cid-g5songws> <p class="mono toc-h" data-astro-cid-g5songws>on this page</p> <ol data-astro-cid-g5songws> <li class="d2" data-astro-cid-g5songws> <a href="#summary" data-toc="summary" data-astro-cid-g5songws> Summary </a> </li><li class="d2" data-astro-cid-g5songws> <a href="#methodology" data-toc="methodology" data-astro-cid-g5songws> Methodology </a> </li><li class="d3" data-astro-cid-g5songws> <a href="#dataset-coterrorset" data-toc="dataset-coterrorset" data-astro-cid-g5songws> Dataset: COTERRORSET </a> </li><li class="d3" data-astro-cid-g5songws> <a href="#approaches" data-toc="approaches" data-astro-cid-g5songws> Approaches </a> </li><li class="d2" data-astro-cid-g5songws> <a href="#results" data-toc="results" data-astro-cid-g5songws> Results </a> </li><li class="d2" data-astro-cid-g5songws> <a href="#comments" data-toc="comments" data-astro-cid-g5songws> Comments </a> </li> </ol> </aside> </div> <nav class="wrap narrow pager" aria-label="More posts" data-astro-cid-g5songws> <a class="card ticks pg" href="/blog/2024/gcp/" data-astro-cid-g5songws> <span class="mono lbl" data-astro-cid-g5songws>← older</span> <span class="pg-t" data-astro-cid-g5songws>Troubleshooting GPU Experiments on Google Cloud (Bus Error)</span> </a> <span data-astro-cid-g5songws></span> </nav> </article> <dialog class="lightbox" data-lightbox aria-label="Image preview" data-astro-cid-g5songws> <button class="lb-close" type="button" aria-label="Close preview" data-astro-cid-g5songws><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg></button> <img alt="" data-lightbox-img data-astro-cid-g5songws> </dialog>  </main> <footer class="site-footer" data-astro-cid-jo6i4kqk> <div class="wrap" data-astro-cid-jo6i4kqk> <div class="cta" data-astro-cid-jo6i4kqk> <p class="eyebrow" data-astro-cid-jo6i4kqk><span class="pulse" data-astro-cid-jo6i4kqk></span> open to collaborations</p> <h2 data-astro-cid-jo6i4kqk>
+Let’s talk about <span class="serif" data-astro-cid-jo6i4kqk>agents</span>, <span class="serif" data-astro-cid-jo6i4kqk>RL</span>, or <span class="serif" data-astro-cid-jo6i4kqk>theorem proving</span>.
+</h2> <div class="cta-actions" data-astro-cid-jo6i4kqk> <a class="btn btn-primary" href="mailto:allan@bytedance.com" data-astro-cid-jo6i4kqk><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Zm.5.5 8.5 6 8.5-6"></path> </svg> allan@bytedance.com</a> <a class="btn" href="https://scholar.google.com/citations?user=u68TA6oAAAAJ" target="_blank" rel="noopener" data-astro-cid-jo6i4kqk><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"> <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path> </svg> Scholar</a> </div> </div> <div class="cols" data-astro-cid-jo6i4kqk> <div data-astro-cid-jo6i4kqk> <p class="h mono" data-astro-cid-jo6i4kqk>navigate</p> <ul data-astro-cid-jo6i4kqk> <li data-astro-cid-jo6i4kqk><a class="link" href="/" data-astro-cid-jo6i4kqk>Home</a></li> <li data-astro-cid-jo6i4kqk> <a class="link" href="/about/" data-astro-cid-jo6i4kqk> About </a> </li><li data-astro-cid-jo6i4kqk> <a class="link" href="/publications/" data-astro-cid-jo6i4kqk> Publications </a> </li><li data-astro-cid-jo6i4kqk> <a class="link" href="/blog/" data-astro-cid-jo6i4kqk> Writing </a> </li> <li data-astro-cid-jo6i4kqk><a class="link" href="/rss.xml" data-astro-cid-jo6i4kqk>RSS</a></li> </ul> </div> <div data-astro-cid-jo6i4kqk> <p class="h mono" data-astro-cid-jo6i4kqk>elsewhere</p> <ul data-astro-cid-jo6i4kqk> <li data-astro-cid-jo6i4kqk> <a class="link" href="https://scholar.google.com/citations?user=u68TA6oAAAAJ" target="_blank" rel="noopener me" data-astro-cid-jo6i4kqk> Google Scholar </a> </li><li data-astro-cid-jo6i4kqk> <a class="link" href="https://github.com/allanj" target="_blank" rel="noopener me" data-astro-cid-jo6i4kqk> GitHub </a> </li><li data-astro-cid-jo6i4kqk> <a class="link" href="https://huggingface.co/allanjie" target="_blank" rel="noopener me" data-astro-cid-jo6i4kqk> Hugging Face </a> </li><li data-astro-cid-jo6i4kqk> <a class="link" href="https://orcid.org/0000-0002-0656-9228" target="_blank" rel="noopener me" data-astro-cid-jo6i4kqk> ORCID </a> </li> </ul> </div> <div data-astro-cid-jo6i4kqk> <p class="h mono" data-astro-cid-jo6i4kqk>tools</p> <ul data-astro-cid-jo6i4kqk> <li data-astro-cid-jo6i4kqk><a class="link" href="/jsonv/" data-astro-cid-jo6i4kqk>JSON visualizer</a></li> <li data-astro-cid-jo6i4kqk><a class="link" href="https://github.com/allanj/repo-level-codegen-papers" target="_blank" rel="noopener" data-astro-cid-jo6i4kqk>Repo-level codegen papers</a></li> </ul> </div> <div class="status mono" data-astro-cid-jo6i4kqk> <p data-astro-cid-jo6i4kqk><span class="k" data-astro-cid-jo6i4kqk>loc</span> Singapore · <time data-clock data-tz="Asia/Singapore" data-astro-cid-jo6i4kqk>SGT</time></p> <p data-astro-cid-jo6i4kqk><span class="k" data-astro-cid-jo6i4kqk>build</span> 0449266 · 2026-09-26</p> <p data-astro-cid-jo6i4kqk><span class="k" data-astro-cid-jo6i4kqk>stack</span> astro · geist · jetbrains mono</p> </div> </div> <div class="legal mono" data-astro-cid-jo6i4kqk> <span data-astro-cid-jo6i4kqk>© 2026 Zhanming Jie</span> <span data-astro-cid-jo6i4kqk> <kbd data-mod data-astro-cid-jo6i4kqk>⌘</kbd><kbd data-astro-cid-jo6i4kqk>K</kbd> to jump anywhere
+</span> </div> </div> </footer><script type="module">var e=document.querySelector(`[data-clock]`);if(e){let t=new Intl.DateTimeFormat(`en-GB`,{timeZone:e.dataset.tz,hour:`2-digit`,minute:`2-digit`,hour12:!1}),n=()=>e.textContent=`${t.format(new Date)} SGT`;n(),setInterval(n,15e3)}</script> <dialog class="palette" data-palette aria-label="Search and jump" data-astro-cid-oqgw6c2e> <div class="panel" data-astro-cid-oqgw6c2e> <div class="input-row" data-astro-cid-oqgw6c2e> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm9 2-4.35-4.35"></path> </svg> <input type="text" placeholder="Search pages, papers, posts…" autocomplete="off" spellcheck="false" aria-label="Search" aria-controls="palette-list" role="combobox" aria-expanded="true" data-palette-input data-astro-cid-oqgw6c2e> <kbd data-astro-cid-oqgw6c2e>esc</kbd> </div> <ul id="palette-list" class="list" role="listbox" data-palette-list data-astro-cid-oqgw6c2e></ul> <div class="foot mono" data-astro-cid-oqgw6c2e> <span data-astro-cid-oqgw6c2e><kbd data-astro-cid-oqgw6c2e>↑</kbd><kbd data-astro-cid-oqgw6c2e>↓</kbd> navigate</span> <span data-astro-cid-oqgw6c2e><kbd data-astro-cid-oqgw6c2e>↵</kbd> open</span> <span class="count" data-palette-count data-astro-cid-oqgw6c2e></span> </div> </div> </dialog> <script type="application/json" id="palette-data">[{"group":"Pages","title":"Home","href":"/","hint":"/"},{"group":"Pages","title":"About","href":"/about/","hint":"/about/"},{"group":"Pages","title":"Publications","href":"/publications/","hint":"/publications/"},{"group":"Pages","title":"Writing","href":"/blog/","hint":"/blog/"},{"group":"Pages","title":"JSON visualizer","href":"/jsonv/","hint":"/jsonv/","keywords":"tool json viewer"},{"group":"Sections","title":"Research focus","href":"/#research","hint":"home","keywords":"interests agents rl lean"},{"group":"Sections","title":"Highlights","href":"/#highlights","hint":"home","keywords":"seed-prover featured"},{"group":"Sections","title":"News","href":"/#news","hint":"home","keywords":"updates log"},{"group":"Sections","title":"Experience","href":"/about/#experience","hint":"about","keywords":"cv career timeline bytedance salesforce"},{"group":"Sections","title":"Service","href":"/about/#service","hint":"about","keywords":"reviewer program committee activities"},{"group":"Sections","title":"Open source","href":"/about/#open-source","hint":"about","keywords":"software github code"},{"group":"Actions","title":"Toggle light / dark theme","action":"theme","hint":"theme"},{"group":"Actions","title":"Copy email address","action":"copy-email","hint":"allan@bytedance.com"},{"group":"Papers","title":"Measure Twice, Locate Once: Mitigating Hallucinations in LLM-based Agents for Repository-Scale Fault Localization","hint":"TOSEM 2026","href":"https://doi.org/10.1145/3831589","external":true,"keywords":" Feiyue Chen Guowei Yang Cheryl Lee Zhanming Jie Yuqi Chen agents-rl 2026"},{"group":"Papers","title":"Seed2.0 Model Card: Towards Intelligence Frontier for Real-World Complexity","hint":"Tech report 2026","href":"https://arxiv.org/abs/2607.00248","external":true,"keywords":" ByteDance Seed agents-rl reasoning 2026"},{"group":"Papers","title":"Seed-Prover 1.5: Mastering Undergraduate-Level Theorem Proving via Learning from Experience","hint":"Tech report 2025","href":"https://arxiv.org/abs/2512.17260","external":true,"keywords":" Jiangjie Chen Wenxiang Chen Jiacheng Du Jinyi Hu Zhicheng Jiang Allan Jie Xiaoran Jin Xing Jin Chenggang Li Wenlei Shi Zhihong Wang Mingxuan Wang Chenrui Wei Shufa Wei Huajian Xin Fan Yang Weihao Gao Zheng Yuan Tianyang Zhan Zeyu Zheng Tianxi Zhou Thomas Hanwen Zhu theorem-proving agents-rl 2025 featured"},{"group":"Papers","title":"Seed-Prover: Deep and Broad Reasoning for Automated Theorem Proving","hint":"Tech report 2025","href":"https://arxiv.org/abs/2507.23726","external":true,"keywords":" Luoxin Chen Jinming Gu Liankai Huang Wenhao Huang Zhicheng Jiang Allan Jie Xiaoran Jin Xing Jin Chenggang Li Kaijing Ma Cheng Ren Jiawei Shen Wenlei Shi Tong Sun He Sun Jiahui Wang Siran Wang Zhihong Wang Chenrui Wei Shufa Wei Yonghui Wu Yuchen Wu Yihang Xia Huajian Xin Fan Yang Huaiyuan Ying Hongyi Yuan Zheng Yuan Tianyang Zhan Chi Zhang Yue Zhang Ge Zhang Tianyun Zhao Jianqiu Zhao Yichi Zhou Thomas Hanwen Zhu theorem-proving agents-rl 2025 featured"},{"group":"Papers","title":"Solving Formal Math Problems by Decomposition and Iterative Reflection","hint":"arXiv 2025","href":"https://arxiv.org/abs/2507.15225","external":true,"keywords":"Delta Prover Yichi Zhou Jianqiu Zhao Yongxin Zhang Bohan Wang Siran Wang Luoxin Chen Jiahui Wang Haowei Chen Allan Jie Xinbo Zhang Haocheng Wang Luong Trung Rong Ye Phan Nhat Hoang Huishuai Zhang Peng Sun Hang Li theorem-proving agents-rl 2025"},{"group":"Papers","title":"ThinK: Thinner Key Cache by Query-Driven Pruning","hint":"ICLR 2025","href":"https://openreview.net/forum?id=n0OtGl6VGb","external":true,"keywords":" Yuhui Xu Zhanming Jie Hanze Dong Lei Wang Xudong Lu Aojun Zhou Amrita Saha Caiming Xiong Doyen Sahoo efficiency 2025 featured"},{"group":"Papers","title":"ReFT: Reasoning with Reinforced Fine-Tuning","hint":"ACL 2024","href":"https://aclanthology.org/2024.acl-long.410/","external":true,"keywords":" Trung Quoc Luong Xinbo Zhang Zhanming Jie Peng Sun Xiaoran Jin Hang Li reasoning agents-rl 2024 featured"},{"group":"Papers","title":"Non-Autoregressive Machine Translation as Constrained HMM","hint":"Findings of ACL 2024","href":"https://aclanthology.org/2024.findings-acl.735/","external":true,"keywords":" Haoran Li Zhanming Jie Wei Lu parsing 2024"},{"group":"Papers","title":"Design of Chain-of-Thought in Math Problem Solving","hint":"arXiv 2023","href":"https://arxiv.org/abs/2309.11054","external":true,"keywords":" Zhanming Jie Trung Quoc Luong Xinbo Zhang Xiaoran Jin Hang Li reasoning 2023"},{"group":"Papers","title":"Leveraging Training Data in Few-Shot Prompting for Numerical Reasoning","hint":"Findings of ACL 2023","href":"https://aclanthology.org/2023.findings-acl.668/","external":true,"keywords":" Zhanming Jie Wei Lu reasoning 2023"},{"group":"Papers","title":"Sequence-to-Sequence Pre-training with Unified Modality Masking for Visual Document Understanding","hint":"arXiv 2023","href":"https://arxiv.org/abs/2305.10448","external":true,"keywords":"GenDoc Shuwei Feng Tianyang Zhan Zhanming Jie Trung Quoc Luong Xiaoran Jin multimodal 2023"},{"group":"Papers","title":"Learning to Reason Deductively: Math Word Problem Solving as Complex Relation Extraction","hint":"ACL 2022","href":"https://aclanthology.org/2022.acl-long.410/","external":true,"keywords":" Zhanming Jie Jierui Li Wei Lu reasoning 2022 featured"},{"group":"Papers","title":"To be Closer: Learning to Link up Aspects with Opinions","hint":"EMNLP 2021","href":"https://aclanthology.org/2021.emnlp-main.317/","external":true,"keywords":" Yuxiang Zhou Lejian Liao Yang Gao Zhanming Jie Wei Lu ie parsing 2021"},{"group":"Papers","title":"Better Feature Integration for Named Entity Recognition","hint":"NAACL 2021","href":"https://aclanthology.org/2021.naacl-main.271/","external":true,"keywords":" Lu Xu Zhanming Jie Wei Lu Lidong Bing ie 2021"},{"group":"Papers","title":"ENT-DESC: Entity Description Generation by Exploring Knowledge Graph","hint":"EMNLP 2020","href":"https://aclanthology.org/2020.emnlp-main.90/","external":true,"keywords":" Liying Cheng Dekun Wu Lidong Bing Yan Zhang Zhanming Jie Wei Lu Luo Si parsing 2020"},{"group":"Papers","title":"Overview of the NLPCC 2020 Shared Task: AutoIE","hint":"NLPCC 2020","href":"https://doi.org/10.1007/978-3-030-60457-8_46","external":true,"keywords":" Xuefeng Yang Benhong Wu Zhanming Jie Yunfeng Liu ie 2020"},{"group":"Papers","title":"Dependency-Guided LSTM-CRF for Named Entity Recognition","hint":"EMNLP 2019","href":"https://aclanthology.org/D19-1399/","external":true,"keywords":" Zhanming Jie Wei Lu ie 2019"},{"group":"Papers","title":"Better Modeling of Incomplete Annotations for Named Entity Recognition","hint":"NAACL 2019","href":"https://aclanthology.org/N19-1079/","external":true,"keywords":" Zhanming Jie Pengjun Xie Wei Lu Ruixue Ding Linlin Li ie 2019"},{"group":"Papers","title":"Dependency-based Hybrid Trees for Semantic Parsing","hint":"EMNLP 2018","href":"https://aclanthology.org/D18-1265/","external":true,"keywords":" Zhanming Jie Wei Lu parsing 2018"},{"group":"Papers","title":"Matrix Product Operators for Sequence-to-Sequence Learning","hint":"Physical Review E","href":"https://doi.org/10.1103/PhysRevE.98.042114","external":true,"keywords":" Chu Guo Zhanming Jie Wei Lu Dario Poletti other 2018"},{"group":"Papers","title":"Efficient Dependency-Guided Named Entity Recognition","hint":"AAAI 2017","href":"https://doi.org/10.1609/aaai.v31i1.11009","external":true,"keywords":" Zhanming Jie Aldrian Obaja Muis Wei Lu ie 2017"},{"group":"Papers","title":"A Cloud-Assisted Framework for Bag-of-Features Tagging in Social Networks","hint":"NCCA 2015","href":"https://doi.org/10.1109/NCCA.2015.25","external":true,"keywords":" Zhanming Jie Ming Cheung James She other 2015"},{"group":"Papers","title":"Community-Aware Prediction of Virality Timing Using Big Data of Social Cascades","hint":"BigDataService 2015","href":"https://doi.org/10.1109/BigDataService.2015.40","external":true,"keywords":" Alvin Junus Ming Cheung James She Zhanming Jie other 2015"},{"group":"Papers","title":"Connection Discovery Using Big Data of User-Shared Images in Social Media","hint":"IEEE TMM","href":"https://doi.org/10.1109/TMM.2015.2460192","external":true,"keywords":" Ming Cheung James She Zhanming Jie multimodal 2015"},{"group":"Papers","title":"Multilingual Semantic Parsing: Parsing Multiple Languages into Semantic Representations","hint":"COLING 2014","href":"https://aclanthology.org/C14-1122/","external":true,"keywords":" Zhanming Jie Wei Lu parsing 2014"},{"group":"Writing","title":"Paper Reading: Can LLMs Learn from Previous Mistakes?","hint":"2024-04","href":"/blog/2024/mistake-paper/","keywords":"reasoning reading-notes"},{"group":"Writing","title":"Troubleshooting GPU Experiments on Google Cloud (Bus Error)","hint":"2024-01","href":"/blog/2024/gcp/","keywords":"infra debugging"},{"group":"Writing","title":"My Personal Practice in ACL Paper Formatting","hint":"2022-07","href":"/blog/2022/paper-writing/","keywords":"writing latex"},{"group":"Writing","title":"Paper Reading Notes from ICLR 2022","hint":"2022-05","href":"/blog/2022/iclr-notes/","keywords":"conference reading-notes"},{"group":"Writing","title":"Deductive Reasoning for Math Word Problem Solving","hint":"2022-04","href":"/blog/2022/reasoning/","keywords":"reasoning math paper"},{"group":"Links","title":"Google Scholar","hint":"Zhanming Jie","href":"https://scholar.google.com/citations?user=u68TA6oAAAAJ","external":true},{"group":"Links","title":"GitHub","hint":"@allanj","href":"https://github.com/allanj","external":true},{"group":"Links","title":"Hugging Face","hint":"allanjie","href":"https://huggingface.co/allanjie","external":true},{"group":"Links","title":"ORCID","hint":"0000-0002-0656-9228","href":"https://orcid.org/0000-0002-0656-9228","external":true},{"group":"Links","title":"RSS feed","hint":"/rss.xml","href":"/rss.xml"}]</script><script type="module">var e=document.querySelector(`[data-palette]`),t=e.querySelector(`[data-palette-input]`),n=e.querySelector(`[data-palette-list]`),r=e.querySelector(`[data-palette-count]`),i=JSON.parse(document.getElementById(`palette-data`).textContent||`[]`),a=[`Pages`,`Sections`,`Actions`,`Papers`,`Writing`,`Links`],o=[],s=0,c=e=>e.toLowerCase().normalize(`NFKD`).replace(/[̀-ͯ]/g,``);function l(e,t){let n=c(e.title),r=c(`${e.title} ${e.hint??``} ${e.keywords??``} ${e.group}`),i=0;for(let e of t){if(!r.includes(e))return-1;i+=n.startsWith(e)?6:n.includes(e)?3:1}return i}function u(){let e=c(t.value.trim()).split(/\s+/).filter(Boolean);if(o=e.length?i.map(t=>[t,l(t,e)]).filter(([,e])=>e>=0).sort((e,t)=>t[1]-e[1]).map(([e])=>e):i.filter(e=>e.group!==`Papers`||e.keywords?.includes(`featured`)),o.sort((e,t)=>a.indexOf(e.group)-a.indexOf(t.group)),s=0,n.innerHTML=``,!o.length){n.innerHTML=`<li class="empty">no goals match “${t.value.replace(/[<>&]/g,``)}”</li>`,r.textContent=`0 results`;return}let u=``;o.forEach((e,t)=>{if(e.group!==u){let t=document.createElement(`li`);t.className=`group`,t.setAttribute(`role`,`presentation`),t.textContent=e.group,n.appendChild(t),u=e.group}let r=document.createElement(`li`);r.className=`opt`,r.id=`pal-opt-${t}`,r.setAttribute(`role`,`option`),r.dataset.idx=String(t);let i=document.createElement(`span`);if(i.className=`t`,i.textContent=e.title,r.appendChild(i),e.hint){let t=document.createElement(`span`);t.className=`h`,t.textContent=e.hint,r.appendChild(t)}let a=document.createElement(`span`);a.className=`arrow`,a.textContent=e.external?`↗`:`↵`,r.appendChild(a),r.addEventListener(`mousemove`,()=>d(t,!1)),r.addEventListener(`click`,()=>f(e)),n.appendChild(r)}),r.textContent=`${o.length} result${o.length===1?``:`s`}`,d(0,!1)}function d(e,r=!0){s=(e+o.length)%o.length,n.querySelectorAll(`.opt`).forEach(e=>e.setAttribute(`aria-selected`,`false`));let i=n.querySelector(`#pal-opt-${s}`);i&&(i.setAttribute(`aria-selected`,`true`),t.setAttribute(`aria-activedescendant`,i.id),r&&i.scrollIntoView({block:`nearest`}))}async function f(e){if(e.action===`theme`){m(),document.querySelector(`[data-theme-toggle]`)?.click();return}if(e.action===`copy-email`||e.action===`copy-url`){let n=e.action===`copy-email`?e.hint??``:location.origin;try{await navigator.clipboard.writeText(n),t.value=``,t.placeholder=`copied ${n} ✓`}catch{}u();return}e.href&&(m(),e.external?window.open(e.href,`_blank`,`noopener`):location.href=e.href)}function p(){e.open||(t.value=``,t.placeholder=`Search pages, papers, posts…`,u(),e.showModal(),t.focus())}function m(){e.open&&e.close()}t.addEventListener(`input`,u),t.addEventListener(`keydown`,e=>{if(e.key===`ArrowDown`)e.preventDefault(),d(s+1);else if(e.key===`ArrowUp`)e.preventDefault(),d(s-1);else if(e.key===`Enter`){e.preventDefault();let t=o[s];t&&f(t)}}),e.addEventListener(`click`,t=>{t.target===e&&m()}),document.querySelectorAll(`[data-palette-open]`).forEach(e=>e.addEventListener(`click`,p)),window.addEventListener(`keydown`,t=>{let n=t.target.closest(`input, textarea, [contenteditable="true"]`);(t.metaKey||t.ctrlKey)&&t.key.toLowerCase()===`k`?(t.preventDefault(),e.open?m():p()):t.key===`/`&&!n&&!e.open&&(t.preventDefault(),p())});</script><script type="module">var e=document.querySelectorAll(`[data-reveal]`);if(`IntersectionObserver`in window){let t=new IntersectionObserver(e=>{for(let n of e)n.isIntersecting&&(n.target.classList.add(`in`),t.unobserve(n.target))},{rootMargin:`0px 0px -8% 0px`,threshold:.05});e.forEach(e=>t.observe(e))}else e.forEach(e=>e.classList.add(`in`));</script></body> </html><script type="module">var e=document.querySelector(`[data-lightbox]`),t=document.querySelector(`[data-lightbox-img]`);document.querySelector(`[data-prose]`)?.addEventListener(`click`,n=>{let r=n.target.closest(`img`);r&&e&&t&&(t.src=r.currentSrc||r.src,t.alt=r.alt,e.showModal())}),e?.addEventListener(`click`,()=>e.close());var n=[...document.querySelectorAll(`[data-toc]`)];if(n.length){let e=n.map(e=>document.getElementById(e.dataset.toc)).filter(Boolean),t=()=>{let t=e[0];for(let n of e)n.getBoundingClientRect().top<140&&(t=n);n.forEach(e=>e.classList.toggle(`active`,e.dataset.toc===t?.id))};t(),window.addEventListener(`scroll`,t,{passive:!0})}</script>
