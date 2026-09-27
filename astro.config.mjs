@@ -23,7 +23,7 @@ export default defineConfig({
   },
   // Keep URLs from the old Jekyll (al-folio) site alive.
   redirects: {
-    '/activities': '/about/#service',
+    '/activities': '/about/',
     '/software': '/about/#open-source',
     '/projects': '/about/',
     '/news': '/#news',

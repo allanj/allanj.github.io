@@ -258,15 +258,6 @@ export const highlights: Highlight[] = [
   },
 ];
 
-export const service = [
-  { role: 'Senior Program Committee', venues: 'AAAI 2023' },
-  {
-    role: 'Program Committee / Reviewer',
-    venues: 'ACL 2020–2022 · EMNLP 2018–2022 · NAACL 2019 · AACL 2022 · AAAI 2019 · NLPCC 2017, 2020 · PACLIC 2018 · IJCNLP 2017',
-  },
-  { role: 'Journal Reviewer', venues: 'IEEE Transactions on Emerging Topics in Computing · Natural Language Engineering · ACM TALLIP' },
-];
-
 export type Repo = { name: string; repo: string; blurb: string; stars: number; lang: string };
 
 // `stars` is a fallback; the build refreshes them from the GitHub API when it can.
@@ -277,9 +268,4 @@ export const repos: Repo[] = [
   { name: 'ner_with_dependency', repo: 'allanj/ner_with_dependency', blurb: 'Dependency-guided LSTM-CRF (EMNLP 2019).', stars: 77, lang: 'Python' },
   { name: 'Deductive-MWP', repo: 'allanj/Deductive-MWP', blurb: 'Deductive reasoner for math word problems (ACL 2022).', stars: 63, lang: 'Python' },
   { name: 'LayoutLMv3-DocVQA', repo: 'allanj/LayoutLMv3-DocVQA', blurb: 'Fine-tuning LayoutLMv3 on DocVQA.', stars: 53, lang: 'Python' },
-];
-
-export const talks = [
-  { date: '2022-04', title: 'Workshop on “A Science of Certified AI”', href: '/files/smu_talk.pdf' },
-  { date: '2022-03', title: 'Math word problem solving — SMT, SUTD', href: '/files/sutd_smt_talk.pdf' },
 ];

@@ -5,7 +5,7 @@ import Icon from '../components/Icon.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Timeline from '../components/Timeline.astro';
 import Base from '../layouts/Base.astro';
-import { education, experience, repos, service, site, socials, talks } from '../data/site';
+import { education, experience, repos, site, socials } from '../data/site';
 import { withLiveStars } from '../lib/github';
 
 const liveRepos = await withLiveStars(repos);
@@ -13,7 +13,7 @@ const liveRepos = await withLiveStars(repos);
 
 <Base
   title="About"
-  description="About Zhanming (Allan) Jie — LLM Agent Researcher at ByteDance Seed, building LLM agents for science. Experience, education, service, open source and talks."
+  description="About Zhanming (Allan) Jie — LLM Agent Researcher at ByteDance Seed, building LLM agents for science. Experience, education and open source."
 >
   <header class="page-head grid-bg">
     <div class="wrap head-grid">
@@ -84,57 +84,9 @@ const liveRepos = await withLiveStars(repos);
     </div>
   </section>
 
-  <section class="section" id="service">
-    <div class="wrap two">
-      <div>
-        <SectionHead idx="02" label="service" title="Service" />
-        <dl class="kv">
-          {
-            service.map((s) => (
-              <div>
-                <dt class="mono">{s.role}</dt>
-                <dd>{s.venues}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
-      <div id="talks">
-        <SectionHead idx="03" label="talks & docs" title="Talks & documents" />
-        <ul class="docs">
-          {
-            talks.map((t) => (
-              <li>
-                <a href={t.href} class="doc">
-                  <time class="mono">{t.date.replace('-', '.')}</time>
-                  <span>{t.title}</span>
-                  <span class="mono kind">slides · pdf</span>
-                </a>
-              </li>
-            ))
-          }
-          <li>
-            <a href="/files/research_statement.pdf" class="doc">
-              <time class="mono">2022.09</time>
-              <span>Research statement: Structured Reasoning</span>
-              <span class="mono kind">pdf</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/allanj/phd-thesis" class="doc" target="_blank" rel="noopener">
-              <time class="mono">2020</time>
-              <span>Ph.D. thesis: Leveraging Dependency Trees for Structured Prediction</span>
-              <span class="mono kind">github ↗</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="open-source">
     <div class="wrap">
-      <SectionHead idx="04" label="open source" title="Open source">
+      <SectionHead idx="02" label="open source" title="Open source">
         <a class="link mono small" href="https://github.com/allanj" target="_blank" rel="noopener">github.com/allanj →</a>
       </SectionHead>
       <div class="repos">
@@ -231,70 +183,6 @@ const liveRepos = await withLiveStars(repos);
     .portrait {
       order: -1;
       width: min(280px, 70vw);
-    }
-  }
-
-  .two {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(40px, 6vw, 88px);
-  }
-  .kv {
-    margin: 0;
-    border-top: 1px solid var(--line);
-  }
-  .kv div {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .kv dt {
-    font-size: 12px;
-    color: var(--accent);
-  }
-  .kv dd {
-    margin: 6px 0 0;
-    color: var(--text-2);
-    font-size: 15px;
-  }
-  .docs {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--line);
-  }
-  .doc {
-    display: grid;
-    grid-template-columns: 66px minmax(0, 1fr) auto;
-    gap: 14px;
-    align-items: baseline;
-    padding: 16px 4px;
-    border-bottom: 1px solid var(--line);
-    font-size: 15px;
-    transition: background 0.2s, padding 0.3s var(--ease);
-  }
-  .doc time,
-  .doc .kind {
-    font-size: 11.5px;
-    color: var(--muted);
-  }
-  .doc:hover {
-    background: var(--surface);
-    padding-inline: 12px;
-  }
-  .doc:hover span:not(.kind) {
-    color: var(--accent);
-  }
-  @media (max-width: 860px) {
-    .two {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  @media (max-width: 480px) {
-    .doc {
-      grid-template-columns: 56px minmax(0, 1fr);
-    }
-    .doc .kind {
-      display: none;
     }
   }
 
