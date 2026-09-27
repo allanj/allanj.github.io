@@ -40,6 +40,22 @@ export type Paper = {
 
 export const papers: Paper[] = [
   {
+    id: 'seed2026seed21',
+    title: 'Seed2.1 Model Card: Agentic Intelligence for Productivity',
+    authors: ['ByteDance Seed'],
+    authorNote: 'Team report · I contributed the financial-agent and Lean 4 proving capabilities',
+    venue: 'Tech report 2026',
+    venueFull: 'ByteDance Seed technical report',
+    year: 2026,
+    type: 'report',
+    topics: ['agents-rl', 'theorem-proving'],
+    links: {
+      pdf: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/lapzild-tss/ljhwZthlaukjlkulzlp/seed2.1/Seed2_1_Model_Card.pdf',
+      project: 'https://seed.bytedance.com/en/seed2_1',
+    },
+    featured: true,
+  },
+  {
     id: 'chen2026measure',
     title: 'Measure Twice, Locate Once: Mitigating Hallucinations in LLM-based Agents for Repository-Scale Fault Localization',
     authors: ['Feiyue Chen', 'Guowei Yang', 'Cheryl Lee', 'Zhanming Jie', 'Yuqi Chen'],
@@ -112,7 +128,6 @@ export const papers: Paper[] = [
     topics: ['efficiency'],
     links: { paper: 'https://openreview.net/forum?id=n0OtGl6VGb', arxiv: 'https://arxiv.org/abs/2407.21018', code: 'https://github.com/SalesforceAIResearch/ThinK' },
     award: 'Spotlight',
-    featured: true,
   },
   {
     id: 'luong2024reft',

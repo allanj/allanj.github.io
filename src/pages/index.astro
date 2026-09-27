@@ -8,14 +8,13 @@ import SectionHead from '../components/SectionHead.astro';
 import Timeline from '../components/Timeline.astro';
 import Base from '../layouts/Base.astro';
 import { papers } from '../data/publications';
-import { education, experience, highlights, interests, metrics, news, site, socials } from '../data/site';
+import { education, experience, highlights, interests, news, site, socials } from '../data/site';
 import { fmtDate, postUrl, readingTime } from '../lib/posts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 4);
 const recent = papers.slice(0, 6);
-const firstYear = Math.min(...papers.map((p) => p.year));
 const shownNews = news.slice(0, 7);
 const olderNews = news.slice(7);
 
@@ -30,7 +29,7 @@ const jsonLd = {
   worksFor: { '@type': 'Organization', name: site.org, url: site.orgUrl },
   alumniOf: { '@type': 'CollegeOrUniversity', name: 'Singapore University of Technology and Design' },
   address: { '@type': 'PostalAddress', addressLocality: 'Singapore' },
-  knowsAbout: ['Large language models', 'Reinforcement learning', 'LLM agents', 'Automated theorem proving', 'Lean 4', 'Natural language processing'],
+  knowsAbout: ['LLM agents', 'AI for science', 'Reinforcement learning', 'Automated theorem proving', 'Large language models', 'Natural language processing'],
   sameAs: socials.filter((s) => s.id !== 'email').map((s) => s.href),
 };
 ---
@@ -55,8 +54,8 @@ const jsonLd = {
           <span class="serif">act</span> — trained with reinforcement learning at scale.
         </p>
         <p class="sub">
-          Currently working on agentic RL and formal theorem proving in Lean 4 as part of the Seed-Prover team. Previously at
-          Salesforce AI Research and ByteDance AI Lab; Ph.D. from SUTD.
+          Currently building LLM agents for science — materials, biology and beyond. Before that, financial agents and Lean 4
+          theorem proving (Seed-Prover) at Seed, and earlier Salesforce AI Research and ByteDance AI Lab; Ph.D. from SUTD.
         </p>
         <div class="cta">
           <a class="btn btn-primary" href="/publications/">Publications <Icon name="arrow-right" /></a>
@@ -64,12 +63,6 @@ const jsonLd = {
           <a class="btn" href={socials[1].href} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>
           <a class="btn" href="/about/"><Icon name="file" /> About &amp; CV</a>
         </div>
-        <dl class="stats mono">
-          <div><dt>citations</dt><dd>{(metrics.citations / 1000).toFixed(1)}k+</dd></div>
-          <div><dt>h-index</dt><dd>{metrics.hIndex}</dd></div>
-          <div><dt>papers</dt><dd>{papers.length}</dd></div>
-          <div><dt>since</dt><dd>{firstYear}</dd></div>
-        </dl>
       </div>
       <div class="hero-lean">
         <LeanHero />
@@ -116,14 +109,22 @@ const jsonLd = {
               <p class="mono kicker">{h.kicker}</p>
               <h3>{h.title}</h3>
               <p class="hl-blurb">{h.blurb}</p>
-              <dl class="hl-stats">
-                {h.stats.map((s) => (
-                  <div>
-                    <dd class="mono">{s.value}</dd>
-                    <dt>{s.label}</dt>
-                  </div>
-                ))}
-              </dl>
+              {h.stats ? (
+                <dl class="hl-stats">
+                  {h.stats.map((s) => (
+                    <div>
+                      <dd class="mono">{s.value}</dd>
+                      <dt>{s.label}</dt>
+                    </div>
+                  ))}
+                </dl>
+              ) : (
+                <p class="hl-tags">
+                  {h.tags?.map((t) => (
+                    <span class="chip chip-accent">{t}</span>
+                  ))}
+                </p>
+              )}
               <p class="hl-links mono">
                 {h.links.map((l) => (
                   <a href={l.href} target="_blank" rel="noopener">
@@ -146,7 +147,7 @@ const jsonLd = {
         <div class="recent">
           {recent.map((p) => <PaperItem paper={p} compact />)}
         </div>
-        <a class="btn more-btn" href="/publications/">Browse all {papers.length} papers <Icon name="arrow-right" /></a>
+        <a class="btn more-btn" href="/publications/">Browse all papers <Icon name="arrow-right" /></a>
       </div>
       <div id="news">
         <SectionHead idx="04" label="log" title="News" />
@@ -287,43 +288,6 @@ const jsonLd = {
     gap: 10px;
     margin-top: 28px;
   }
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    margin: 36px 0 0;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    width: fit-content;
-    max-width: 100%;
-  }
-  .stats div {
-    padding: 10px 18px;
-    border-right: 1px solid var(--line);
-  }
-  .stats div:last-child {
-    border-right: 0;
-  }
-  .stats dt {
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--faint);
-  }
-  .stats dd {
-    margin: 2px 0 0;
-    font-size: 18px;
-    color: var(--text);
-  }
-  .hover-only {
-    display: none;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .hover-only {
-      display: inline;
-    }
-  }
   .fig {
     margin-top: 12px;
     text-align: right;
@@ -338,19 +302,10 @@ const jsonLd = {
       text-align: left;
     }
   }
-  @media (max-width: 480px) {
-    .stats div {
-      padding: 8px 12px;
-    }
-    .stats dd {
-      font-size: 16px;
-    }
-  }
-
   /* research */
   .interests {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
   }
   .interest {
@@ -412,6 +367,14 @@ const jsonLd = {
     flex-wrap: wrap;
     gap: 12px 28px;
     margin: 8px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line-2);
+  }
+  .hl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
     padding-top: 16px;
     border-top: 1px dashed var(--line-2);
   }

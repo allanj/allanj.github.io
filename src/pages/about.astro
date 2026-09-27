@@ -13,7 +13,7 @@ const liveRepos = await withLiveStars(repos);
 
 <Base
   title="About"
-  description="About Zhanming (Allan) Jie — Research Scientist at ByteDance Seed working on LLM agents and reinforcement learning. Experience, education, service, open source and talks."
+  description="About Zhanming (Allan) Jie — LLM Agent Researcher at ByteDance Seed, building LLM agents for science. Experience, education, service, open source and talks."
 >
   <header class="page-head grid-bg">
     <div class="wrap head-grid">
@@ -22,28 +22,30 @@ const liveRepos = await withLiveStars(repos);
         <h1>Hi, I’m Allan.</h1>
         <div class="bio">
           <p>
-            I’m a Research Scientist at <a class="link" href={site.orgUrl} target="_blank" rel="noopener">ByteDance Seed</a> in
-            Singapore, working on <strong>LLM agents and reinforcement learning</strong>. I’m a core contributor to
-            <a class="link" href="https://github.com/ByteDance-Seed/Seed-Prover" target="_blank" rel="noopener">Seed-Prover</a>, a
-            family of Lean 4 theorem provers trained with large-scale agentic RL — Seed-Prover reached an IMO-certified,
-            silver-medal-level score at IMO 2025, and Seed-Prover 1.5 proves 88% of PutnamBench.
+            I’m an <strong>LLM Agent Researcher</strong> at
+            <a class="link" href={site.orgUrl} target="_blank" rel="noopener">ByteDance Seed</a> in Singapore. These days I build
+            <strong>LLM agents for science</strong> — materials, biology and beyond.
           </p>
           <p>
-            I’m especially interested in agentic RL: long-horizon credit assignment, reward design, and learning from
+            Earlier at Seed I built financial agents and worked on formal theorem proving as a core contributor to
+            <a class="link" href="https://github.com/ByteDance-Seed/Seed-Prover" target="_blank" rel="noopener">Seed-Prover</a>, a
+            family of Lean 4 provers trained with large-scale agentic RL — Seed-Prover reached an IMO-certified, silver-medal-level
+            score at IMO 2025, and Seed-Prover 1.5 proves 88% of PutnamBench. I also contributed the financial-agent and Lean 4
+            proving capabilities to <a class="link" href="https://seed.bytedance.com/en/seed2_1" target="_blank" rel="noopener">Seed2.1</a>.
+            Across all of it, I’m most interested in agentic RL: long-horizon credit assignment, reward design, and learning from
             experience.
           </p>
           <p>
-            Before Seed, I was a Research Scientist at <strong>Salesforce AI Research</strong>, working on efficient long-context
-            inference (ThinK, an ICLR 2025 Spotlight), and an NLP Scientist at <strong>ByteDance AI Lab</strong>, working on
-            mathematical reasoning with language models — including ReFT, which brings reinforcement learning to chain-of-thought
-            fine-tuning.
+            Before Seed, I was a Research Scientist at <strong>Salesforce AI Research</strong>, and an NLP Scientist at
+            <strong>ByteDance AI Lab</strong>, working on mathematical reasoning with language models — including ReFT, which brings
+            reinforcement learning to chain-of-thought fine-tuning.
           </p>
           <p>
             I received my Ph.D. from the Singapore University of Technology and Design, advised by
-            Prof. Wei Lu
-            in the <a class="link" href="https://statnlp-research.github.io/" target="_blank" rel="noopener">StatNLP</a> group, where
-            I built structured models for named entity recognition and semantic parsing; the thesis received SUTD’s Best Thesis
-            Award. Along the way I interned at the
+            <a class="link" href="https://dr.ntu.edu.sg/entities/person/Wei-Lu" target="_blank" rel="noopener">Prof. Wei Lu</a>
+            (now at NTU) in the <a class="link" href="https://statnlp-research.github.io/" target="_blank" rel="noopener">StatNLP</a>
+            group, where I built structured models for named entity recognition and semantic parsing; the thesis received SUTD’s
+            Best Thesis Award. Along the way I interned at the
             <a class="link" href="https://allenai.org/" target="_blank" rel="noopener">Allen Institute for AI</a> and at Alibaba.
           </p>
         </div>
@@ -161,15 +163,6 @@ const liveRepos = await withLiveStars(repos);
           <p class="r-blurb">Hypergraph-based structured prediction framework from StatNLP — I was an active maintainer.</p>
           <p class="r-meta mono"><span>maintainer</span><span>Java</span></p>
         </a>
-        <a class="repo card ticks" href="/jsonv/" data-reveal>
-          <p class="r-top mono">
-            <Icon name="code" size={14} />
-            <span class="r-owner">tools/</span>
-            <span class="r-name">jsonv</span>
-          </p>
-          <p class="r-blurb">A tiny in-browser JSON visualizer with collapsible trees — handy for inspecting model outputs.</p>
-          <p class="r-meta mono"><span>web tool</span><span>JS</span></p>
-        </a>
       </div>
     </div>
   </section>
@@ -218,11 +211,6 @@ const liveRepos = await withLiveStars(repos);
     aspect-ratio: 9 / 10;
     object-fit: cover;
     border-radius: 6px;
-    filter: grayscale(1) contrast(1.06) brightness(0.96);
-    transition: filter 0.6s var(--ease);
-  }
-  .portrait:hover :global(img) {
-    filter: none;
   }
   .portrait figcaption span {
     display: inline-flex;

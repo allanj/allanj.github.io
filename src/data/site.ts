@@ -6,14 +6,14 @@ export const site = {
   name: 'Zhanming (Allan) Jie',
   shortName: 'Allan Jie',
   handle: 'allanj',
-  role: 'Research Scientist',
+  role: 'LLM Agent Researcher',
   org: 'ByteDance Seed',
   orgUrl: 'https://seed.bytedance.com/',
   location: 'Singapore',
   timezone: 'Asia/Singapore',
-  email: 'allan@bytedance.com',
+  email: 'allan.jie@bytedance.com',
   description:
-    'Zhanming (Allan) Jie — Research Scientist at ByteDance Seed, Singapore. LLM agents, reinforcement learning, reasoning, and formal theorem proving (Seed-Prover).',
+    'Zhanming (Allan) Jie — LLM Agent Researcher at ByteDance Seed, Singapore. LLM agents for science, agentic reinforcement learning, reasoning, and formal theorem proving.',
   googleSiteVerification: '0m9D6GMo20UdxGfmrDgOAUSyYILfAz7Aejakz9Wswaw',
 };
 
@@ -38,8 +38,8 @@ export const interests = [
     key: 'agentic-rl',
     title: 'Agentic RL',
     blurb:
-      'Training LLM agents with reinforcement learning over long horizons — credit assignment, reward design, and learning from experience.',
-    tags: ['long-horizon RL', 'reward design', 'experience'],
+      'Training LLM agents with reinforcement learning over long horizons — now for science (materials, biology), previously for finance. Credit assignment, reward design, and learning from experience.',
+    tags: ['agents for science', 'long-horizon RL', 'reward design'],
   },
   {
     key: 'formal-math',
@@ -55,22 +55,7 @@ export const interests = [
       'From deductive math-word-problem solvers to reinforced fine-tuning (ReFT): making multi-step reasoning more reliable and more explainable.',
     tags: ['chain-of-thought', 'ReFT', 'math'],
   },
-  {
-    key: 'efficiency',
-    title: 'Efficient inference',
-    blurb:
-      'Cheaper long-context serving, e.g. query-driven pruning of the KV cache (ThinK).',
-    tags: ['KV cache', 'long context'],
-  },
 ];
-
-// Google Scholar snapshot — update occasionally.
-export const metrics = {
-  citations: 1697,
-  hIndex: 17,
-  i10: 20,
-  asOf: 'Sep 2026',
-};
 
 export type Role = {
   period: string;
@@ -85,12 +70,12 @@ export type Role = {
 export const experience: Role[] = [
   {
     period: '2025 — now',
-    title: 'Research Scientist',
+    title: 'LLM Agent Researcher',
     org: 'ByteDance Seed',
     orgUrl: 'https://seed.bytedance.com/en/',
     place: 'Singapore',
     summary:
-      'LLM agents and reinforcement learning. Core contributor to Seed-Prover — Lean 4 theorem-proving agents trained with large-scale agentic RL (IMO 2025 silver-level score; 88% of PutnamBench).',
+      'Building LLM agents for science — materials, biology and beyond. Previously built financial agents and worked on formal theorem proving as a core contributor to Seed-Prover (IMO 2025 silver-level score; 88% of PutnamBench); contributed financial-agent and Lean 4 proving capabilities to Seed2.1.',
     head: true,
   },
   {
@@ -99,7 +84,7 @@ export const experience: Role[] = [
     org: 'Salesforce AI Research',
     orgUrl: 'https://www.salesforceairesearch.com/',
     place: 'Singapore',
-    summary: 'Efficient long-context inference for LLMs — ThinK, query-driven KV-cache pruning (ICLR 2025 Spotlight).',
+    summary: 'Efficient long-context inference and reasoning for large language models.',
   },
   {
     period: '2020 — 2024',
@@ -144,6 +129,11 @@ export type NewsItem = { date: string; html: string; tag?: 'paper' | 'release' |
 // Newest first. `date` is YYYY-MM, or YYYY when the month isn't public.
 export const news: NewsItem[] = [
   {
+    date: '2026',
+    tag: 'career',
+    html: 'Now building <b>LLM agents for science</b> — materials, biology and beyond — at ByteDance Seed.',
+  },
+  {
     date: '2026-07',
     tag: 'paper',
     html: '<em>Measure Twice, Locate Once</em> — mitigating hallucinations in LLM agents for repository-scale fault localization — published in <b>ACM TOSEM</b>.',
@@ -151,7 +141,7 @@ export const news: NewsItem[] = [
   {
     date: '2026-06',
     tag: 'release',
-    html: 'The <a href="https://arxiv.org/abs/2607.00248">Seed2.0 Model Card</a> is out; I’m one of the contributors.',
+    html: '<a href="https://seed.bytedance.com/en/seed2_1">Seed2.1</a> is released — I contributed its <b>financial-agent</b> and <b>Lean 4 proving</b> capabilities. The <a href="https://arxiv.org/abs/2607.00248">Seed2.0 Model Card</a> also landed on arXiv.',
   },
   {
     date: '2025-12',
@@ -164,11 +154,6 @@ export const news: NewsItem[] = [
     html: 'Seed-Prover takes part in <b>IMO 2025</b>: an IMO-certified <b>30/42</b>, silver-medal level. Papers: <a href="https://arxiv.org/abs/2507.23726">Seed-Prover</a> and <a href="https://arxiv.org/abs/2507.15225">Delta Prover</a>.',
   },
   { date: '2025', tag: 'career', html: 'Joined <b>ByteDance Seed</b> in Singapore to work on LLM agents and reinforcement learning.' },
-  {
-    date: '2025-04',
-    tag: 'paper',
-    html: '<a href="https://openreview.net/forum?id=n0OtGl6VGb">ThinK</a> (query-driven KV-cache pruning) is a <b>Spotlight</b> at ICLR 2025 in Singapore.',
-  },
   {
     date: '2024-08',
     tag: 'paper',
@@ -203,11 +188,25 @@ export type Highlight = {
   kicker: string;
   title: string;
   blurb: string;
-  stats: { value: string; label: string }[];
+  stats?: { value: string; label: string }[];
+  /** shown instead of stats when there are no headline numbers */
+  tags?: string[];
   links: { label: string; href: string }[];
 };
 
 export const highlights: Highlight[] = [
+  {
+    id: 'seed-2.1',
+    kicker: 'ByteDance Seed · 2026',
+    title: 'Seed2.1',
+    blurb:
+      'ByteDance’s flagship model family for agentic productivity, in Pro and Turbo sizes. I contributed to its financial-agent and Lean 4 theorem-proving capabilities.',
+    tags: ['financial agents', 'Lean 4 proving', 'agentic productivity'],
+    links: [
+      { label: 'model card', href: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/lapzild-tss/ljhwZthlaukjlkulzlp/seed2.1/Seed2_1_Model_Card.pdf' },
+      { label: 'blog', href: 'https://seed.bytedance.com/en/blog/seed2-1-officially-released-advancing-ai-productivity' },
+    ],
+  },
   {
     id: 'seed-prover-1.5',
     kicker: 'ByteDance Seed · 2025',
@@ -243,28 +242,13 @@ export const highlights: Highlight[] = [
     ],
   },
   {
-    id: 'think',
-    kicker: 'Salesforce AI Research · ICLR 2025',
-    title: 'ThinK',
-    blurb:
-      'The KV cache is redundant along the channel dimension too. ThinK prunes the least important key channels per query, cutting long-context memory while keeping accuracy.',
-    stats: [
-      { value: '>20%', label: 'KV-cache memory saved' },
-      { value: 'Spotlight', label: 'ICLR 2025' },
-    ],
-    links: [
-      { label: 'paper', href: 'https://openreview.net/forum?id=n0OtGl6VGb' },
-      { label: 'code', href: 'https://github.com/SalesforceAIResearch/ThinK' },
-    ],
-  },
-  {
     id: 'reft',
     kicker: 'ByteDance Research · ACL 2024',
     title: 'ReFT',
     blurb:
       'Reinforced fine-tuning: warm up with SFT, then run PPO over many sampled chain-of-thought paths, rewarded by answer correctness — generalising better than SFT alone on math reasoning.',
     stats: [
-      { value: '400+', label: 'citations' },
+      { value: 'SFT → RL', label: 'two-stage recipe' },
       { value: 'ACL', label: '2024 main' },
     ],
     links: [

@@ -2,14 +2,11 @@
 import Icon from '../components/Icon.astro';
 import PaperItem from '../components/PaperItem.astro';
 import Base from '../layouts/Base.astro';
-import { isMe, papers, topics } from '../data/publications';
-import { metrics, socials } from '../data/site';
+import { papers, topics } from '../data/publications';
+import { socials } from '../data/site';
 
 const years = [...new Set(papers.map((p) => p.year))].sort((a, b) => b - a);
-const counts = Object.fromEntries(topics.map((t) => [t.id, papers.filter((p) => p.topics.includes(t.id)).length]));
-const usedTopics = topics.filter((t) => counts[t.id] > 0);
-const firstAuthor = papers.filter((p) => isMe(p.authors[0]) || p.equal?.some(isMe)).length;
-const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journal').length;
+const usedTopics = topics.filter((t) => papers.some((p) => p.topics.includes(t.id)));
 ---
 
 <Base
@@ -24,14 +21,6 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
         From structured prediction and NER, through math reasoning and RL fine-tuning, to Lean 4 theorem proving and LLM agents.
         Also on <a class="link" href={socials[0].href} target="_blank" rel="noopener">Google Scholar</a>.
       </p>
-      <dl class="stats mono">
-        <div><dt>total</dt><dd>{papers.length}</dd></div>
-        <div><dt>peer-reviewed</dt><dd>{venues}</dd></div>
-        <div><dt>first / co-first</dt><dd>{firstAuthor}</dd></div>
-        <div><dt>citations</dt><dd>{metrics.citations.toLocaleString('en-US')}</dd></div>
-        <div><dt>h-index</dt><dd>{metrics.hIndex}</dd></div>
-      </dl>
-      <p class="asof mono">citation metrics: Google Scholar, {metrics.asOf}</p>
     </div>
   </header>
 
@@ -43,11 +32,11 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
         <kbd>/</kbd>
       </label>
       <div class="chips" role="group" aria-label="Filter by topic">
-        <button type="button" class="fchip" aria-pressed="true" data-topic="all">All <span>{papers.length}</span></button>
+        <button type="button" class="fchip" aria-pressed="true" data-topic="all">All</button>
         {
           usedTopics.map((t) => (
             <button type="button" class="fchip" aria-pressed="false" data-topic={t.id}>
-              {t.label} <span>{counts[t.id]}</span>
+              {t.label}
             </button>
           ))
         }
@@ -98,39 +87,6 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
     max-width: 62ch;
     color: var(--text-2);
     font-size: 18px;
-  }
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 32px 0 0;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--surface);
-    width: fit-content;
-    max-width: 100%;
-  }
-  .stats div {
-    padding: 10px 18px;
-    border-right: 1px solid var(--line);
-  }
-  .stats div:last-child {
-    border-right: 0;
-  }
-  .stats dt {
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--faint);
-  }
-  .stats dd {
-    margin: 2px 0 0;
-    font-size: 20px;
-    color: var(--text);
-  }
-  .asof {
-    margin-top: 10px;
-    font-size: 11px;
-    color: var(--faint);
   }
   .body {
     padding-block: 32px clamp(56px, 8vw, 104px);
@@ -189,11 +145,6 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
     cursor: pointer;
     transition: all 0.2s;
   }
-  .fchip span {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--faint);
-  }
   .fchip:hover {
     border-color: var(--accent-line);
     color: var(--text);
@@ -203,10 +154,6 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
     background: var(--accent-fill);
     color: var(--accent-ink);
     font-weight: 550;
-  }
-  .fchip[aria-pressed='true'] span {
-    color: var(--accent-ink);
-    opacity: 0.65;
   }
   .toggle {
     display: inline-flex;
@@ -299,12 +246,6 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
       position: static;
       padding-top: 24px;
     }
-    .stats div {
-      padding: 8px 12px;
-    }
-    .stats dd {
-      font-size: 17px;
-    }
   }
 </style>
 
@@ -332,7 +273,7 @@ const venues = papers.filter((p) => p.type === 'conference' || p.type === 'journ
     for (const b of blocks) b.hidden = !b.querySelector('[data-search]:not([hidden])');
     empty.hidden = shown > 0;
     const filtered = shown !== rows.length;
-    status.textContent = filtered ? `showing ${shown} of ${rows.length}` : '';
+    status.textContent = filtered ? `${shown} matching` : '';
     const url = new URL(location.href);
     topic === 'all' ? url.searchParams.delete('topic') : url.searchParams.set('topic', topic);
     history.replaceState(null, '', url);

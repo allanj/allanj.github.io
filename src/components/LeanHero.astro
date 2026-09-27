@@ -14,7 +14,7 @@ const lines: Tok[][] = [
   [['', '  '], ['op', '· '], ['kw', 'exact'], ['', ' '], ['fn', 'reft'], ['', '            '], ['cm', "-- ACL '24"]],
   [['', '  '], ['op', '· '], ['kw', 'exact'], ['', ' '], ['fn', 'seed_prover'], ['', '     '], ['cm', '-- Lean 4']],
   [['', '  '], ['op', '· '], ['kw', 'apply'], ['', ' '], ['fn', 'agentic_rl']],
-  [['', '    '], ['kw', 'simp'], ['op', ' ['], ['fn', 'learn_from_experience'], ['op', ']']],
+  [['', '    '], ['kw', 'simp'], ['op', ' ['], ['fn', 'materials'], ['op', ', '], ['fn', 'biology'], ['op', ']'], ['', '  '], ['cm', '-- now']],
 ];
 
 type Goal = { case?: string; hyps?: string[]; target: string };
@@ -61,12 +61,12 @@ const goals: (Goal[] | null)[] = [
 
   <figcaption class="statusbar mono">
     <span><span class="dot ok" data-lean-dot></span> Lean 4 · Mathlib</span>
-    <span data-lean-status>Ln 10, Col 33</span>
+    <span data-lean-status>Ln 10, Col 38</span>
   </figcaption>
 
   <p class="sr-only">
     A Lean 4 snippet proving the playful theorem allan_jie: there exists a language model that reasons, proves and acts —
-    discharged by ReFT, Seed-Prover and agentic reinforcement learning.
+    discharged by ReFT, Seed-Prover and agentic reinforcement learning for science.
   </p>
 
   <script type="application/json" data-lean-data set:html={JSON.stringify({ lines, goals })} />

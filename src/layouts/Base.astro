@@ -29,9 +29,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const items: PaletteItem[] = [
   { group: 'Pages', title: 'Home', href: '/', hint: '/' },
   ...nav.map((n) => ({ group: 'Pages' as const, title: n.label, href: n.href, hint: n.href })),
-  { group: 'Pages', title: 'JSON visualizer', href: '/jsonv/', hint: '/jsonv/', keywords: 'tool json viewer' },
-  { group: 'Sections', title: 'Research focus', href: '/#research', hint: 'home', keywords: 'interests agents rl lean' },
-  { group: 'Sections', title: 'Highlights', href: '/#highlights', hint: 'home', keywords: 'seed-prover featured' },
+  { group: 'Sections', title: 'Research focus', href: '/#research', hint: 'home', keywords: 'interests agents rl lean science' },
+  { group: 'Sections', title: 'Highlights', href: '/#highlights', hint: 'home', keywords: 'seed-prover seed2.1 featured' },
   { group: 'Sections', title: 'News', href: '/#news', hint: 'home', keywords: 'updates log' },
   { group: 'Sections', title: 'Experience', href: '/about/#experience', hint: 'about', keywords: 'cv career timeline bytedance salesforce' },
   { group: 'Sections', title: 'Service', href: '/about/#service', hint: 'about', keywords: 'reviewer program committee activities' },

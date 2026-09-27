@@ -1,5 +1,5 @@
 ---
-import { siArxiv, siGithub, siGooglescholar, siHuggingface, siRss, siX } from 'simple-icons';
+import { siArxiv, siGithub, siGooglescholar, siHuggingface, siRss } from 'simple-icons';
 
 interface Props {
   name: string;
@@ -12,7 +12,6 @@ const { name, size = 16, class: className } = Astro.props;
 const brands: Record<string, string> = {
   github: siGithub.path,
   scholar: siGooglescholar.path,
-  x: siX.path,
   arxiv: siArxiv.path,
   huggingface: siHuggingface.path,
   rss: siRss.path,

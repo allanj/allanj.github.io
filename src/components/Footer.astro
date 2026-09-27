@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
     <div class="cta">
       <p class="eyebrow"><span class="pulse"></span> open to collaborations</p>
       <h2>
-        Let’s talk about <span class="serif">agents</span>, <span class="serif">RL</span>, or <span class="serif">theorem proving</span>.
+        Let’s talk about <span class="serif">agents</span>, <span class="serif">RL</span>, or <span class="serif">AI for science</span>.
       </h2>
       <div class="cta-actions">
         <a class="btn btn-primary" href={`mailto:${site.email}`}><Icon name="email" /> {site.email}</a>
@@ -63,13 +63,6 @@ const year = new Date().getFullYear();
           }
         </ul>
       </div>
-      <div>
-        <p class="h mono">tools</p>
-        <ul>
-          <li><a class="link" href="/jsonv/">JSON visualizer</a></li>
-          <li><a class="link" href="https://github.com/allanj/repo-level-codegen-papers" target="_blank" rel="noopener">Repo-level codegen papers</a></li>
-        </ul>
-      </div>
       <div class="status mono">
         <p><span class="k">loc</span> {site.location} · <time data-clock data-tz={site.timezone}>SGT</time></p>
         <p><span class="k">build</span> {sha} · {built}</p>
@@ -110,7 +103,7 @@ const year = new Date().getFullYear();
   }
   .cols {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.6fr);
     gap: 32px;
     margin-top: clamp(48px, 7vw, 80px);
     padding-top: 32px;
