@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PPO, GRPO, SPO Primer · Allan Jie</title>
+<meta name="description" content="An interactive, from-zero walkthrough of policy gradients for LLM training: how PPO, GRPO and SPO each choose the baseline, with the math color-coded and playable.">
+<link rel="canonical" href="https://allanj.github.io/rl-primer/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PPO, GRPO, SPO Primer">
+<meta property="og:description" content="An interactive, from-zero walkthrough of policy gradients for LLM training: how PPO, GRPO and SPO each choose the baseline, with the math color-coded and playable.">
+<meta property="og:url" content="https://allanj.github.io/rl-primer/">
+<meta property="og:image" content="https://allanj.github.io/og.png">
+<script>
+/* Follow the light/dark choice made on the rest of the site (same localStorage key). */
+try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Base reset */
+:root{color-scheme:light}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: one reading column (66ch) with wider interactive figures, a sticky ladder nav, and one fixed color per math symbol across formulas, prose and charts. */
+:root{
+  --bg:#F4F7F8; --surface:#FFFFFF; --sunk:#E9EEF1; --ink:#14202B; --muted:#566573; --rule:#D3DBE1;
+  --pi:#3A4CC0; --rew:#A45C00; --base:#7B45B8; --up:#0B7F62; --down:#BF3358;
+  --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --font-body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E151D; --surface:#16202B; --sunk:#1E2A37; --ink:#E4EBF0; --muted:#94A3B0; --rule:#2C3A49;
+    --pi:#93A3FF; --rew:#EDAF4E; --base:#C6A0FF; --up:#4CCFA2; --down:#FF849F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E151D; --surface:#16202B; --sunk:#1E2A37; --ink:#E4EBF0; --muted:#94A3B0; --rule:#2C3A49;
+  --pi:#93A3FF; --rew:#EDAF4E; --base:#C6A0FF; --up:#4CCFA2; --down:#FF849F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+.wrap{max-width:920px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+p,ul,ol,dl,h1,h2,h3,figure,pre,table{margin:0}
+.prose{display:flex;flex-direction:column;gap:1.05rem}
+.prose > p,.prose > ul,.prose > ol,.prose > h3,.prose > details,.prose > pre{max-width:66ch}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--ink)}
+:focus-visible{outline:2px solid var(--pi);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.12;letter-spacing:-0.01em}
+h1{font-size:clamp(2.1rem,6vw,3.5rem);font-weight:700}
+h2{font-size:clamp(1.5rem,3.6vw,2.05rem);font-weight:700}
+h3{font-size:1.12rem;font-weight:700;margin-top:.5rem}
+.eyebrow,.step{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+ul,ol{padding-left:1.25rem;display:flex;flex-direction:column;gap:.45rem}
+code,.mono{font-family:var(--font-mono);font-size:.88em}
+pre{background:var(--sunk);padding:14px 16px;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:.82rem;line-height:1.55}
+pre .c{color:var(--muted)}
+.t-pi{color:var(--pi);fill:var(--pi)} .t-rew{color:var(--rew);fill:var(--rew)}
+.t-base{color:var(--base);fill:var(--base)} .t-adv{color:var(--up);fill:var(--up)}
+.t-down{color:var(--down)}
+b.t-pi,b.t-rew,b.t-base,b.t-adv,b.t-down{font-weight:600}
+
+/* hero */
+header.hero{padding-block:44px 30px;display:flex;flex-direction:column;gap:18px}
+.lede{font-size:1.14rem;max-width:62ch}
+.eq{overflow-x:auto;overflow-y:hidden;padding-block:6px;font-size:1.06rem;text-align:center}
+.eq mjx-container{margin:0 !important}
+.hero .eq{font-size:1.22rem;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:22px 14px}
+.fills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule)}
+.fills > div{padding:14px 16px 4px 0;display:flex;flex-direction:column;gap:4px}
+.fills > div + div{padding-left:16px;border-left:1px solid var(--rule)}
+.fills strong{font-family:var(--font-display);font-size:1.05rem}
+.fills span{font-size:.95rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.92rem;list-style:none;padding:0;flex-direction:row}
+.legend i{font-style:italic;font-weight:600;margin-right:5px}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+
+/* ladder nav */
+nav.ladder{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--rule);margin-inline:-20px;padding-inline:20px}
+nav.ladder ol{list-style:none;padding:0;display:flex;flex-direction:row;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.ladder ol::-webkit-scrollbar{display:none}
+nav.ladder a{display:block;white-space:nowrap;padding:11px 10px;font-family:var(--font-display);font-size:.9rem;font-weight:500;text-decoration:none;color:var(--muted)}
+nav.ladder a:hover{color:var(--ink)}
+nav.ladder li + li a::before{content:"›";margin-right:12px;color:var(--rule)}
+
+section{padding-top:58px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:36px}
+section > .prose{margin-top:6px}
+
+/* small static visuals */
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--font-display);font-size:.92rem}
+.loop .node{border:1px solid var(--rule);background:var(--surface);border-radius:6px;padding:8px 12px;display:flex;flex-direction:column;line-height:1.25}
+.loop .node small{font-family:var(--font-mono);font-size:.72rem;color:var(--muted)}
+.loop .arr{color:var(--muted)}
+dl.cast{display:grid;grid-template-columns:minmax(7.5rem,11rem) minmax(0,1fr);border-top:1px solid var(--rule);max-width:66ch}
+dl.cast dt,dl.cast dd{padding:9px 0;border-bottom:1px solid var(--rule);margin:0}
+dl.cast dt{font-family:var(--font-display);font-weight:700;font-size:.95rem;padding-right:12px}
+dl.cast dd{font-size:.97rem}
+.chain{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px 8px;font-family:var(--font-mono);font-size:.86rem}
+.chain .tok{display:flex;flex-direction:column;align-items:center;gap:3px}
+.chain .tok b{font-weight:500;background:var(--sunk);border-radius:4px;padding:4px 9px}
+.chain .tok span{color:var(--pi);font-variant-numeric:tabular-nums}
+.chain .op{color:var(--muted);padding-bottom:1px}
+
+/* figures */
+figure.fig{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+figure.fig > figcaption{display:flex;flex-direction:column;gap:2px}
+.figno{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.figtitle{font-family:var(--font-display);font-weight:700;font-size:1.05rem;line-height:1.25}
+.fig .note{font-size:.9rem;color:var(--muted);max-width:70ch}
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;font-family:var(--font-display);font-size:.88rem}
+.ctl{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ctl label,.ctl .lab{color:var(--muted);font-size:.8rem}
+.ctl output{font-family:var(--font-mono);color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=range]{accent-color:var(--pi);width:190px;max-width:100%;margin:0}
+button{font:inherit;color:inherit}
+.btn{font-family:var(--font-display);font-size:.88rem;font-weight:500;border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:5px;padding:7px 12px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn:not(:disabled):hover{filter:brightness(1.15)}
+.btn.ghost:not(:disabled):hover{border-color:var(--ink);filter:none}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:7px 11px;font-family:var(--font-display);font-size:.86rem;cursor:pointer;color:var(--muted)}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--sunk);color:var(--ink);font-weight:700}
+.readout{font-size:.97rem;background:var(--sunk);border-radius:6px;padding:11px 13px;min-height:3.2em}
+.readout .mono,.stat .mono{font-variant-numeric:tabular-nums}
+.stat{font-family:var(--font-display);font-size:.86rem;color:var(--muted)}
+.stat b{color:var(--ink)}
+svg.chart{display:block;max-width:100%}
+svg.chart text{font-family:var(--font-mono);font-size:11px;fill:var(--muted)}
+.axis{stroke:var(--rule);stroke-width:1;fill:none}
+.keys{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--font-display);font-size:.82rem;color:var(--muted)}
+.keys span::before{content:"";display:inline-block;width:14px;height:0;border-top:2px solid var(--k,var(--ink));margin-right:6px;vertical-align:middle}
+.keys span.dash::before{border-top-style:dashed}
+.keys span.dot::before{width:8px;height:8px;border:0;border-radius:50%;background:var(--k)}
+
+/* toy policy bars */
+.prompt{font-family:var(--font-mono);font-size:.86rem}
+.prompt b{font-weight:500;background:var(--sunk);padding:3px 8px;border-radius:4px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:4.6rem 3.9rem minmax(0,1fr) 4.9rem;gap:10px;align-items:center;font-family:var(--font-mono);font-size:.84rem;padding:5px 6px;border-radius:5px;border:1px solid transparent}
+.row.picked{border-color:var(--ink);background:var(--sunk)}
+.row .name{display:flex;flex-direction:column;line-height:1.2}
+.row .name small{font-family:var(--font-display);font-size:.7rem;color:var(--muted)}
+.row .rw{color:var(--rew)}
+.track{position:relative;height:20px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.row.picked .track{background:var(--bg)}
+.track .fill{position:absolute;inset:0 auto 0 0;background:var(--pi);transition:width .25s}
+.track .ghost{position:absolute;top:0;bottom:0;opacity:.85}
+.track .ghost.up{background:repeating-linear-gradient(135deg,var(--up) 0 4px,transparent 4px 7px);outline:1px solid var(--up);outline-offset:-1px}
+.track .ghost.down{background:var(--down)}
+.row .pc{text-align:right;display:flex;flex-direction:column;line-height:1.2;font-variant-numeric:tabular-nums}
+.row .pc small{font-size:.72rem;min-height:1.2em}
+.row .pc small.up{color:var(--up)} .row .pc small.down{color:var(--down)}
+@media (max-width:520px){
+  .row{grid-template-columns:3.2rem minmax(0,1fr) 4.4rem;gap:8px}
+  .row .rw{display:none}
+  .fills{grid-template-columns:1fr}
+  .fills > div + div{padding-left:0;border-left:0;border-top:1px solid var(--rule)}
+  body{font-size:16px}
+}
+.tokpick{display:flex;flex-wrap:wrap;gap:5px}
+.tokpick button{font-family:var(--font-mono);font-size:.8rem;border:1px solid var(--rule);background:transparent;border-radius:4px;padding:6px 9px;cursor:pointer;color:var(--muted)}
+.tokpick button[aria-pressed="true"]{background:var(--sunk);color:var(--ink);border-color:var(--ink)}
+.fig > .ctl{font-family:var(--font-display);font-size:.88rem}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.pair > div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pair h4{margin:0;font-family:var(--font-display);font-size:.92rem}
+@media (max-width:640px){.pair{grid-template-columns:1fr}}
+
+/* GRPO group */
+.group{display:grid;gap:3px}
+.group .col{display:flex;flex-direction:column;gap:5px;min-width:0}
+.tile{border:1px solid var(--rule);background:var(--bg);border-radius:4px;min-height:34px;padding:0;cursor:pointer;font-family:var(--font-mono);font-size:.82rem;font-weight:500}
+.tile.ok{color:var(--up);border-color:var(--up)} .tile.bad{color:var(--down)}
+.barbox{position:relative;height:150px}
+.barbox::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px solid var(--rule)}
+.barbox i{position:absolute;left:14%;right:14%;border-radius:2px;transition:height .2s,top .2s}
+.barbox i.up{background:var(--up)} .barbox i.down{background:var(--down)}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;font-size:.92rem;min-width:640px;width:100%}
+th,td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+thead th{font-family:var(--font-display);font-size:1rem}
+tbody th{font-family:var(--font-display);font-weight:500;color:var(--muted);font-size:.85rem;width:9.5rem}
+details{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:9px 0}
+details summary{cursor:pointer;font-family:var(--font-display);font-weight:500;font-size:.95rem}
+details > div{padding-top:10px;display:flex;flex-direction:column;gap:10px;font-size:.97rem}
+.sources{font-size:.92rem;list-style:none;padding:0}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],
+    macros:{pol:['\\class{t-pi}{#1}',1],rew:['\\class{t-rew}{#1}',1],bas:['\\class{t-base}{#1}',1],adv:['\\class{t-adv}{#1}',1],ratio:'\\mathrm{ratio}'}},
+  svg:{fontCache:'global'}
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.min.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Reinforcement learning for LLM training, from zero</p>
+  <h1>One equation, three ways to fill it in</h1>
+  <p class="lede">PPO, GRPO and SPO train a language model the same way. Let it answer, score the answer, then make good answers more likely. They differ in one detail: how each decides what counts as better than expected. This page builds that idea one step at a time, using a single arithmetic prompt as the running example.</p>
+  <div class="eq">\[ \nabla_\theta J \;=\; \mathbb{E}\Big[\; \adv{A}\cdot\nabla_\theta \log \pol{\pi_\theta(y\mid x)} \;\Big] \qquad\text{with}\qquad \adv{A} \;=\; \rew{r} \;-\; \bas{b} \]</div>
+  <ul class="legend">
+    <li><span class="swatch" style="background:var(--pi)"></span><i class="t-pi">π</i>policy: the model's probabilities</li>
+    <li><span class="swatch" style="background:var(--rew)"></span><i class="t-rew">r</i>reward: the grader's score</li>
+    <li><span class="swatch" style="background:var(--base)"></span><i class="t-base">b</i>baseline: the score you expected</li>
+    <li><span class="swatch" style="background:var(--up)"></span><i class="t-adv">A</i>advantage: reward minus baseline</li>
+  </ul>
+  <div class="fills">
+    <div><strong>PPO</strong><span>The baseline is predicted by a second neural network, the critic.</span></div>
+    <div><strong>GRPO</strong><span>The baseline is the average score of several answers to the same prompt.</span></div>
+    <div><strong>SPO</strong><span>The baseline is a running record of how often the model solved this prompt before.</span></div>
+  </div>
+  <p class="note" style="color:var(--muted);font-size:.95rem">If the equation means nothing yet, that is expected. By the end of step 3 you will be able to read every symbol in it. The colors stay the same all the way down the page.</p>
+</header>
+
+<nav class="ladder" aria-label="Sections">
+  <ol>
+    <li><a href="#cast">Symbols</a></li>
+    <li><a href="#gradient">Policy gradient</a></li>
+    <li><a href="#baseline">Baseline</a></li>
+    <li><a href="#ppo">PPO</a></li>
+    <li><a href="#grpo">GRPO</a></li>
+    <li><a href="#spo">SPO</a></li>
+    <li><a href="#compare">Side by side</a></li>
+  </ol>
+</nav>
+
+<!-- ───────────── 1 ───────────── -->
+<section id="cast">
+  <p class="step">Step 1</p>
+  <h2>The RL words, in LLM words</h2>
+  <div class="prose">
+    <p>Reinforcement learning has its own vocabulary, but for LLM training each word maps to something you already know. One round of training looks like this:</p>
+    <div class="loop" aria-label="The training loop">
+      <span class="node">Prompt<small>x</small></span><span class="arr">→</span>
+      <span class="node">Model<small class="t-pi">π<sub>θ</sub></small></span><span class="arr">→</span>
+      <span class="node">Response<small>y</small></span><span class="arr">→</span>
+      <span class="node">Grader<small>checks the answer</small></span><span class="arr">→</span>
+      <span class="node">Reward<small class="t-rew">r</small></span><span class="arr">→</span>
+      <span class="node">Update weights<small>θ</small></span>
+    </div>
+    <dl class="cast">
+      <dt>Policy <span class="t-pi">π<sub>θ</sub></span></dt><dd>The LLM itself. θ (theta) is the full set of its weights.</dd>
+      <dt>State</dt><dd>The prompt plus the tokens written so far.</dd>
+      <dt>Action</dt><dd>The next token.</dd>
+      <dt>Trajectory</dt><dd>One complete response. Also called a rollout or an episode.</dd>
+      <dt>Reward <span class="t-rew">r</span></dt><dd>A number from a grader. In our example: 1 if the final answer is 408, otherwise 0.</dd>
+      <dt>Objective J(θ)</dt><dd>The average reward the model earns. Training tries to raise it.</dd>
+    </dl>
+    <h3>How to read <span class="t-pi">π<sub>θ</sub>(y | x)</span></h3>
+    <p>It is the probability that the model with weights θ writes response y when given prompt x. The bar means "given". A response is a chain of tokens, and the model picks one token at a time, so the probability of the whole response is the token probabilities multiplied together:</p>
+    <div class="chain" aria-label="Token probabilities multiplied into a response probability">
+      <span class="tok"><b>The</b><span>0.90</span></span><span class="op">×</span>
+      <span class="tok"><b>answer</b><span>0.85</span></span><span class="op">×</span>
+      <span class="tok"><b>is</b><span>0.95</span></span><span class="op">×</span>
+      <span class="tok"><b>408</b><span>0.20</span></span><span class="op">=</span>
+      <span class="tok"><b>whole response</b><span>0.145</span></span>
+    </div>
+    <p>Papers almost always write the logarithm of this number. Logs turn the product into a sum, which is easier for both computers and calculus:</p>
+    <div class="eq">\[ \log \pol{\pi_\theta(y\mid x)} \;=\; \sum_{t=1}^{T} \log \pol{\pi_\theta(y_t \mid x,\, y_{\lt t})} \;=\; -0.105 - 0.163 - 0.051 - 1.609 \;=\; -1.93 \]</div>
+    <p>Here \(y_t\) is token number t and \(y_{\lt t}\) means all tokens before it. This sum is the same quantity the cross-entropy loss computes in ordinary fine-tuning. Keep that in mind, because the next step depends on it.</p>
+  </div>
+</section>
+
+<!-- ───────────── 2 ───────────── -->
+<section id="gradient">
+  <p class="step">Step 2</p>
+  <h2>Policy gradient: make rewarded answers more likely</h2>
+  <div class="prose">
+    <p>The whole method fits in one sentence. Sample a response, score it, and nudge the weights so that response becomes more likely in proportion to its score. Written as math:</p>
+    <div class="eq">\[ \nabla_\theta J \;=\; \mathbb{E}_{\,y\sim\pi_\theta}\Big[\; \rew{r(y)}\;\nabla_\theta \log \pol{\pi_\theta(y\mid x)} \;\Big] \]</div>
+    <p>Read it from right to left.</p>
+    <ul>
+      <li>\(\nabla_\theta \log \pol{\pi_\theta(y\mid x)}\) is a direction. It says how to change every weight so that this exact response becomes more likely. Supervised fine-tuning follows the same direction when y is a human-written target.</li>
+      <li>\(\rew{r(y)}\) says how hard to push. Reward 1 means a full push. Reward 0 means no push at all.</li>
+      <li>\(\mathbb{E}_{\,y\sim\pi_\theta}[\,\cdot\,]\) means "average over many responses sampled from the model". In practice you sample a batch and take the mean.</li>
+      <li>\(\nabla_\theta J\) is the result: the direction that raises average reward.</li>
+    </ul>
+    <p>So this kind of RL is fine-tuning on the model's own samples, with each sample weighted by its reward. In code the two losses differ by one factor:</p>
+<pre><span class="c"># supervised fine-tuning: imitate a human answer</span>
+loss = -logprob(y_human)
+
+<span class="c"># policy gradient (REINFORCE): imitate your own answers, weighted by reward</span>
+loss = -reward * logprob(y_sampled)</pre>
+    <p>To watch it work, shrink the LLM down to a model that can only give four answers to one prompt. When one answer is pushed up, the other three go down to make room, because probabilities sum to 1.</p>
+  </div>
+  <figure class="fig" id="bench-a" data-seed="11" data-mode="binary" data-baseline="off" data-toggle="mode">
+    <figcaption><span class="figno">Figure 1</span><span class="figtitle">A four-answer model, trained by hand</span></figcaption>
+  </figure>
+  <div class="prose">
+    <p><strong>Try this.</strong> With right-or-wrong rewards, sample a few times. Only a sampled 408 changes anything, and wrong answers are ignored. Then switch to partial credit and sample until you draw 398. It earns 0.6, so it gets pushed up even though it is wrong. That flaw is what the next step fixes.</p>
+  </div>
+</section>
+
+<!-- ───────────── 3 ───────────── -->
+<section id="baseline">
+  <p class="step">Step 3</p>
+  <h2>Baseline and advantage: compare with what you expected</h2>
+  <div class="prose">
+    <p>With partial credit every answer earns something, so every sampled answer is pushed up. The model still improves on average, because better answers are pushed harder. But each single update is noisy, and a run of unlucky samples can lock in a wrong answer. The fix is to subtract the reward you expected before looking:</p>
+    <div class="eq">\[ \adv{A} \;=\; \rew{r} \;-\; \bas{b} \]</div>
+    <ul>
+      <li><b class="t-base">b</b> is the baseline, the reward you expected.</li>
+      <li><b class="t-adv">A</b> is the advantage, the surprise. Positive means better than expected, so push the response up. Negative means worse than expected, so push it down. Zero means nothing to learn.</li>
+    </ul>
+    <p>Replace r with A in the policy gradient and you have the equation from the top of the page. Subtracting a baseline does not change where training heads on average. It only removes noise, as long as b is chosen without looking at which response was sampled.</p>
+    <details>
+      <summary>Why subtracting b changes nothing on average</summary>
+      <div>
+        <p>The extra term is the baseline times the average nudge direction, and the average nudge direction is zero. Probabilities always sum to 1, so pushing them all "up" by their own share cancels out:</p>
+        <div class="eq">\[ \mathbb{E}_{y\sim\pi_\theta}\big[\bas{b}\,\nabla_\theta\log\pol{\pi_\theta(y)}\big] = \bas{b}\sum_y \pol{\pi_\theta(y)}\,\frac{\nabla_\theta \pol{\pi_\theta(y)}}{\pol{\pi_\theta(y)}} = \bas{b}\,\nabla_\theta \sum_y \pol{\pi_\theta(y)} = \bas{b}\,\nabla_\theta 1 = 0 \]</div>
+      </div>
+    </details>
+  </div>
+  <figure class="fig" id="bench-b" data-seed="23" data-mode="partial" data-baseline="on" data-toggle="baseline">
+    <figcaption><span class="figno">Figure 2</span><span class="figtitle">The same model, now with a baseline</span></figcaption>
+  </figure>
+  <figure class="fig" id="fan">
+    <figcaption><span class="figno">Figure 3</span><span class="figtitle">Twenty training runs each way, 100 updates per run</span></figcaption>
+    <div class="pair">
+      <div><h4>No baseline</h4><div id="fan-none"></div><p class="stat" id="fan-none-stat"></p></div>
+      <div><h4>Baseline = expected reward</h4><div id="fan-base"></div><p class="stat" id="fan-base-stat"></p></div>
+    </div>
+    <div class="keys"><span style="--k:var(--pi)">one run</span><span style="--k:var(--ink)">average of the 20 runs</span></div>
+    <div class="controls"><button class="btn" id="fan-run" type="button">Run 20 new runs</button></div>
+    <p class="note">Each line is the probability of answering 408 during one training run, with partial-credit rewards. Same model, same learning rate, same number of samples. Without a baseline some runs drift to a wrong answer and stay there.</p>
+  </figure>
+  <div class="prose">
+    <p>A good baseline is therefore worth a lot. For an LLM it is also hard to get, because the expected reward is different for every prompt. An easy prompt might be solved 95% of the time and a hard one 5%. <strong>PPO, GRPO and SPO are three answers to one question: where does b come from?</strong></p>
+  </div>
+</section>
+
+<!-- ───────────── 4 ───────────── -->
+<section id="ppo">
+  <p class="step">Step 4</p>
+  <h2>PPO: learn the baseline with a second network</h2>
+  <div class="prose">
+    <p>Proximal Policy Optimization (Schulman et al., 2017) is the classic method, and the one used in the original RLHF recipe for instruction-following models. It adds two ideas to the policy gradient.</p>
+    <h3>Idea 1: a critic predicts the reward</h3>
+    <p>Train a second network, the critic \(\bas{V_\phi(s)}\). It reads the prompt and the tokens written so far, and predicts the final reward. It is trained by plain regression against the rewards that were actually observed. Because the critic makes a prediction at every token, the advantage can be different at every token: it is how much the prediction moved when that token was written.</p>
+  </div>
+  <figure class="fig" id="credit">
+    <figcaption><span class="figno">Figure 4</span><span class="figtitle">A critic gives credit token by token</span></figcaption>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Which response">
+        <button type="button" id="credit-ok" aria-pressed="true">A correct response</button>
+        <button type="button" id="credit-bad" aria-pressed="false">A response with one slip</button>
+      </div>
+    </div>
+    <div id="credit-chart"></div>
+    <p class="readout" id="credit-read"></p>
+    <p class="note">Illustrative critic values for a response that works out 17 × 24 in steps. The advantage shown is the one-step surprise, explained next.</p>
+  </figure>
+  <div class="prose">
+    <h3>The one-step surprise</h3>
+    <p>The advantage in Figure 4 has a name and a formula. Papers call it the TD error and write it δ (delta). It is the change in the critic's prediction caused by writing one token:</p>
+    <div class="eq">\[ \delta_t \;=\; \underbrace{\rew{r_t} + \gamma\,\bas{V_\phi(s_{t+1})}}_{\text{what the critic thinks now}} \;-\; \underbrace{\bas{V_\phi(s_t)}}_{\text{what it thought before}} \]</div>
+    <ul>
+      <li>\(\bas{V_\phi(s_t)}\) is the critic's prediction of the final reward just before token t is written.</li>
+      <li>\(\bas{V_\phi(s_{t+1})}\) is its prediction just after.</li>
+      <li>\(\rew{r_t}\) is any reward handed out at this exact step. In LLM tasks it is 0 for every token except the last. After the last token there is nothing left to predict, so the prediction counts as 0 and the real reward takes its place.</li>
+      <li>\(\gamma\) (gamma) is a discount on future reward. For LLM training it is 1 or very close to 1, and it is 1 in the figures here.</li>
+    </ul>
+    <p>Think of the win-probability bar in a chess broadcast. Before a move it reads 60%, and after the move it reads 10%. Only that move happened in between, so the move was worth −50 points. That drop is δ. The surprises of a whole response always add up to the final reward minus the first prediction, so δ splits the total surprise across the tokens.</p>
+    <h3>GAE: also count the surprises that follow</h3>
+    <p>If the critic were perfect, δ alone would be the advantage. A real critic is often wrong or slow. It may miss a mistake at the token where it happens and only react a few tokens later. Generalized Advantage Estimation (GAE) therefore gives each token its own surprise plus a fading share of the later ones:</p>
+    <div class="eq">\[ \adv{A_t} \;=\; \delta_t \;+\; (\gamma\lambda)\,\delta_{t+1} \;+\; (\gamma\lambda)^2\,\delta_{t+2} \;+\; \dots \]</div>
+    <p>λ (lambda) is a number between 0 and 1 that sets how fast the share fades.</p>
+  </div>
+  <figure class="fig" id="gae">
+    <figcaption><span class="figno">Figure 5</span><span class="figtitle">GAE: how far a later surprise reaches back</span></figcaption>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Which response">
+        <button type="button" id="gae-bad" aria-pressed="true">A response with one slip</button>
+        <button type="button" id="gae-ok" aria-pressed="false">A correct response</button>
+      </div>
+      <div class="ctl"><label for="gae-lam">λ <output id="gae-lam-out"></output></label><input type="range" id="gae-lam" min="0" max="1" step="0.05" value="0.5"></div>
+    </div>
+    <div class="ctl"><span class="lab">Pick a token to see how its advantage is built</span><div class="tokpick" id="gae-pick" role="group" aria-label="Token"></div></div>
+    <div id="gae-chart"></div>
+    <p class="readout" id="gae-read"></p>
+    <p class="note">Top bars: each token's one-step surprise, the same numbers as Figure 4. The weights under them show how much of each surprise flows into the selected token. Bottom bars: the resulting advantage of every token. <strong>Try this.</strong> Keep 17×4 selected, the correct step just before the slip, and drag λ from 0 to 1. Its advantage goes from +0.10 to −0.50 as it takes on blame for a slip that came after it.</p>
+  </figure>
+  <div class="prose">
+    <ul>
+      <li><strong>λ = 0</strong> trusts the critic fully and uses only the token's own surprise. That is precise when the critic is good and wrong when the critic is wrong.</li>
+      <li><strong>λ = 1</strong> counts every later surprise in full. The advantage becomes the final reward minus the prediction before the token, so it no longer depends on the critic's later predictions. The price is noise: a token is blamed or credited for everything that came after it.</li>
+      <li><strong>In practice</strong> λ sits in between, and 0.95 is a common choice.</li>
+    </ul>
+    <p>In code it is one backward pass over the tokens:</p>
+<pre><span class="c"># last token: only its own surprise</span>
+A[T] = delta[T]
+<span class="c"># every earlier token, going backward</span>
+A[t] = delta[t] + gamma * lam * A[t+1]</pre>
+    <h3>Idea 2: clip, so one batch can be reused safely</h3>
+    <p>Generating responses is the expensive part, so you want several gradient steps from each batch. After the first step the model has changed, though, and the batch was sampled from the old model. PPO tracks how far the model has moved on each token with a ratio:</p>
+    <div class="eq">\[ \ratio_t \;=\; \frac{\pol{\pi_\theta(y_t \mid s_t)}}{\pol{\pi_{\theta_{\text{old}}}(y_t \mid s_t)}} \]</div>
+    <p>A ratio of 1 means the model is unchanged on this token. A ratio of 1.3 means the new model is 30% more likely to write it. Papers call this \(r_t(\theta)\), which is easy to confuse with reward, so this page writes "ratio". The objective to maximize is:</p>
+    <div class="eq">\[ L^{\text{clip}} \;=\; \mathbb{E}_t\Big[\,\min\big(\;\ratio_t\,\adv{A_t}\,,\;\; \operatorname{clip}(\ratio_t,\,1-\epsilon,\,1+\epsilon)\,\adv{A_t}\;\big)\Big] \]</div>
+    <ul>
+      <li>\(\ratio_t\,\adv{A_t}\) is the policy gradient from step 3 in disguise. Raising the probability of a good token raises it.</li>
+      <li>\(\operatorname{clip}(\cdot)\) cuts the ratio off outside the range from 1 − ε to 1 + ε. ε is usually 0.2.</li>
+      <li>\(\min\) keeps the more pessimistic of the two. The effect: once a token has moved far enough in the helpful direction, it stops earning credit. If it moved in the harmful direction, the full penalty still applies.</li>
+    </ul>
+  </div>
+  <figure class="fig" id="clip">
+    <figcaption><span class="figno">Figure 6</span><span class="figtitle">The clipped objective for one token</span></figcaption>
+    <div class="controls">
+      <div class="ctl"><span class="lab">This token was</span>
+        <div class="seg" role="group" aria-label="Sign of the advantage">
+          <button type="button" id="clip-pos" aria-pressed="true">better than expected (A = +1)</button>
+          <button type="button" id="clip-neg" aria-pressed="false">worse (A = −1)</button>
+        </div>
+      </div>
+      <div class="ctl"><label for="clip-ratio">ratio <output id="clip-ratio-out"></output></label><input type="range" id="clip-ratio" min="0.3" max="1.9" step="0.01" value="1.35"></div>
+      <div class="ctl"><label for="clip-eps">ε <output id="clip-eps-out"></output></label><input type="range" id="clip-eps" min="0.05" max="0.4" step="0.01" value="0.2"></div>
+    </div>
+    <div id="clip-chart"></div>
+    <div class="keys"><span style="--k:var(--ink)">clipped objective (what PPO maximizes)</span><span class="dash" style="--k:var(--muted)">ratio × A, unclipped</span><span class="dot" style="--k:var(--pi)">this token</span></div>
+    <p class="readout" id="clip-read"></p>
+    <p class="note">Horizontal axis: ratio, new probability divided by old probability. Shaded band: the trust zone from 1 − ε to 1 + ε. Where the solid line is flat, the gradient is zero and the token stops pulling on the weights.</p>
+  </figure>
+  <div class="prose">
+    <p><strong>What it costs for LLMs.</strong> The critic is another network of similar size, so it takes extra memory and compute. It is also hard to train well, because rewards usually arrive only at the end of a response and every prompt is a different problem. A poor critic gives a poor baseline. GRPO removes the critic for this reason.</p>
+  </div>
+</section>
+
+<!-- ───────────── 5 ───────────── -->
+<section id="grpo">
+  <p class="step">Step 5</p>
+  <h2>GRPO: let a group of answers be the baseline</h2>
+  <div class="prose">
+    <p>Group Relative Policy Optimization comes from DeepSeek (introduced in DeepSeekMath, 2024, and used to train DeepSeek-R1). It drops the critic. For each prompt, sample a group of G responses and grade them all. The group's average reward is the baseline:</p>
+    <div class="eq">\[ \adv{\hat A_i} \;=\; \frac{\rew{r_i} \;-\; \bas{\operatorname{mean}(r_1,\dots,r_G)}}{\operatorname{std}(r_1,\dots,r_G)} \]</div>
+    <p>The numerator is the same r − b as before. Dividing by the standard deviation puts easy and hard prompts on the same scale. Worked example with 8 responses, 2 of them correct: the mean is 0.25 and the std is 0.43. A correct response gets (1 − 0.25) / 0.43 = <span class="t-adv mono">+1.73</span>. A wrong one gets (0 − 0.25) / 0.43 = <span class="t-down mono">−0.58</span>.</p>
+    <p>Every token of response i then receives that one number, and it goes into the same clipped objective as PPO:</p>
+    <div class="eq">\[ J_{\text{GRPO}} = \mathbb{E}\Bigg[\frac{1}{G}\sum_{i=1}^{G}\frac{1}{|y_i|}\sum_{t=1}^{|y_i|}\min\Big(\ratio_{i,t}\,\adv{\hat A_i},\; \operatorname{clip}(\ratio_{i,t},1-\epsilon,1+\epsilon)\,\adv{\hat A_i}\Big)\Bigg] - \beta\, D_{\text{KL}}\big(\pol{\pi_\theta}\,\|\,\pol{\pi_{\text{ref}}}\big) \]</div>
+    <p>Read it from the outside in: for each of the G responses, for each of its tokens, take PPO's clipped term, then average. The last term penalizes drifting far from a reference model, and many later recipes set β to 0.</p>
+  </div>
+  <figure class="fig" id="grp">
+    <figcaption><span class="figno">Figure 7</span><span class="figtitle">One prompt, one group</span></figcaption>
+    <div class="controls">
+      <div class="ctl"><label for="grp-g">Group size G <output id="grp-g-out"></output></label><input type="range" id="grp-g" min="2" max="16" step="1" value="8"></div>
+      <div class="ctl"><label for="grp-p">Model's success rate on this prompt <output id="grp-p-out"></output></label><input type="range" id="grp-p" min="0" max="100" step="1" value="25"></div>
+      <button class="btn" type="button" id="grp-sample">Sample a new group</button>
+    </div>
+    <div class="group" id="grp-grid"></div>
+    <p class="readout" id="grp-read"></p>
+    <p class="note">Top row: the G responses, ✓ correct or ✗ wrong. Click any of them to flip it. Bars: each response's advantage \(\hat A_i\), drawn on a fixed scale. Make only one response correct and see how tall its bar becomes: rare wins get a loud signal.</p>
+  </figure>
+  <div class="prose">
+    <h3>The weak spot: groups that all agree</h3>
+    <p>If all G responses are correct, or all are wrong, the rewards are identical. Every advantage is zero and the group teaches nothing, although you paid to generate it. For a model that solves the prompt with probability p, the chance of that happening is \(p^G + (1-p)^G\).</p>
+  </div>
+  <figure class="fig" id="waste">
+    <figcaption><span class="figno">Figure 8</span><span class="figtitle">How often a group is wasted</span></figcaption>
+    <div id="waste-chart"></div>
+    <p class="readout" id="waste-read"></p>
+    <p class="note">Horizontal axis: the model's success rate on the prompt. Vertical axis: share of groups where all responses get the same reward. The dot follows the sliders in Figure 7. As training succeeds, more prompts move to the right edge, so the waste grows. The SPO authors measured this share rising from about 60% to over 80% during a GRPO run.</p>
+  </figure>
+  <div class="prose">
+    <p>Two more costs. A group can only be scored when its slowest response has finished, which hurts when responses involve long tool calls. And like SPO below, GRPO gives one number to a whole response, so it cannot point at the token where things went wrong the way a critic can.</p>
+  </div>
+</section>
+
+<!-- ───────────── 6 ───────────── -->
+<section id="spo">
+  <p class="step">Step 6</p>
+  <h2>SPO: remember how each prompt went last time</h2>
+  <div class="prose">
+    <p>Single-stream Policy Optimization (Xu and Ding, 2025) goes back to one response per prompt, as in classic RL. The baseline comes from memory. For every prompt in the training set, SPO keeps a small running record of how often the model has solved it. It has three parts.</p>
+    <h3>Part 1: a value tracker per prompt</h3>
+    <p>For each prompt x, keep two fading counters: α for successes and β for failures. The baseline is the success rate they imply:</p>
+    <div class="eq">\[ \bas{\hat v(x)} \;=\; \frac{\alpha}{\alpha+\beta} \]</div>
+    <p>Each time the prompt is visited, the model writes one response and earns a reward of 1 or 0. First shrink both counters by a factor ρ, then add the new result:</p>
+    <div class="eq">\[ \alpha \;\leftarrow\; \rho\,\alpha + \rew{r} \qquad\qquad \beta \;\leftarrow\; \rho\,\beta + (1-\rew{r}) \]</div>
+    <p>ρ (rho) is a forgetting factor between 0 and 1. Old evidence is multiplied by ρ on every visit, so it fades, and the tracker remembers roughly the last 1 / (1 − ρ) visits. The advantage uses the baseline from before the new response was seen, which keeps it fair in the sense of step 3:</p>
+    <div class="eq">\[ \adv{A} \;=\; \rew{r} \;-\; \bas{\hat v_{\text{before}}(x)} \]</div>
+    <p>How fast should it forget? If the model has changed a lot since it last saw this prompt, old results say little about the current model. SPO measures that change with the KL divergence D between the current policy and the policy at the last visit, and sets</p>
+    <div class="eq">\[ \rho \;=\; 2^{-D / D_{\text{half}}} \quad\text{kept within } [\rho_{\min},\,\rho_{\max}] = [0.875,\; 0.96] \]</div>
+    <p>A big change gives a small ρ and fast forgetting. In the figure below you set ρ by hand to feel what it does.</p>
+  </div>
+  <figure class="fig" id="trk">
+    <figcaption><span class="figno">Figure 9</span><span class="figtitle">A tracker following one prompt</span></figcaption>
+    <div class="controls">
+      <div class="ctl"><label for="trk-p">Model's true success rate <output id="trk-p-out"></output></label><input type="range" id="trk-p" min="0" max="100" step="1" value="30"></div>
+      <div class="ctl"><label for="trk-rho">Forgetting factor ρ <output id="trk-rho-out"></output></label><input type="range" id="trk-rho" min="0.6" max="0.99" step="0.005" value="0.92"></div>
+      <button class="btn" type="button" id="trk-1">Sample 1 response</button>
+      <button class="btn ghost" type="button" id="trk-20">Sample 20</button>
+      <button class="btn ghost" type="button" id="trk-reset">Reset</button>
+    </div>
+    <div id="trk-chart"></div>
+    <div class="keys"><span style="--k:var(--base)">tracker baseline v̂</span><span class="dash" style="--k:var(--muted)">true success rate</span><span class="dot" style="--k:var(--up)">reward 1</span><span class="dot" style="--k:var(--down)">reward 0</span></div>
+    <p class="readout" id="trk-read"></p>
+    <p class="note"><strong>Try this.</strong> Drag the true success rate up to 80%, as if training had improved the model, and sample 20 more. The tracker catches up. Repeat with ρ at 0.99 and then at 0.70: a high ρ is smooth but slow to notice the change, a low ρ is quick but jumpy.</p>
+  </figure>
+  <div class="prose">
+    <h3>Part 2: normalize across the whole batch</h3>
+    <p>GRPO rescales advantages inside each group. SPO has no groups, so it rescales across the whole batch \(\mathcal{B}\) of different prompts:</p>
+    <div class="eq">\[ \adv{\tilde A} \;=\; \frac{\adv{A} - \mu_{\mathcal{B}}}{\sigma_{\mathcal{B}}} \]</div>
+    <p>\(\mu_{\mathcal{B}}\) and \(\sigma_{\mathcal{B}}\) are the mean and standard deviation of all advantages in the batch. With thousands of samples behind them, these statistics are far steadier than the ones from a group of 8. The result goes into the same PPO clipped objective, one value for every token of the response.</p>
+    <h3>Part 3: spend samples where there is something to learn</h3>
+    <p>A prompt the model always solves, or never solves, gives advantages near zero. SPO uses the tracker to choose which prompts to visit, with weight</p>
+    <div class="eq">\[ w(x) \;\propto\; \sqrt{\bas{\hat v(x)}\,\big(1-\bas{\hat v(x)}\big)} \;+\; \epsilon \qquad (\epsilon = 0.05) \]</div>
+    <p>The square root term is largest for prompts the model solves about half the time. The small ε keeps every prompt in rotation. This is how SPO avoids the wasted compute in Figure 8.</p>
+  </div>
+  <figure class="fig" id="wt">
+    <figcaption><span class="figno">Figure 10</span><span class="figtitle">Which prompts get sampled</span></figcaption>
+    <div id="wt-chart"></div>
+    <p class="readout" id="wt-read"></p>
+    <p class="note">Horizontal axis: the tracker's estimate v̂ for a prompt. Vertical axis: its sampling weight. The dot is the prompt from Figure 9.</p>
+  </figure>
+  <div class="prose">
+    <p><strong>What it costs.</strong> The tracker is a table with one entry per prompt, so SPO needs a training set whose prompts come back many times. The base form assumes right-or-wrong rewards. It also needs a warm-up pass to fill the table, 8 responses per prompt in the paper. In return, the authors report a 3.4 point average gain over GRPO on math benchmarks with Qwen3-8B (scored by majority vote over 32 samples), and a 4.35× throughput gain in a simulated agentic setting where response times vary widely.</p>
+  </div>
+</section>
+
+<!-- ───────────── 7 ───────────── -->
+<section id="compare">
+  <p class="step">Recap</p>
+  <h2>Side by side</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>PPO</th><th>GRPO</th><th>SPO</th></tr></thead>
+      <tbody>
+        <tr><th>Where <span class="t-base">b</span> comes from</th><td>A critic network that predicts reward from the tokens so far</td><td>The mean reward of G responses to the same prompt</td><td>A per-prompt tracker of past success, with forgetting</td></tr>
+        <tr><th>Responses per prompt, per step</th><td>1</td><td>G, commonly 8 or more</td><td>1</td></tr>
+        <tr><th>Extra machinery</th><td>A second network to train and keep in memory</td><td>None, but every prompt costs G generations</td><td>A table with two numbers per prompt</td></tr>
+        <tr><th>Credit per token</th><td>Yes, the critic scores every position</td><td>No, one number per response</td><td>No, one number per response</td></tr>
+        <tr><th>Advantage scaling</th><td>Usually normalized over the batch</td><td>Normalized inside each group</td><td>Normalized over the whole batch</td></tr>
+        <tr><th>Weak spot</th><td>The critic is costly and hard to train well for LLMs</td><td>Groups that all agree give no signal, and a group waits for its slowest member</td><td>Prompts must be revisited, and the base form expects right-or-wrong rewards</td></tr>
+        <tr><th>Update rule</th><td colspan="3">All three use the PPO clipped objective from Figure 6. Only the advantage that goes into it differs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>If you remember three things</h3>
+    <ol>
+      <li>Policy gradient is fine-tuning on the model's own samples, weighted by advantage.</li>
+      <li>Advantage is reward minus a baseline, and a better baseline means less noise.</li>
+      <li>PPO learns the baseline, GRPO averages it from a group, and SPO remembers it per prompt.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <p class="eyebrow">Sources</p>
+  <ul class="sources">
+    <li><a href="https://arxiv.org/abs/1707.06347">Proximal Policy Optimization Algorithms</a> (Schulman et al., 2017)</li>
+    <li><a href="https://arxiv.org/abs/1506.02438">High-Dimensional Continuous Control Using Generalized Advantage Estimation</a> (Schulman et al., 2015)</li>
+    <li><a href="https://arxiv.org/abs/2402.03300">DeepSeekMath</a> (Shao et al., 2024), which introduces GRPO</li>
+    <li><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1</a> (DeepSeek-AI, 2025)</li>
+    <li><a href="https://arxiv.org/abs/2509.13232">Single-stream Policy Optimization</a> (Xu and Ding, 2025)</li>
+  </ul>
+  <p class="note" style="color:var(--muted);font-size:.88rem">Figures 1 to 3 and 7 to 10 run the real update rules on a toy problem in your browser. Figures 4 and 5 use made-up critic values to show the idea.</p>
+  <p class="note" style="color:var(--muted);font-size:.88rem"><a href="/">← allanj.github.io</a></p>
+</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+function $(s,r){return (r||document).querySelector(s)}
+function S(tag,attrs){var e=document.createElementNS(NS,tag);if(attrs)for(var k in attrs)e.setAttribute(k,attrs[k]);for(var i=2;i<arguments.length;i++)e.append(arguments[i]);return e}
+function H(tag,attrs){var e=document.createElement(tag);if(attrs)for(var k in attrs){if(k==='class')e.className=attrs[k];else if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k])}for(var i=2;i<arguments.length;i++)e.append(arguments[i]);return e}
+function rngFrom(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function softmax(z){var m=Math.max.apply(null,z),e=z.map(function(v){return Math.exp(v-m)}),s=e.reduce(function(a,b){return a+b},0);return e.map(function(v){return v/s})}
+function sg(v,d){return (v>=0?'+':'−')+Math.abs(v).toFixed(d==null?2:d)}
+function pct(v){return Math.round(v*100)+'%'}
+function draw(p,rng){var u=rng(),a=0,c=p[0];while(u>c&&a<p.length-1){a++;c+=p[a]}return a}
+function chart(host,height,label,paint){
+  var svg=S('svg',{class:'chart',role:'img','aria-label':label});host.append(svg);var last=-1;
+  function render(){var w=Math.max(240,Math.floor(host.clientWidth||600));last=w;svg.setAttribute('width',w);svg.setAttribute('height',height);svg.setAttribute('viewBox','0 0 '+w+' '+height);svg.replaceChildren();paint(svg,w,height)}
+  if('ResizeObserver' in window){new ResizeObserver(function(){var w=Math.max(240,Math.floor(host.clientWidth||600));if(w!==last)render()}).observe(host)}
+  render();return render;
+}
+function txt(x,y,s,anchor,extra){var a={x:x,y:y,'text-anchor':anchor||'start'};if(extra)for(var k in extra)a[k]=extra[k];var t=S('text',a);t.textContent=s;return t}
+function seg(btns,onPick){btns.forEach(function(b,i){b.addEventListener('click',function(){btns.forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false')});onPick(i)})})}
+
+/* ── Figures 1 and 2: the four-answer policy ── */
+var NAMES=['408','398','418','68'], TAGS=['correct','off by ten','off by ten','way off'];
+var RW={binary:[1,0,0,0],partial:[1,0.6,0.6,0.1]}, P0=[0.2,0.35,0.3,0.15];
+function bench(root){
+  var id=root.id, rng=rngFrom(+root.dataset.seed), mode=root.dataset.mode, useBase=root.dataset.baseline==='on', which=root.dataset.toggle;
+  var z, pending=null, steps=0, LR=1;
+  var controls=H('div',{class:'controls'});
+  var segEl=H('div',{class:'seg',role:'group','aria-label':which==='mode'?'Reward type':'Baseline'});
+  var b1=H('button',{type:'button',id:id+'-opt0',text:which==='mode'?'Right or wrong':'No baseline'});
+  var b2=H('button',{type:'button',id:id+'-opt1',text:which==='mode'?'Partial credit':'Baseline = expected reward'});
+  var first=which==='mode'?mode==='binary':!useBase;
+  b1.setAttribute('aria-pressed',first?'true':'false');b2.setAttribute('aria-pressed',first?'false':'true');
+  segEl.append(b1,b2);
+  var bSample=H('button',{type:'button',class:'btn',id:id+'-sample',text:'Sample a response'});
+  var bApply=H('button',{type:'button',class:'btn',id:id+'-apply',text:'Apply the update'});
+  var bTrain=H('button',{type:'button',class:'btn ghost',id:id+'-train',text:'Train 20 steps'});
+  var bReset=H('button',{type:'button',class:'btn ghost',id:id+'-reset',text:'Reset'});
+  controls.append(segEl,bSample,bApply,bTrain,bReset);
+  var prompt=H('p',{class:'prompt'});prompt.innerHTML='Prompt: <b>What is 17 × 24?</b>';
+  var stat=H('p',{class:'stat'});
+  var rowsEl=H('div',{class:'rows'}), rows=[];
+  NAMES.forEach(function(n,k){
+    var fill=H('div',{class:'fill'}),ghost=H('div',{class:'ghost'}),track=H('div',{class:'track'},fill,ghost);
+    var rw=H('span',{class:'rw'}),pc=H('span'),dl=H('small'),pcw=H('span',{class:'pc'},pc,dl);
+    var name=H('span',{class:'name'},H('span',{text:n}),H('small',{text:TAGS[k]}));
+    var el=H('div',{class:'row'},name,rw,track,pcw);rowsEl.append(el);
+    rows.push({el:el,fill:fill,ghost:ghost,rw:rw,pc:pc,dl:dl});
+  });
+  var read=H('p',{class:'readout'});read.setAttribute('aria-live','polite');
+  root.append(prompt,controls,rowsEl,stat,read);
+
+  function baseline(p){if(!useBase)return 0;var R=RW[mode],b=0;for(var k=0;k<4;k++)b+=p[k]*R[k];return b}
+  function step(){var p=softmax(z),R=RW[mode],a=draw(p,rng),b=baseline(p),A=R[a]-b,nz=z.slice();for(var k=0;k<4;k++)nz[k]+=LR*A*((k===a?1:0)-p[k]);return {a:a,r:R[a],b:b,A:A,nz:nz,np:softmax(nz)}}
+  function render(msg){
+    var p=softmax(z),R=RW[mode];
+    rows.forEach(function(row,k){
+      row.fill.style.width=(p[k]*100)+'%';row.rw.textContent='r = '+R[k];row.pc.textContent=(p[k]*100).toFixed(1)+'%';
+      row.el.classList.toggle('picked',!!pending&&pending.a===k);
+      if(pending){var np=pending.np[k],d=np-p[k],lo=Math.min(p[k],np),hi=Math.max(p[k],np);
+        if(Math.abs(d)<0.0005){row.ghost.hidden=true;row.dl.className='';row.dl.textContent='no change'}
+        else{row.ghost.hidden=false;row.ghost.className='ghost '+(d>0?'up':'down');row.ghost.style.left=(lo*100)+'%';row.ghost.style.width=((hi-lo)*100)+'%';
+          row.dl.className=d>0?'up':'down';row.dl.textContent=(d>0?'▲ +':'▼ −')+Math.abs(d*100).toFixed(1)}
+      }else{row.ghost.hidden=true;row.dl.className='';row.dl.textContent=''}
+    });
+    bApply.disabled=!pending;
+    stat.innerHTML='Updates so far: <b class="mono">'+steps+'</b> · probability of the correct answer: <b class="mono">'+(p[0]*100).toFixed(1)+'%</b>'+(useBase?' · baseline now: <b class="mono t-base">'+baseline(p).toFixed(2)+'</b>':'');
+    if(msg!=null)read.innerHTML=msg;
+  }
+  function explain(s){
+    var n=NAMES[s.a],ok=s.a===0;
+    var head='Sampled <b>'+n+'</b> ('+(ok?'correct':'wrong')+'). Reward <b class="t-rew mono">'+s.r+'</b>, baseline <b class="t-base mono">'+(useBase?s.b.toFixed(2):'0')+'</b>, advantage <b class="mono '+(s.A>=0?'t-adv':'t-down')+'">'+sg(s.A)+'</b>. ';
+    if(!useBase&&s.r===0)return head+'A reward of 0 means no push at all. The model learns nothing from this sample.';
+    if(Math.abs(s.A)<0.02)return head+'The advantage is close to zero, so almost nothing changes. This answer was about as good as expected.';
+    if(s.A>0)return head+'The update makes '+n+' more likely and takes probability from the other three'+(ok?'.':', even though '+n+' is wrong.');
+    return head+'The update makes '+n+' less likely and hands its probability to the other three.';
+  }
+  function reset(msg){z=P0.map(Math.log);pending=null;steps=0;render(msg||'Press <b>Sample a response</b>. The model draws one answer according to the bars above.')}
+  bSample.addEventListener('click',function(){pending=step();render(explain(pending))});
+  bApply.addEventListener('click',function(){if(!pending)return;z=pending.nz;pending=null;steps++;render('Applied. The bars now show the updated model. Sample again.')});
+  bTrain.addEventListener('click',function(){pending=null;for(var i=0;i<20;i++){z=step().nz;steps++}render('Ran 20 rounds of sample, score, update. The correct answer now has probability <b class="mono">'+(softmax(z)[0]*100).toFixed(1)+'%</b>.')});
+  bReset.addEventListener('click',function(){reset()});
+  seg([b1,b2],function(i){if(which==='mode')mode=i===0?'binary':'partial';else useBase=i===1;reset()});
+  reset();
+}
+bench($('#bench-a'));bench($('#bench-b'));
+
+/* ── Figure 3: fan of training runs ── */
+(function(){
+  var STEPS=100,RUNS=20,LR=0.5,seed=7,data={none:[],base:[]};
+  function run(rng,useBase){var z=P0.map(Math.log),R=RW.partial,out=[];for(var s=0;s<=STEPS;s++){var p=softmax(z);out.push(p[0]);var a=draw(p,rng),b=0;if(useBase)for(var k=0;k<4;k++)b+=p[k]*R[k];var A=R[a]-b;for(k=0;k<4;k++)z[k]+=LR*A*((k===a?1:0)-p[k])}return out}
+  function simulate(){['none','base'].forEach(function(key,j){var rng=rngFrom(seed*31+j*977);data[key]=[];for(var i=0;i<RUNS;i++)data[key].push(run(rng,key==='base'))})}
+  function painter(key){return function(svg,w,h){
+    var L=40,Rr=46,T=10,B=26,X=function(s){return L+(w-L-Rr)*s/STEPS},Y=function(v){return T+(h-T-B)*(1-v)};
+    [0,0.5,1].forEach(function(v){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(v),y2:Y(v)}),txt(L-6,Y(v)+4,pct(v),'end'))});
+    [0,50,100].forEach(function(s){svg.append(txt(X(s),h-8,s===0?'0':s===100?'100 updates':String(s),s===0?'start':s===100?'end':'middle'))});
+    var mean=[];for(var s=0;s<=STEPS;s++)mean.push(0);
+    data[key].forEach(function(r){var d='';r.forEach(function(v,s){d+=(s?'L':'M')+X(s).toFixed(1)+' '+Y(v).toFixed(1);mean[s]+=v/RUNS});svg.append(S('path',{d:d,fill:'none',stroke:'var(--pi)','stroke-width':1,'stroke-opacity':0.38}))});
+    var dm='';mean.forEach(function(v,s){dm+=(s?'L':'M')+X(s).toFixed(1)+' '+Y(v).toFixed(1)});
+    svg.append(S('path',{d:dm,fill:'none',stroke:'var(--ink)','stroke-width':2.2}),txt(w-Rr+5,Y(mean[STEPS])+4,pct(mean[STEPS]),'start',{style:'fill:var(--ink)'}));
+  }}
+  simulate();
+  var r1=chart($('#fan-none'),210,'Twenty training runs without a baseline',painter('none'));
+  var r2=chart($('#fan-base'),210,'Twenty training runs with a baseline',painter('base'));
+  function stats(){['none','base'].forEach(function(key){var low=data[key].filter(function(r){return r[STEPS]<0.5}).length;
+    $('#fan-'+key+'-stat').innerHTML=low===0?'All <b>20</b> runs ended above 50%.':'<b>'+low+'</b> of 20 runs ended below 50%.'})}
+  stats();
+  $('#fan-run').addEventListener('click',function(){seed++;simulate();r1();r2();stats()});
+})();
+
+/* ── Figure 4: per-token credit from a critic ── */
+(function(){
+  var D=[{tok:['17×20','=340','17×4','=68','340+68','=408'],v:[0.20,0.35,0.50,0.60,0.80,0.90],r:1},
+         {tok:['17×20','=340','17×4','=78','340+78','=418'],v:[0.20,0.35,0.50,0.60,0.10,0.05],r:0}];
+  var cur=0;
+  var re=chart($('#credit-chart'),300,'Critic prediction and per-token advantage',function(svg,w,h){
+    var d=D[cur],n=6,L=40,Rr=14,bw=(w-L-Rr)/n,small=w<400;
+    var yT=22,yB=118,Y=function(v){return yT+(yB-yT)*(1-v)};
+    svg.append(txt(L,12,'critic’s prediction','start'));
+    [0,1].forEach(function(v){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(v),y2:Y(v)}),txt(L-6,Y(v)+4,String(v),'end'))});
+    var pts=d.v.concat([d.r]),path='';
+    pts.forEach(function(v,i){path+=(i?'L':'M')+(L+bw*i).toFixed(1)+' '+Y(v).toFixed(1)});
+    svg.append(S('path',{d:path,fill:'none',stroke:'var(--base)','stroke-width':2}));
+    pts.forEach(function(v,i){var last=i===n;svg.append(S('circle',{cx:L+bw*i,cy:Y(v),r:last?5:3.5,fill:last?'var(--rew)':'var(--base)'}))});
+    svg.append(txt(w-Rr,Y(d.r)+(d.r?-9:-9),'reward '+d.r,'end',{style:'fill:var(--rew)'}));
+    d.tok.forEach(function(t,i){svg.append(S('rect',{x:L+bw*i+2,y:132,width:bw-4,height:22,rx:3,fill:'var(--sunk)'}),txt(L+bw*i+bw/2,147,t,'middle',{style:'fill:var(--ink);font-size:'+(small?9.5:11)+'px'}))});
+    var y0=218,sc=100;svg.append(txt(L,178,'advantage of each token','start'),S('line',{class:'axis',x1:L,x2:w-Rr,y1:y0,y2:y0}),txt(L-6,y0+4,'0','end'));
+    for(var i=0;i<n;i++){var A=pts[i+1]-pts[i],hh=Math.abs(A)*sc,up=A>=0;
+      svg.append(S('rect',{x:L+bw*i+bw*0.22,y:up?y0-hh:y0,width:bw*0.56,height:Math.max(hh,1),fill:up?'var(--up)':'var(--down)'}),
+        txt(L+bw*i+bw/2,up?y0-hh-5:y0+hh+13,sg(A),'middle',{style:'fill:'+(up?'var(--up)':'var(--down)')+';font-size:'+(small?9.5:11)+'px'}));}
+  });
+  var read=$('#credit-read');
+  function say(){read.innerHTML=cur===0?'Every step is sound, so the critic’s prediction climbs a little with each token and each token earns a small positive advantage.':'The critic’s prediction collapses at <b class="mono">=78</b>, where 17 × 4 goes wrong. That token takes almost all the blame, and the correct steps before it still earn credit. GRPO and SPO would give all six tokens the same negative number.'}
+  seg([$('#credit-ok'),$('#credit-bad')],function(i){cur=i;re();say()});say();
+})();
+
+/* ── Figure 5: GAE ── */
+(function(){
+  var D=[{tok:['17×20','=340','17×4','=68','340+68','=408'],v:[0.20,0.35,0.50,0.60,0.80,0.90],r:1},
+         {tok:['17×20','=340','17×4','=78','340+78','=418'],v:[0.20,0.35,0.50,0.60,0.10,0.05],r:0}];
+  var cur=1,sel=2,lamIn=$('#gae-lam'),pick=$('#gae-pick'),read=$('#gae-read'),re;
+  function z0(v){return Math.abs(v)<0.005?0:v}
+  function deltas(){var d=D[cur],pts=d.v.concat([d.r]),out=[];for(var i=0;i<6;i++)out.push(pts[i+1]-pts[i]);return out}
+  function gae(dl,lam){var A=[],next=0;for(var i=5;i>=0;i--){next=dl[i]+lam*next;A[i]=next}return A}
+  function bar(svg,x,bw,y0,v,sc,fs,opts){var hh=Math.abs(v)*sc,up=v>=0,col=up?'var(--up)':'var(--down)';
+    var r=S('rect',{x:x+bw*0.22,y:up?y0-hh:y0,width:bw*0.56,height:Math.max(hh,1),fill:col,'fill-opacity':opts.op});
+    if(opts.ring){r.setAttribute('stroke','var(--ink)');r.setAttribute('stroke-width',1.5)}
+    svg.append(r,txt(x+bw/2,up?y0-hh-5:y0+hh+13,sg(v),'middle',{style:'fill:'+col+';font-size:'+fs,'fill-opacity':opts.top}))}
+  function paint(svg,w,h){
+    var d=D[cur],lam=+lamIn.value,dl=deltas(),A=gae(dl,lam),n=6,L=40,Rr=14,bw=(w-L-Rr)/n,fs=(w<400?9.5:11)+'px',y0=62,y1=268;
+    svg.append(txt(L,12,'one-step surprise δ of each token','start'),S('line',{class:'axis',x1:L,x2:w-Rr,y1:y0,y2:y0}),txt(L-6,y0+4,'0','end'));
+    if(sel>0)svg.append(txt(L,138,'weight','start'));
+    for(var i=0;i<n;i++){var x=L+bw*i,wt=i<sel?0:Math.pow(lam,i-sel),on=i>=sel&&wt>0.004;
+      bar(svg,x,bw,y0,dl[i],90,fs,{op:on?(0.3+0.7*wt).toFixed(2):0.15,top:on?1:0.45});
+      if(i>=sel)svg.append(txt(x+bw/2,138,'×'+(wt===1?'1':wt.toFixed(2)),'middle',{style:'fill:var(--ink);font-size:'+fs,'fill-opacity':on?1:0.45}));
+      var box=S('rect',{x:x+2,y:146,width:bw-4,height:22,rx:3,fill:'var(--sunk)'});if(i===sel){box.setAttribute('stroke','var(--ink)');box.setAttribute('stroke-width',1.5)}
+      svg.append(box,txt(x+bw/2,161,d.tok[i],'middle',{style:'fill:var(--ink);font-size:'+fs}));
+    }
+    svg.append(txt(L,192,'advantage A of each token (GAE)','start'),S('line',{class:'axis',x1:L,x2:w-Rr,y1:y1,y2:y1}),txt(L-6,y1+4,'0','end'));
+    for(i=0;i<n;i++)bar(svg,L+bw*i,bw,y1,z0(A[i]),70,fs,{op:1,top:1,ring:i===sel});
+  }
+  function say(){
+    var d=D[cur],lam=+lamIn.value,dl=deltas(),A=gae(dl,lam),parts=[],a=z0(A[sel]);
+    $('#gae-lam-out').textContent=lam.toFixed(2);
+    for(var i=sel;i<6;i++){var wt=Math.pow(lam,i-sel);if(i>sel&&wt<0.005)break;parts.push((i===sel?'':wt.toFixed(2)+' × ')+'('+sg(dl[i])+')')}
+    var s='Advantage of <b class="mono">'+d.tok[sel]+'</b> <span class="mono">= '+parts.join(' + ')+' = </span><b class="mono '+(a>=0?'t-adv':'t-down')+'">'+sg(a)+'</b>. ';
+    if(sel===5)s+='This is the last token, so there are no later surprises to add.';
+    else if(lam===0)s+='With λ = 0 only the token’s own surprise counts.';
+    else if(lam===1)s+='With λ = 1 every later surprise counts in full. The total equals the final reward minus the critic’s prediction before this token: '+d.r+' − '+d.v[sel].toFixed(2)+'.';
+    else s+='Each step further away is scaled down by another factor of λ = '+lam.toFixed(2)+'.';
+    read.innerHTML=s;
+  }
+  function tokens(){pick.replaceChildren();D[cur].tok.forEach(function(t,i){
+    var b=H('button',{type:'button',id:'gae-tok-'+i,text:t,'aria-pressed':i===sel?'true':'false'});
+    b.addEventListener('click',function(){sel=i;Array.prototype.forEach.call(pick.children,function(o,j){o.setAttribute('aria-pressed',j===i?'true':'false')});re();say()});pick.append(b)})}
+  tokens();re=chart($('#gae-chart'),346,'One-step surprises and the GAE advantage built from them',paint);say();
+  lamIn.addEventListener('input',function(){re();say()});
+  seg([$('#gae-bad'),$('#gae-ok')],function(i){cur=i===0?1:0;tokens();re();say()});
+})();
+
+/* ── Figure 6: PPO clip ── */
+(function(){
+  var A=1,rIn=$('#clip-ratio'),eIn=$('#clip-eps'),read=$('#clip-read');
+  function obj(r,e){var c=Math.min(Math.max(r,1-e),1+e);return Math.min(r*A,c*A)}
+  var re=chart($('#clip-chart'),270,'Clipped objective as a function of the probability ratio',function(svg,w,h){
+    var r=+rIn.value,e=+eIn.value,L=40,Rr=14,T=14,B=30,ymin=A>0?-0.1:-2.1,ymax=A>0?2.1:0.1;
+    var X=function(v){return L+(w-L-Rr)*v/2},Y=function(v){return T+(h-T-B)*(1-(v-ymin)/(ymax-ymin))};
+    svg.append(S('rect',{x:X(1-e),y:T,width:X(1+e)-X(1-e),height:h-T-B,fill:'var(--sunk)'}));
+    (A>0?[0,1,2]:[-2,-1,0]).forEach(function(v){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(v),y2:Y(v)}),txt(L-6,Y(v)+4,(v<0?'−':'')+Math.abs(v),'end'))});
+    svg.append(S('line',{x1:X(1),x2:X(1),y1:T,y2:h-B,stroke:'var(--muted)','stroke-dasharray':'2 4','stroke-width':1}));
+    svg.append(txt(X(0),h-10,'0','middle'),txt(X(2),h-10,'2','end'),txt(X(1-e)-2,h-10,(1-e).toFixed(2),'end'),txt(X(1+e)+2,h-10,(1+e).toFixed(2),'start'));
+    svg.append(S('line',{x1:X(0),y1:Y(0),x2:X(2),y2:Y(2*A),stroke:'var(--muted)','stroke-width':1.3,'stroke-dasharray':'5 4'}));
+    var pts=[0,1-e,1+e,2].map(function(v){return X(v).toFixed(1)+','+Y(obj(v,e)).toFixed(1)}).join(' ');
+    svg.append(S('polyline',{points:pts,fill:'none',stroke:'var(--ink)','stroke-width':2.6,'stroke-linejoin':'round'}));
+    var fx=A>0?X((1+e+2)/2):X((1-e)/2),fy=Y(A>0?(1+e):-(1-e))-9;
+    svg.append(txt(fx,fy,'flat: no gradient','middle'));
+    svg.append(S('line',{x1:X(r),x2:X(r),y1:Y(obj(r,e)),y2:h-B,stroke:'var(--pi)','stroke-width':1}),S('circle',{cx:X(r),cy:Y(obj(r,e)),r:6,fill:'var(--pi)',stroke:'var(--surface)','stroke-width':2}));
+  });
+  function say(){
+    var r=+rIn.value,e=+eIn.value,c=Math.min(Math.max(r,1-e),1+e),s;
+    $('#clip-ratio-out').textContent=r.toFixed(2);$('#clip-eps-out').textContent=e.toFixed(2);
+    if(A>0){
+      if(r>1+e)s='The new model already makes this good token '+r.toFixed(2)+' times as likely, past the limit of '+(1+e).toFixed(2)+'. The curve is flat here, so the token stops pushing. PPO will not over-commit to one lucky sample.';
+      else if(r<1-e)s='The model has made a good token less likely. That is the harmful direction, so nothing is clipped and the gradient pulls the probability back up.';
+      else s='Inside the trust zone. The objective rises with the ratio, so the gradient keeps making this good token more likely.';
+    }else{
+      if(r<1-e)s='The model has already made this bad token much less likely, past the limit of '+(1-e).toFixed(2)+'. The curve is flat here, so there is no further push.';
+      else if(r>1+e)s='The model has made a bad token more likely. That is the harmful direction, so nothing is clipped and the gradient pulls it back at full strength.';
+      else s='Inside the trust zone. The objective rises as the ratio falls, so the gradient makes this bad token less likely.';
+    }
+    read.innerHTML=s+' <span class="mono">ratio × A = '+sg(r*A)+', clipped = '+sg(c*A)+', objective = min = '+sg(obj(r,e))+'</span>';
+  }
+  rIn.addEventListener('input',function(){re();say()});eIn.addEventListener('input',function(){re();say()});
+  seg([$('#clip-pos'),$('#clip-neg')],function(i){A=i===0?1:-1;re();say()});say();
+})();
+
+/* ── Figures 7 and 8: GRPO group and wasted groups ── */
+(function(){
+  var gIn=$('#grp-g'),pIn=$('#grp-p'),grid=$('#grp-grid'),read=$('#grp-read'),rng=rngFrom(5),rewards=[0,0,1,0,0,1,0,0],UNIT=18;
+  function sample(){var G=+gIn.value,p=+pIn.value/100;rewards=[];for(var i=0;i<G;i++)rewards.push(rng()<p?1:0)}
+  function render(){
+    var G=rewards.length,mean=rewards.reduce(function(a,b){return a+b},0)/G,sd=Math.sqrt(rewards.reduce(function(a,b){return a+(b-mean)*(b-mean)},0)/G);
+    var k=Math.round(mean*G);
+    $('#grp-g-out').textContent=gIn.value;$('#grp-p-out').textContent=pIn.value+'%';
+    grid.style.gridTemplateColumns='repeat('+G+',minmax(0,1fr))';grid.replaceChildren();
+    rewards.forEach(function(r,i){
+      var A=sd>1e-9?(r-mean)/sd:0,hh=Math.min(Math.abs(A)*UNIT,74);
+      var t=H('button',{type:'button',class:'tile '+(r?'ok':'bad'),id:'grp-tile-'+i,'aria-label':'Response '+(i+1)+': '+(r?'correct':'wrong')+'. Click to flip.',text:r?'✓':'✗'});
+      t.addEventListener('click',function(){rewards[i]=1-rewards[i];render();var n=$('#grp-tile-'+i);if(n)n.focus()});
+      var bar=H('i',{class:A>=0?'up':'down'});bar.style.height=hh+'px';bar.style.top=(A>=0?75-hh:75)+'px';
+      grid.append(H('div',{class:'col'},t,H('div',{class:'barbox'},bar)));
+    });
+    if(sd<1e-9){read.innerHTML='All '+G+' responses got the same reward, so the std is 0 and every advantage is <b class="mono">0</b>. This group cost '+G+' generations and teaches the model nothing.'}
+    else{var ap=(1-mean)/sd,an=(0-mean)/sd;
+      read.innerHTML='<b class="mono">'+k+'</b> of '+G+' correct. Baseline (group mean) <b class="mono t-base">'+mean.toFixed(2)+'</b>, std <b class="mono">'+sd.toFixed(2)+'</b>. Each correct response gets <b class="mono t-adv">'+sg(ap)+'</b> and each wrong one gets <b class="mono t-down">'+sg(an)+'</b>.'}
+  }
+  var reWaste=chart($('#waste-chart'),200,'Share of wasted groups against success rate',function(svg,w,h){
+    var G=+gIn.value,p=+pIn.value/100,L=40,Rr=16,T=12,B=26,X=function(v){return L+(w-L-Rr)*v},Y=function(v){return T+(h-T-B)*(1-v)};
+    [0,0.5,1].forEach(function(v){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(v),y2:Y(v)}),txt(L-6,Y(v)+4,pct(v),'end'),txt(X(v),h-8,pct(v),v===0?'start':v===1?'end':'middle'))});
+    var d='';for(var i=0;i<=100;i++){var q=i/100,f=Math.pow(q,G)+Math.pow(1-q,G);d+=(i?'L':'M')+X(q).toFixed(1)+' '+Y(f).toFixed(1)}
+    var f0=Math.pow(p,G)+Math.pow(1-p,G);
+    svg.append(S('path',{d:d,fill:'none',stroke:'var(--ink)','stroke-width':2.2}),S('line',{x1:X(p),x2:X(p),y1:Y(f0),y2:Y(0),stroke:'var(--pi)','stroke-width':1}),S('circle',{cx:X(p),cy:Y(f0),r:6,fill:'var(--pi)',stroke:'var(--surface)','stroke-width':2}));
+  });
+  function sayWaste(){var G=+gIn.value,p=+pIn.value/100,f=Math.pow(p,G)+Math.pow(1-p,G);
+    $('#waste-read').innerHTML='With G = <b class="mono">'+G+'</b> and a success rate of <b class="mono">'+pct(p)+'</b>, about <b class="mono">'+(f*100).toFixed(f<0.1?1:0)+'%</b> of groups are wasted. '+(f>0.4?'Most of the compute on prompts like this one produces no learning signal.':'Prompts near 50% are the productive ones.')}
+  function all(){render();reWaste();sayWaste()}
+  gIn.addEventListener('input',function(){sample();all()});pIn.addEventListener('input',function(){sample();all()});
+  $('#grp-sample').addEventListener('click',function(){sample();all()});
+  render();sayWaste();
+})();
+
+/* ── Figures 9 and 10: SPO tracker and sampling weight ── */
+(function(){
+  var pIn=$('#trk-p'),rhoIn=$('#trk-rho'),read=$('#trk-read'),rng,al,be,hist,WIN=60,reW;
+  function v(){return al+be>0?al/(al+be):0.5}
+  function init(){rng=rngFrom(86);var p=+pIn.value/100,s=0;for(var i=0;i<8;i++)s+=rng()<p?1:0;var v0=s/8,N0=8;al=N0*v0;be=N0*(1-v0);hist=[]}
+  function visit(){var p=+pIn.value/100,rho=+rhoIn.value,before=v(),r=rng()<p?1:0;al=rho*al+r;be=rho*be+(1-r);hist.push({r:r,before:before,after:v(),p:p})}
+  init();for(var i0=0;i0<24;i0++)visit();
+  var re=chart($('#trk-chart'),240,'Tracker estimate following the true success rate',function(svg,w,h){
+    var L=40,Rr=14,T=14,B=26,view=hist.slice(-WIN),n=Math.max(view.length,WIN),first=hist.length-view.length;
+    var X=function(i){return L+(w-L-Rr)*(i+0.5)/n},Y=function(val){return T+(h-T-B)*(1-val)};
+    [0,0.5,1].forEach(function(t){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(t),y2:Y(t)}),txt(L-6,Y(t)+4,pct(t),'end'))});
+    svg.append(txt(L,h-8,'visit '+(first+1),'start'),txt(w-Rr,h-8,'visit '+(first+n),'end'));
+    if(!view.length)return;
+    var dp='',dv='';view.forEach(function(e,i){dp+=(i?'L':'M')+X(i).toFixed(1)+' '+Y(e.p).toFixed(1);dv+=(i?'L':'M')+X(i).toFixed(1)+' '+Y(e.after).toFixed(1)});
+    svg.append(S('path',{d:dp,fill:'none',stroke:'var(--muted)','stroke-width':1.4,'stroke-dasharray':'5 4'}));
+    view.forEach(function(e,i){svg.append(S('circle',{cx:X(i),cy:Y(e.r?1:0),r:3.2,fill:e.r?'var(--up)':'var(--down)'}))});
+    svg.append(S('path',{d:dv,fill:'none',stroke:'var(--base)','stroke-width':2.4,'stroke-linejoin':'round'}));
+    var e=view[view.length-1];svg.append(S('circle',{cx:X(view.length-1),cy:Y(e.after),r:5,fill:'var(--base)',stroke:'var(--surface)','stroke-width':2}));
+  });
+  function say(){
+    var rho=+rhoIn.value;$('#trk-p-out').textContent=pIn.value+'%';$('#trk-rho-out').textContent=rho.toFixed(3)+' (remembers about '+Math.round(1/(1-rho))+' visits)';
+    if(!hist.length){read.innerHTML='Tracker initialized from 8 warm-up responses: v̂ = <b class="mono t-base">'+v().toFixed(2)+'</b>. Sample a response.';return}
+    var e=hist[hist.length-1],A=e.r-e.before;
+    read.innerHTML='Visit <b class="mono">'+hist.length+'</b>: baseline before <b class="mono t-base">'+e.before.toFixed(2)+'</b>, reward <b class="mono t-rew">'+e.r+'</b>, advantage <b class="mono '+(A>=0?'t-adv':'t-down')+'">'+sg(A)+'</b>. Counters are now α = <span class="mono">'+al.toFixed(2)+'</span> and β = <span class="mono">'+be.toFixed(2)+'</span>, so v̂ = <b class="mono t-base">'+e.after.toFixed(2)+'</b>.';
+  }
+  function sayW(){var cur=v(),wt=Math.sqrt(cur*(1-cur))+0.05;
+    $('#wt-read').innerHTML='The tracker says v̂ = <b class="mono t-base">'+cur.toFixed(2)+'</b>, so this prompt has weight <b class="mono">'+wt.toFixed(2)+'</b>. The largest possible weight is 0.55, at v̂ = 0.50. A prompt the model always or never solves keeps only the floor of 0.05.'}
+  function all(){re();say();if(reW)reW();sayW()}
+  reW=chart($('#wt-chart'),190,'Sampling weight as a function of the tracker estimate',function(svg,w,h){
+    var L=40,Rr=16,T=12,B=26,X=function(t){return L+(w-L-Rr)*t},Y=function(t){return T+(h-T-B)*(1-t/0.6)},cur=v(),wt=Math.sqrt(cur*(1-cur))+0.05;
+    [0,0.3,0.6].forEach(function(t){svg.append(S('line',{class:'axis',x1:L,x2:w-Rr,y1:Y(t),y2:Y(t)}),txt(L-6,Y(t)+4,t.toFixed(1),'end'))});
+    [0,0.5,1].forEach(function(t){svg.append(txt(X(t),h-8,'v̂ = '+t,t===0?'start':t===1?'end':'middle'))});
+    var d='';for(var i=0;i<=100;i++){var q=i/100;d+=(i?'L':'M')+X(q).toFixed(1)+' '+Y(Math.sqrt(q*(1-q))+0.05).toFixed(1)}
+    svg.append(S('path',{d:d,fill:'none',stroke:'var(--ink)','stroke-width':2.2}),S('line',{x1:X(cur),x2:X(cur),y1:Y(wt),y2:Y(0),stroke:'var(--base)','stroke-width':1}),S('circle',{cx:X(cur),cy:Y(wt),r:6,fill:'var(--base)',stroke:'var(--surface)','stroke-width':2}));
+  });
+  say();sayW();re();
+  $('#trk-1').addEventListener('click',function(){visit();all()});
+  $('#trk-20').addEventListener('click',function(){for(var i=0;i<20;i++)visit();all()});
+  $('#trk-reset').addEventListener('click',function(){init();all()});
+  pIn.addEventListener('input',say);rhoIn.addEventListener('input',say);
+})();
+})();
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@ Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and
 | Name, role, links, news, experience, highlights, service, repos | `src/data/site.ts` |
 | Publications (drives `/publications/`, the home page and ⌘K search) | `src/data/publications.ts` |
 | Blog posts | `src/content/blog/<slug>/index.md` (images live next to the post) |
-| Static files (PDFs, the JSON viewer at `/jsonv/`) | `public/` |
+| Static files (PDFs, the JSON viewer at `/jsonv/`, the RL primer at `/rl-primer/`) | `public/` |
 
 Posts are served at `/blog/<year>/<slug>/`, matching the old Jekyll URLs. Math uses `$…$` / `$$…$$` and is rendered with KaTeX at build time.
 
